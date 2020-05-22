@@ -5,7 +5,7 @@ export const UPDATE_TODO = 'UPDATE_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 export const INCREMENT_TODO_ID = 'INCREMENT_TODO_ID';
 
-export const setTodos = todos => ({
+export const setTodos = (todos) => ({
   type: SET_TODOS,
   todos,
 });
@@ -17,7 +17,7 @@ export const addTodo = ({ id, text, createdAt }) => ({
   text,
 });
 
-export const toggleCompleteTodo = id => ({
+export const toggleCompleteTodo = (id) => ({
   type: TOGGLE_COMPLETE_TODO,
   id,
 });
@@ -29,7 +29,7 @@ export const updateTodo = ({ id, text, updatedAt }) => ({
   text,
 });
 
-export const removeTodo = id => ({
+export const removeTodo = (id) => ({
   type: REMOVE_TODO,
   id,
 });

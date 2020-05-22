@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 export default function useKeyPress(key, callback, active = true) {
   useEffect(() => {
-    const keypress = e => {
+    const keypress = (e) => {
       if (e.key === key) {
         callback();
       }

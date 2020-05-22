@@ -1,10 +1,10 @@
-const path              = require('path');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const resolve = dir => path.join(__dirname, '../../', dir);
+const resolve = (dir) => path.join(__dirname, '../../', dir);
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -89,11 +89,21 @@ module.exports = {
       },
       {
         test: /\.scss$/i,
-        use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.less$/i,
-        use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+        use: [
+          'style-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'less-loader',
+        ],
       },
       {
         test: /\.(jpe?g|png|gif)$/i,
@@ -106,7 +116,7 @@ module.exports = {
             loader: 'image-webpack-loader',
             options: {
               optipng: { optimizationLevel: 7 },
-              pngquant: { quality: [0.75, 0.90], speed: 3 },
+              pngquant: { quality: [0.75, 0.9], speed: 3 },
               mozjpeg: { progressive: true },
               gifsicle: { interlaced: false },
             },

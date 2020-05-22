@@ -16,14 +16,15 @@ export default function TodoPage() {
     if (R.isEmpty(user)) {
       dispatch(push('/login'));
     } else {
-      dispatch(attemptGetTodos())
-        .then(() => setLoading(false));
+      dispatch(attemptGetTodos()).then(() => setLoading(false));
     }
   }, []);
 
-  return !loading && (
-    <div className="todo-page page">
-      <TodoSection />
-    </div>
+  return (
+    !loading && (
+      <div className="todo-page page">
+        <TodoSection />
+      </div>
+    )
   );
 }

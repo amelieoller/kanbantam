@@ -2,14 +2,21 @@ import update from 'immutability-helper';
 import * as R from 'ramda';
 
 import {
-  SET_TODOS, ADD_TODO, TOGGLE_COMPLETE_TODO, UPDATE_TODO, REMOVE_TODO,
+  SET_TODOS,
+  ADD_TODO,
+  TOGGLE_COMPLETE_TODO,
+  UPDATE_TODO,
+  REMOVE_TODO,
 } from '_actions/todos';
 
 import { LOGOUT_USER } from '_actions/user';
 
-export function todo(state = {
-  completed: false,
-}, action) {
+export function todo(
+  state = {
+    completed: false,
+  },
+  action,
+) {
   switch (action.type) {
     case ADD_TODO:
       return update(state, {
@@ -19,7 +26,7 @@ export function todo(state = {
       });
     case TOGGLE_COMPLETE_TODO:
       return update(state, {
-        completed: { $apply: x => !x },
+        completed: { $apply: (x) => !x },
       });
     case UPDATE_TODO:
       return update(state, {

@@ -25,12 +25,16 @@ router.put('/password', requireAuth, (req, res) => {
         if (err) {
           res.status(400).send({ err, message: 'Error updating password' });
         }
-        User.findByIdAndUpdate({ _id: req.user._id }, { password: hash }, err => {
-          if (err) {
-            res.status(400).send({ err, message: 'Error updating password' });
-          }
-          res.status(200).send({ message: 'Password successfully updated' });
-        });
+        User.findByIdAndUpdate(
+          { _id: req.user._id },
+          { password: hash },
+          (err) => {
+            if (err) {
+              res.status(400).send({ err, message: 'Error updating password' });
+            }
+            res.status(200).send({ message: 'Password successfully updated' });
+          },
+        );
       });
     });
   } else {
@@ -41,10 +45,20 @@ router.put('/password', requireAuth, (req, res) => {
 router.put('/', requireAuth, (req, res) => {
   req.body.updated_at = Date.now();
 
-  User.findByIdAndUpdate({ _id: req.user._id }, req.body, { new: true }, (err, user) => {
-    if (err) {
-      res.status(400).send({ err, message: 'Error updating user' });
-    }
-    res.status(200).send({ message: 'User successfully updated', user: user.hidePassword() });
-  });
+  User.findByIdAndUpdate(
+    { _id: req.user._id },
+    req.body,
+    { new: true },
+    (err, user) => {
+      if (err) {
+        res.status(400).send({ err, message: 'Error updating user' });
+      }
+      res
+        .status(200)
+        .send({
+          message: 'User successfully updated',
+          user: user.hidePassword(),
+        });
+    },
+  );
 });

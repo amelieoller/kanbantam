@@ -1,10 +1,10 @@
 const express = require('express');
 const path = require('path');
 
-const auth         = require('./auth');
-const user         = require('./user');
-const users        = require('./users');
-const todos        = require('./todos');
+const auth = require('./auth');
+const user = require('./user');
+const users = require('./users');
+const todos = require('./todos');
 
 const router = express.Router();
 
@@ -15,8 +15,19 @@ router.use('/api/todos', todos);
 
 router.get('/api/tags', (req, res) => {
   res.send([
-    'MERN', 'Node', 'Express', 'Webpack', 'React', 'Redux', 'Mongoose',
-    'Bulma', 'Fontawesome', 'Ramda', 'ESLint', 'Jest', 'Enzyme',
+    'MERN',
+    'Node',
+    'Express',
+    'Webpack',
+    'React',
+    'Redux',
+    'Mongoose',
+    'Bulma',
+    'Fontawesome',
+    'Ramda',
+    'ESLint',
+    'Jest',
+    'Enzyme',
   ]);
 });
 

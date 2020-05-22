@@ -17,17 +17,19 @@ export default function ChangeUsername() {
     }
   }, [user.username]);
 
-  const updateUsernameCase = e => setUsernameCase(e.target.value);
+  const updateUsernameCase = (e) => setUsernameCase(e.target.value);
 
-  const disabled = (user.usernameCase === usernameCase)
-    || usernameCase.toLowerCase() !== user.username;
+  const disabled =
+    user.usernameCase === usernameCase ||
+    usernameCase.toLowerCase() !== user.username;
 
   const saveUsernameCase = () => {
     if (usernameCase.toLowerCase() === user.username) {
       const updatedUser = { username_case: usernameCase };
 
-      dispatch(attemptUpdateUser(updatedUser))
-        .catch(() => setUsernameCase(user.usernameCase));
+      dispatch(attemptUpdateUser(updatedUser)).catch(() =>
+        setUsernameCase(user.usernameCase),
+      );
     }
   };
 
@@ -51,22 +53,20 @@ export default function ChangeUsername() {
     'is-danger': disabled && usernameCase !== user.usernameCase,
   });
 
-  const helpMessage = disabled ? `Username case must match: ${user.username}` : 'Username case valid.';
+  const helpMessage = disabled
+    ? `Username case must match: ${user.username}`
+    : 'Username case valid.';
 
   return (
     <div className="change-username box">
-      <h3 className="title is-3">
-        Username
-      </h3>
+      <h3 className="title is-3">Username</h3>
       <hr className="separator" />
 
       <div className="field">
         <label htmlFor="username" className="label">
           Current Username
         </label>
-        <p className="control">
-          {user.usernameCase}
-        </p>
+        <p className="control">{user.usernameCase}</p>
       </div>
 
       <div className="field has-help">
@@ -87,9 +87,7 @@ export default function ChangeUsername() {
           </span>
         </p>
         {usernameCase !== user.usernameCase && (
-          <p className={helpClasses}>
-            {helpMessage}
-          </p>
+          <p className={helpClasses}>{helpMessage}</p>
         )}
       </div>
       <hr className="separator" />

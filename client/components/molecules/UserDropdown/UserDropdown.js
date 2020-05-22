@@ -12,7 +12,7 @@ export default function UserDropdown({ open, closeDropdown }) {
 
   const dropdown = useRef(null);
 
-  const dropdownListener = e =>
+  const dropdownListener = (e) =>
     !e.path.includes(dropdown.current) && open && closeDropdown();
 
   useEffect(() => {
@@ -27,35 +27,34 @@ export default function UserDropdown({ open, closeDropdown }) {
 
   const logout = () => {
     closeDropdown();
-    dispatch(attemptLogout())
-      .catch(R.identity);
+    dispatch(attemptLogout()).catch(R.identity);
   };
 
-  return open && (
-    <div className="dropdown box" ref={dropdown}>
-      <ul className="dropdown-list">
-        <li className="dropdown-header">
-          {user.usernameCase}
-        </li>
-        <hr className="dropdown-separator" />
-        <li className="dropdown-item">
-          <Link to="/todo" onClick={closeDropdown}>
-            Todo List
-          </Link>
-        </li>
-        <li className="dropdown-item">
-          <Link to="/settings" onClick={closeDropdown}>
-            Settings
-          </Link>
-        </li>
-        <hr className="dropdown-separator" />
-        <li className="dropdown-item">
-          <a onClick={logout} onKeyPress={logout}>
-            Logout
-          </a>
-        </li>
-      </ul>
-    </div>
+  return (
+    open && (
+      <div className="dropdown box" ref={dropdown}>
+        <ul className="dropdown-list">
+          <li className="dropdown-header">{user.usernameCase}</li>
+          <hr className="dropdown-separator" />
+          <li className="dropdown-item">
+            <Link to="/todo" onClick={closeDropdown}>
+              Todo List
+            </Link>
+          </li>
+          <li className="dropdown-item">
+            <Link to="/settings" onClick={closeDropdown}>
+              Settings
+            </Link>
+          </li>
+          <hr className="dropdown-separator" />
+          <li className="dropdown-item">
+            <a onClick={logout} onKeyPress={logout}>
+              Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    )
   );
 }
 

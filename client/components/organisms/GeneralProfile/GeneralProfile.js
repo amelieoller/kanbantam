@@ -22,7 +22,6 @@ export default function GeneralProfile() {
   const [bioEdited, setBioEdited] = useState(false);
   const [profilePicEdited, setProfilePicEdited] = useState(false);
 
-
   const resetState = () => {
     setFirstName(user.firstName || '');
     setLastName(user.lastName || '');
@@ -38,65 +37,72 @@ export default function GeneralProfile() {
     resetState();
   }, [user.firstName, user.lastName, user.bio, user.profilePic]);
 
-  const updateFirstName = e => {
+  const updateFirstName = (e) => {
     if (validateName(e.target.value)) {
       setFirstName(e.target.value);
       setFirstNameEdited(true);
     }
   };
 
-  const updateLastName = e => {
+  const updateLastName = (e) => {
     if (validateName(e.target.value)) {
       setLastName(e.target.value);
       setLastNameEdited(true);
     }
   };
 
-  const updateBio = e => {
+  const updateBio = (e) => {
     setBio(e.target.value);
     setBioEdited(true);
   };
 
-  const updateProfilePic = e => {
+  const updateProfilePic = (e) => {
     setProfilePic(e.target.value);
     setProfilePicEdited(true);
   };
 
-  const refresh = () => dispatch(attemptGetUser())
-    .then(resetState)
-    .catch(R.identity);
+  const refresh = () =>
+    dispatch(attemptGetUser()).then(resetState).catch(R.identity);
 
   const save = () => {
     const updatedUser = {};
 
-    if (firstNameEdited) { updatedUser.first_name = firstName; }
-    if (lastNameEdited) { updatedUser.last_name = lastName; }
-    if (profilePicEdited) { updatedUser.profile_pic = profilePic; }
-    if (bioEdited) { updatedUser.bio = bio; }
+    if (firstNameEdited) {
+      updatedUser.first_name = firstName;
+    }
+    if (lastNameEdited) {
+      updatedUser.last_name = lastName;
+    }
+    if (profilePicEdited) {
+      updatedUser.profile_pic = profilePic;
+    }
+    if (bioEdited) {
+      updatedUser.bio = bio;
+    }
 
     if (!R.isEmpty(updatedUser)) {
-      dispatch(attemptUpdateUser(updatedUser))
-        .catch(R.identity);
+      dispatch(attemptUpdateUser(updatedUser)).catch(R.identity);
     }
   };
 
   const charactersRemaining = 240 - bio.length;
-  const edited = firstNameEdited || lastNameEdited || bioEdited || profilePicEdited;
+  const edited =
+    firstNameEdited || lastNameEdited || bioEdited || profilePicEdited;
 
   return (
     <Box className="general-profile">
-      <span className="icon is-medium is-pulled-right" onClick={refresh} onKeyPress={refresh}>
+      <span
+        className="icon is-medium is-pulled-right"
+        onClick={refresh}
+        onKeyPress={refresh}
+      >
         <FontAwesomeIcon icon={faSync} size="lg" />
       </span>
-      <h3 className="title is-3">
-        General
-      </h3>
+      <h3 className="title is-3">General</h3>
       <hr className="separator" />
       <div className="columns">
         <div className="column is-4">
-          <h3 className="title is-3 has-text-centered">
-            {user.usernameCase}
-          </h3>
+          <h3 className="title is-3 has-text-centered">{user.usernameCase}</h3>
           <figure className="image">
             <img
               className="profile-img"
@@ -173,15 +179,17 @@ export default function GeneralProfile() {
                 onChange={updateBio}
               />
             </p>
-            <p className="help">
-              {`Characters remaining: ${charactersRemaining}`}
-            </p>
+            <p className="help">{`Characters remaining: ${charactersRemaining}`}</p>
           </div>
-
         </div>
       </div>
       <hr className="separator" />
-      <button type="button" className="button is-success" disabled={!edited} onClick={save}>
+      <button
+        type="button"
+        className="button is-success"
+        disabled={!edited}
+        onClick={save}
+      >
         Save
       </button>
     </Box>

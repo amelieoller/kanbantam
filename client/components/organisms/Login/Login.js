@@ -32,8 +32,7 @@ export default function Login() {
       localStorage.setItem('username', username);
     }
 
-    dispatch(attemptLogin(userCredentials))
-      .catch(R.identity);
+    dispatch(attemptLogin(userCredentials)).catch(R.identity);
   };
 
   useKeyPress('Enter', login);
@@ -43,20 +42,16 @@ export default function Login() {
     setRemember(!remember);
   };
 
-  const updateUsername = e => setUsername(e.target.value);
-  const updatePassword = e => setPassword(e.target.value);
+  const updateUsername = (e) => setUsername(e.target.value);
+  const updatePassword = (e) => setPassword(e.target.value);
 
   return (
     <Box className="login">
-      <h3 className="title is-3">
-        Login
-      </h3>
+      <h3 className="title is-3">Login</h3>
       <hr className="separator" />
       <p className="has-space-below">
         Not Registered Yet?&nbsp;
-        <Link to="/register">
-          Create an account.
-        </Link>
+        <Link to="/register">Create an account.</Link>
       </p>
 
       <FormInput
@@ -75,13 +70,15 @@ export default function Login() {
       />
 
       <p className="has-space-below">
-        <Link to="/recovery">
-          Forgot your password?
-        </Link>
+        <Link to="/recovery">Forgot your password?</Link>
       </p>
       <hr className="separator" />
       <p className="control is-clearfix">
-        <button type="button" className="button is-success is-pulled-right" onClick={login}>
+        <button
+          type="button"
+          className="button is-success is-pulled-right"
+          onClick={login}
+        >
           Login
         </button>
         <input type="checkbox" onChange={rememberMe} checked={remember} />

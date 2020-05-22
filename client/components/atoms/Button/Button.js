@@ -4,8 +4,20 @@ import classNames from 'classnames';
 
 export default function Button(props) {
   const {
-    className, onClick, label, style, type, size, outlined,
-    inverted, rounded, hovered, focused, active, loading, disabled,
+    className,
+    onClick,
+    label,
+    style,
+    type,
+    size,
+    outlined,
+    inverted,
+    rounded,
+    hovered,
+    focused,
+    active,
+    loading,
+    disabled,
   } = props;
 
   const typeMap = {

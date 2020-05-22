@@ -1,4 +1,4 @@
-const express  = require('express');
+const express = require('express');
 const passport = require('passport');
 const { User } = require('../database/schemas');
 
@@ -30,11 +30,13 @@ router.post('/register', (req, res) => {
         if (err || !savedUser) {
           res.status(400).send({ message: 'Create user failed', err });
         } else {
-          res.send({ message: 'User created successfully', user: savedUser.hidePassword() });
+          res.send({
+            message: 'User created successfully',
+            user: savedUser.hidePassword(),
+          });
         }
       });
     });
-
   });
 });
 
@@ -52,18 +54,20 @@ router.post('/login', (req, res, next) => {
       return res.status(401).send(info);
     }
 
-    req.login(user, err => {
+    req.login(user, (err) => {
       if (err) {
         res.status(401).send({ message: 'Login failed', err });
       }
-      res.send({ message: 'Logged in successfully', user: user.hidePassword() });
+      res.send({
+        message: 'Logged in successfully',
+        user: user.hidePassword(),
+      });
     });
-
   })(req, res, next);
 });
 
 router.post('/logout', (req, res) => {
-  req.session.destroy(err => {
+  req.session.destroy((err) => {
     if (err) {
       res.status(400).send({ message: 'Logout failed', err });
     }

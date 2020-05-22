@@ -33,23 +33,25 @@ export default function Main({ location }) {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  return !loading && (
-    <div className="has-navbar-fixed-top">
-      <Notifications notifications={alerts} />
-      <Navigation pathname={location.pathname} />
-      <div className="main">
-        <Switch>
-          <Route exact path="/" component={WelcomePage} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/register" component={RegisterPage} />
-          <Route path="/home" component={HomePage} />
-          <Route path="/todo" component={TodoPage} />
-          <Route path="/settings" component={SettingsPage} />
-          <Route path="*" component={LostPage} />
-        </Switch>
+  return (
+    !loading && (
+      <div className="has-navbar-fixed-top">
+        <Notifications notifications={alerts} />
+        <Navigation pathname={location.pathname} />
+        <div className="main">
+          <Switch>
+            <Route exact path="/" component={WelcomePage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/register" component={RegisterPage} />
+            <Route path="/home" component={HomePage} />
+            <Route path="/todo" component={TodoPage} />
+            <Route path="/settings" component={SettingsPage} />
+            <Route path="*" component={LostPage} />
+          </Switch>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    )
   );
 }
 

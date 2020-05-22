@@ -1,7 +1,7 @@
 {
-  "name": "mern-boilerplate",
-  "version": "0.5.4",
-  "description": "A full MERN stack boilerplate",
+  "name": "kanban",
+  "version": "0.1.0",
+  "description": "Kanban with extra features",
   "main": "server/index.js",
   "scripts": {
     "build": "./scripts/build-prod",
@@ -15,20 +15,21 @@
     "test:verbose": "./scripts/test-verbose",
     "test:coverage": "./scripts/test-coverage",
     "test:watch-client": "./scripts/test-watch-client",
-    "test:watch-server": "./scripts/test-watch-server"
+    "test:watch-server": "./scripts/test-watch-server",
+    "format": "./scripts/format"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/djizco/mern-boilerplate.git"
+    "url": "git+https://github.com/amelieoller/kanban.git"
   },
   "author": {
-    "name": "Federico Rojas",
-    "email": "djizco@yahoo.com",
-    "url": "https://github.com/djizco"
+    "name": "Amelie Oller",
+    "email": "amelieoller@gmail.com",
+    "url": "https://github.com/amelieoller"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/djizco/mern-boilerplate/issues"
+    "url": "https://github.com/amelieoller/kanban/issues"
   },
   "keywords": [
     "react",
@@ -43,7 +44,7 @@
     "jest",
     "enzyme"
   ],
-  "homepage": "https://github.com/djizco/mern-boilerplate#readme",
+  "homepage": "https://github.com/amelieoller/kanban#readme",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -106,10 +107,11 @@
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
     "favicons-webpack-plugin": "3.0.1",
     "file-loader": "^6.0.0",
@@ -123,6 +125,7 @@
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "nodemon": "^2.0.2",
+    "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.3",
     "superagent": "^5.2.2",

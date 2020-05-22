@@ -1,4 +1,4 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -22,17 +22,20 @@ export default function Navigation({ pathname }) {
 
   const closeDropdown = () => setOpen(false);
 
-  const isHome = (pathname.length === 5)
-    ? pathname === '/home'
-    : R.slice(0, 6, pathname) === '/home/';
+  const isHome =
+    pathname.length === 5
+      ? pathname === '/home'
+      : R.slice(0, 6, pathname) === '/home/';
 
-  const isTodo = (pathname.length === 5)
-    ? pathname === '/todo'
-    : R.slice(0, 6, pathname) === '/todo/';
+  const isTodo =
+    pathname.length === 5
+      ? pathname === '/todo'
+      : R.slice(0, 6, pathname) === '/todo/';
 
-  const isSettings = (pathname.length === 9)
-    ? pathname === '/settings'
-    : R.slice(0, 10, pathname) === '/settings/';
+  const isSettings =
+    pathname.length === 9
+      ? pathname === '/settings'
+      : R.slice(0, 10, pathname) === '/settings/';
 
   const homeItemClasses = classNames({
     'navbar-item': true,
@@ -58,19 +61,18 @@ export default function Navigation({ pathname }) {
   return (
     <nav className="navbar is-fixed-top has-shadow" role="navigation">
       <div className="container">
-
         <div className="navbar-brand">
-          <Link to={auth ? '/home' : '/'} className="navbar-item" aria-label="main navigation">
-            <h3 className="title is-3 logo">
-              MERN Boilerplate
-            </h3>
+          <Link
+            to={auth ? '/home' : '/'}
+            className="navbar-item"
+            aria-label="main navigation"
+          >
+            <h3 className="title is-3 logo">MERN Boilerplate</h3>
           </Link>
           <div className="navbar-brand-right">
             {!auth && (
               <Link to="/login" className="navbar-item is-hidden-desktop">
-                <h6 className="title is-6">
-                  Login
-                </h6>
+                <h6 className="title is-6">Login</h6>
               </Link>
             )}
             {!auth && (
@@ -85,7 +87,11 @@ export default function Navigation({ pathname }) {
                 onKeyPress={toggleDropdown}
               >
                 <figure className="image navbar-image is-32x32">
-                  <img className="profile-img" src={user.profilePic || '/images/default-profile.png'} alt="" />
+                  <img
+                    className="profile-img"
+                    src={user.profilePic || '/images/default-profile.png'}
+                    alt=""
+                  />
                 </figure>
                 <span className="dropdown-caret" />
               </a>
@@ -97,25 +103,27 @@ export default function Navigation({ pathname }) {
           <div className="navbar-menu">
             <div className="navbar-start">
               <Link to="/home" className={homeItemClasses}>
-                <h6 className="title is-6">
-                  Home
-                </h6>
+                <h6 className="title is-6">Home</h6>
               </Link>
               <Link to="/todo" className={todoItemClasses}>
-                <h6 className="title is-6">
-                  Todo
-                </h6>
+                <h6 className="title is-6">Todo</h6>
               </Link>
               <Link to="/settings" className={settingsItemClasses}>
-                <h6 className="title is-6">
-                  Settings
-                </h6>
+                <h6 className="title is-6">Settings</h6>
               </Link>
             </div>
             <div className="navbar-end">
-              <a className="navbar-item is-hoverable" onClick={toggleDropdown} onKeyPress={toggleDropdown}>
+              <a
+                className="navbar-item is-hoverable"
+                onClick={toggleDropdown}
+                onKeyPress={toggleDropdown}
+              >
                 <figure className="image navbar-image is-32x32">
-                  <img className="profile-img" src={user.profilePic || '/images/default-profile.png'} alt="" />
+                  <img
+                    className="profile-img"
+                    src={user.profilePic || '/images/default-profile.png'}
+                    alt=""
+                  />
                 </figure>
                 <span className="dropdown-caret" />
               </a>
@@ -125,9 +133,7 @@ export default function Navigation({ pathname }) {
           <div className="navbar-menu">
             <div className="navbar-end">
               <Link to="/login" className="navbar-item">
-                <h6 className="title is-6">
-                  Login
-                </h6>
+                <h6 className="title is-6">Login</h6>
               </Link>
               <Link to="/register" className="navbar-item">
                 <Button label="Sign Up" type="success" />

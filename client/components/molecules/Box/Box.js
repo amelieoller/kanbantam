@@ -8,11 +8,7 @@ export default function Box({ children, className }) {
     box: true,
   });
 
-  return (
-    <div className={boxClasses}>
-      {children}
-    </div>
-  );
+  return <div className={boxClasses}>{children}</div>;
 }
 
 Box.defaultProps = {
@@ -20,9 +16,7 @@ Box.defaultProps = {
 };
 
 Box.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.array,
-  ]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array])
+    .isRequired,
   className: PropTypes.string,
 };

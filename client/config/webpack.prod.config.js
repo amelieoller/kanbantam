@@ -5,11 +5,13 @@ const config = require('./webpack.config.js');
 
 config.plugins.push(new BundleAnalyzerPlugin());
 
-config.plugins.push(new webpack.DefinePlugin({
-  'process.env': {
-    NODE_ENV: JSON.stringify('production'),
-  },
-}));
+config.plugins.push(
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production'),
+    },
+  }),
+);
 
 config.optimization = {
   minimizer: [
@@ -24,8 +26,10 @@ config.optimization = {
   ],
 };
 
-config.plugins.push(new webpack.LoaderOptionsPlugin({
-  minimize: true,
-}));
+config.plugins.push(
+  new webpack.LoaderOptionsPlugin({
+    minimize: true,
+  }),
+);
 
 module.exports = config;

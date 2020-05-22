@@ -7,45 +7,51 @@ import { login, logout } from '_actions/user';
 
 import { dispatchError } from '_utils/api';
 
-export const attemptLogin = user => dispatch =>
+export const attemptLogin = (user) => (dispatch) =>
   postLogin(user)
-    .then(data => {
+    .then((data) => {
       dispatch(login(snakeToCamelCase(data.user)));
-      dispatch(Notifications.success({
-        title: 'Success!',
-        message: data.message,
-        position: 'tr',
-        autoDismiss: 3,
-      }));
+      dispatch(
+        Notifications.success({
+          title: 'Success!',
+          message: data.message,
+          position: 'tr',
+          autoDismiss: 3,
+        }),
+      );
       dispatch(push('/home'));
       return data;
     })
     .catch(dispatchError(dispatch));
 
-export const attemptRegister = newUser => dispatch =>
+export const attemptRegister = (newUser) => (dispatch) =>
   postRegister(newUser)
-    .then(data => {
-      dispatch(Notifications.success({
-        title: 'Success!',
-        message: data.message,
-        position: 'tr',
-        autoDismiss: 3,
-      }));
+    .then((data) => {
+      dispatch(
+        Notifications.success({
+          title: 'Success!',
+          message: data.message,
+          position: 'tr',
+          autoDismiss: 3,
+        }),
+      );
       return dispatch(attemptLogin(newUser));
     })
     .then(() => dispatch(push('/settings')))
     .catch(dispatchError(dispatch));
 
-export const attemptLogout = () => dispatch =>
+export const attemptLogout = () => (dispatch) =>
   postLogout()
-    .then(data => {
+    .then((data) => {
       dispatch(logout());
-      dispatch(Notifications.success({
-        title: 'Success!',
-        message: data.message,
-        position: 'tr',
-        autoDismiss: 3,
-      }));
+      dispatch(
+        Notifications.success({
+          title: 'Success!',
+          message: data.message,
+          position: 'tr',
+          autoDismiss: 3,
+        }),
+      );
       dispatch(push('/login'));
       return data;
     })

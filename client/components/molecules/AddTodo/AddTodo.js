@@ -18,12 +18,17 @@ export default function AddTodo() {
 
   useKeyPress('Enter', handleAddTodo);
 
-  const updateText = e => setText(e.target.value);
+  const updateText = (e) => setText(e.target.value);
 
   return (
     <div className="add-todo columns is-gapless">
       <div className="column is-10">
-        <input className="input" type="text" value={text} onChange={updateText} />
+        <input
+          className="input"
+          type="text"
+          value={text}
+          onChange={updateText}
+        />
       </div>
       <div className="column is-2">
         <Button

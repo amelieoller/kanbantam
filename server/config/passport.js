@@ -1,13 +1,13 @@
-const passport    = require('passport');
-const session     = require('express-session');
-const MongoStore  = require('connect-mongo')(session);
-const uuid        = require('uuid');
-const mongoose    = require('mongoose');
+const passport = require('passport');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const uuid = require('uuid');
+const mongoose = require('mongoose');
 
-const Strategies  = require('./strategies');
-const { User }    = require('../database/schemas');
+const Strategies = require('./strategies');
+const { User } = require('../database/schemas');
 
-module.exports = app => {
+module.exports = (app) => {
   const sessionConfig = {
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
@@ -28,8 +28,9 @@ module.exports = app => {
 
   passport.deserializeUser((id, done) =>
     User.findById({ _id: id })
-      .then(user => done(null, user))
-      .catch(err => console.warn(`err at deserialize: ${err}`)));
+      .then((user) => done(null, user))
+      .catch((err) => console.warn(`err at deserialize: ${err}`)),
+  );
 
   passport.use(Strategies.local);
 };

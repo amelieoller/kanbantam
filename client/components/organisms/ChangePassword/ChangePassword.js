@@ -59,8 +59,8 @@ export default function ChangePassword() {
     'is-danger': !match,
   });
 
-  const updateOldPassword = e => setOldPassword(e.target.value);
-  const updateConfirmPassword = e => setConfirmPassword(e.target.value);
+  const updateOldPassword = (e) => setOldPassword(e.target.value);
+  const updateConfirmPassword = (e) => setConfirmPassword(e.target.value);
 
   const handleValidatePassword = (username, password) => {
     const { valid, message } = validatePassword(username, password);
@@ -68,7 +68,7 @@ export default function ChangePassword() {
     setMessage(message);
   };
 
-  const updateNewPassword = e => {
+  const updateNewPassword = (e) => {
     setNewPassword(e.target.value);
     handleValidatePassword(user.username, e.target.value);
   };
@@ -89,9 +89,7 @@ export default function ChangePassword() {
 
   return (
     <div className="change-password box">
-      <h3 className="title is-3">
-        Change Password
-      </h3>
+      <h3 className="title is-3">Change Password</h3>
       <hr className="separator" />
 
       <div className="field">
@@ -111,9 +109,7 @@ export default function ChangePassword() {
       </div>
 
       <p className="has-space-below">
-        <Link to="/recovery">
-          Forgot your password?
-        </Link>
+        <Link to="/recovery">Forgot your password?</Link>
       </p>
 
       <div className="field has-help">
@@ -133,11 +129,7 @@ export default function ChangePassword() {
             <i className={newPasswordIconClasses} />
           </span>
         </p>
-        {newPassword && (
-          <p className={newPasswordHelpClasses}>
-            {message}
-          </p>
-        )}
+        {newPassword && <p className={newPasswordHelpClasses}>{message}</p>}
       </div>
 
       <div className="field has-help">

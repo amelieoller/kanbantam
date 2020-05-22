@@ -29,7 +29,7 @@ export default function Register() {
     setPasswordMessage(message);
   };
 
-  const checkUsername = newUsername => {
+  const checkUsername = (newUsername) => {
     const { valid, message } = validateUsername(newUsername);
 
     if (valid) {
@@ -37,7 +37,7 @@ export default function Register() {
       setUsernameAvailable(false);
 
       postCheckUsername(newUsername)
-        .then(res => {
+        .then((res) => {
           setUsernameAvailable(res.available);
           setUsernameMessage(res.message);
         })
@@ -48,17 +48,17 @@ export default function Register() {
     }
   };
 
-  const updateUsername = newUserName => {
+  const updateUsername = (newUserName) => {
     setUsername(newUserName);
     checkPassword(newUserName, password);
   };
 
-  const handleUsernameChange = e => {
+  const handleUsernameChange = (e) => {
     updateUsername(e.target.value);
     checkUsername(e.target.value);
   };
 
-  const handlePasswordChange = e => {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     checkPassword(username, e.target.value);
   };
@@ -70,8 +70,7 @@ export default function Register() {
         password,
       };
 
-      dispatch(attemptRegister(newUser))
-        .catch(R.identity);
+      dispatch(attemptRegister(newUser)).catch(R.identity);
     }
   };
 
@@ -119,15 +118,11 @@ export default function Register() {
 
   return (
     <Box className="register">
-      <h3 className="title is-3">
-        Sign Up
-      </h3>
+      <h3 className="title is-3">Sign Up</h3>
       <hr className="separator" />
       <p className="has-space-below">
         Already a member?&nbsp;
-        <Link to="/login">
-          Login
-        </Link>
+        <Link to="/login">Login</Link>
       </p>
 
       <div className="field">
@@ -147,11 +142,7 @@ export default function Register() {
             <i className={usernameIconClasses} />
           </span>
         </p>
-        {username && (
-          <p className={usernameHelpClasses}>
-            {usernameMessage}
-          </p>
-        )}
+        {username && <p className={usernameHelpClasses}>{usernameMessage}</p>}
       </div>
 
       <div className="field">
@@ -171,11 +162,7 @@ export default function Register() {
             <i className={passwordIconClasses} />
           </span>
         </p>
-        {password && (
-          <p className={passwordHelpClasses}>
-            {passwordMessage}
-          </p>
-        )}
+        {password && <p className={passwordHelpClasses}>{passwordMessage}</p>}
       </div>
 
       <hr className="separator" />

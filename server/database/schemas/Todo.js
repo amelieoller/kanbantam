@@ -14,7 +14,7 @@ const todoSchema = new Schema({
 
 todoSchema.plugin(immutablePlugin);
 
-todoSchema.methods.hide = function() {
+todoSchema.methods.hide = function () {
   return R.omit(['__v'], this.toObject());
 };
 

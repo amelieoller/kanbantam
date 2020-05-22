@@ -10,21 +10,22 @@ import { attemptLogout } from '_thunks/auth';
 export default function SettingsMenu({ pathname }) {
   const dispatch = useDispatch();
 
-  const logout = () =>
-    dispatch(attemptLogout())
-      .catch(R.identity);
+  const logout = () => dispatch(attemptLogout()).catch(R.identity);
 
   const profileClasses = classNames({
-    'is-active': pathname.includes('profile') || pathname === '/settings' || pathname === '/settings/',
+    'is-active':
+      pathname.includes('profile') ||
+      pathname === '/settings' ||
+      pathname === '/settings/',
   });
 
-  const accountClasses = classNames({ 'is-active': pathname.includes('account') });
+  const accountClasses = classNames({
+    'is-active': pathname.includes('account'),
+  });
 
   return (
     <aside className="settings-menu menu box">
-      <p className="menu-label">
-        Personal
-      </p>
+      <p className="menu-label">Personal</p>
       <ul className="menu-list">
         <li>
           <Link to="/settings/profile" className={profileClasses}>
@@ -32,9 +33,7 @@ export default function SettingsMenu({ pathname }) {
           </Link>
         </li>
       </ul>
-      <p className="menu-label">
-        Settings
-      </p>
+      <p className="menu-label">Settings</p>
       <ul className="menu-list">
         <li>
           <Link to="/settings/account" className={accountClasses}>
