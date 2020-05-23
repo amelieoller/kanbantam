@@ -42,6 +42,11 @@ export default function UserDropdown({ open, closeDropdown }) {
             </Link>
           </li>
           <li className="dropdown-item">
+            <Link to="/board" onClick={closeDropdown}>
+              Board List
+            </Link>
+          </li>
+          <li className="dropdown-item">
             <Link to="/settings" onClick={closeDropdown}>
               Settings
             </Link>

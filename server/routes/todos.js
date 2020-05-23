@@ -7,7 +7,9 @@ const router = express.Router();
 module.exports = router;
 
 router.get('/', requireAuth, (req, res) => {
-  Todo.find({ user: req.user.id }, { __v: 0, user: 0 }, (err, todos) => {
+  const board = req.query.boardId;
+
+  Todo.find({ user: req.user.id, board: board }, { __v: 0, user: 0 }, (err, todos) => {
     if (err) {
       res.status(400).send({ message: 'Get users failed', err });
     } else {

@@ -10,11 +10,13 @@ export const setTodos = (todos) => ({
   todos,
 });
 
-export const addTodo = ({ id, text, createdAt }) => ({
+export const addTodo = ({ id, text, createdAt, board, list }) => ({
   type: ADD_TODO,
   createdAt,
   id,
   text,
+  board,
+  list,
 });
 
 export const toggleCompleteTodo = (id) => ({
@@ -22,11 +24,12 @@ export const toggleCompleteTodo = (id) => ({
   id,
 });
 
-export const updateTodo = ({ id, text, updatedAt }) => ({
+export const updateTodo = ({ id, text, updatedAt, list }) => ({
   type: UPDATE_TODO,
   updatedAt,
   id,
   text,
+  list,
 });
 
 export const removeTodo = (id) => ({

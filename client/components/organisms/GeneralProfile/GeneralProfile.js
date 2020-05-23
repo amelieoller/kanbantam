@@ -61,8 +61,7 @@ export default function GeneralProfile() {
     setProfilePicEdited(true);
   };
 
-  const refresh = () =>
-    dispatch(attemptGetUser()).then(resetState).catch(R.identity);
+  const refresh = () => dispatch(attemptGetUser()).then(resetState).catch(R.identity);
 
   const save = () => {
     const updatedUser = {};
@@ -86,8 +85,7 @@ export default function GeneralProfile() {
   };
 
   const charactersRemaining = 240 - bio.length;
-  const edited =
-    firstNameEdited || lastNameEdited || bioEdited || profilePicEdited;
+  const edited = firstNameEdited || lastNameEdited || bioEdited || profilePicEdited;
 
   return (
     <Box className="general-profile">

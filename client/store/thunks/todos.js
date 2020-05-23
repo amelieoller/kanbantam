@@ -18,12 +18,11 @@ import {
 
 import { dispatchError } from '_utils/api';
 
-export const attemptGetTodos = () => (dispatch) =>
-  getTodos()
+export const attemptGetTodos = (boardId) => (dispatch) =>
+  getTodos(boardId)
     .then((data) => {
       const todos = R.map(
-        (todo) =>
-          R.omit(['Id'], R.assoc('id', todo._id, snakeToCamelCase(todo))),
+        (todo) => R.omit(['Id'], R.assoc('id', todo._id, snakeToCamelCase(todo))),
         data.todos,
       );
 
@@ -32,8 +31,8 @@ export const attemptGetTodos = () => (dispatch) =>
     })
     .catch(dispatchError(dispatch));
 
-export const attemptAddTodo = (text) => (dispatch) =>
-  postTodo({ text })
+export const attemptAddTodo = (text, board, list) => (dispatch) =>
+  postTodo({ text, board, list })
     .then((data) => {
       const todo = R.omit(
         ['Id'],

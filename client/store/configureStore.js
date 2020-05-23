@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -15,6 +15,9 @@ export default function configureStore(history, initialState = {}) {
   return createStore(
     createRootReducer(history),
     initialState,
-    applyMiddleware(...middlewares),
+    compose(
+      applyMiddleware(...middlewares),
+      window.devToolsExtension ? window.devToolsExtension() : (f) => f,
+    ),
   );
 }

@@ -5,13 +5,13 @@ import { attemptAddTodo } from '_thunks/todos';
 import useKeyPress from '_hooks/useKeyPress';
 import Button from '_atoms/Button';
 
-export default function AddTodo() {
+export default function AddTodo({ boardId, listId }) {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
 
   const handleAddTodo = () => {
     if (text) {
-      dispatch(attemptAddTodo(text));
+      dispatch(attemptAddTodo(text, boardId, listId));
       setText('');
     }
   };
@@ -23,12 +23,7 @@ export default function AddTodo() {
   return (
     <div className="add-todo columns is-gapless">
       <div className="column is-10">
-        <input
-          className="input"
-          type="text"
-          value={text}
-          onChange={updateText}
-        />
+        <input className="input" type="text" value={text} onChange={updateText} />
       </div>
       <div className="column is-2">
         <Button

@@ -6,7 +6,11 @@ const { Schema } = mongoose;
 
 const todoSchema = new Schema({
   user: { type: Schema.ObjectId, ref: 'User', required: true },
+  board: { type: Schema.ObjectId, ref: 'Board', required: true },
+  list: { type: Schema.ObjectId, ref: 'List', required: true },
   text: { type: String },
+  difficulty: { type: Number },
+  minutes: { type: Number },
   completed: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },

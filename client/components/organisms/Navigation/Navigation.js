@@ -23,14 +23,13 @@ export default function Navigation({ pathname }) {
   const closeDropdown = () => setOpen(false);
 
   const isHome =
-    pathname.length === 5
-      ? pathname === '/home'
-      : R.slice(0, 6, pathname) === '/home/';
+    pathname.length === 5 ? pathname === '/home' : R.slice(0, 6, pathname) === '/home/';
 
   const isTodo =
-    pathname.length === 5
-      ? pathname === '/todo'
-      : R.slice(0, 6, pathname) === '/todo/';
+    pathname.length === 5 ? pathname === '/todo' : R.slice(0, 6, pathname) === '/todo/';
+
+  const isBoard =
+    pathname.length === 5 ? pathname === '/board' : R.slice(0, 6, pathname) === '/board/';
 
   const isSettings =
     pathname.length === 9
@@ -49,6 +48,13 @@ export default function Navigation({ pathname }) {
     'is-tab': true,
     'is-hidden-mobile': true,
     'is-active': isTodo,
+  });
+
+  const boardItemClasses = classNames({
+    'navbar-item': true,
+    'is-tab': true,
+    'is-hidden-mobile': true,
+    'is-active': isBoard,
   });
 
   const settingsItemClasses = classNames({
@@ -107,6 +113,9 @@ export default function Navigation({ pathname }) {
               </Link>
               <Link to="/todo" className={todoItemClasses}>
                 <h6 className="title is-6">Todo</h6>
+              </Link>
+              <Link to="/boards" className={boardItemClasses}>
+                <h6 className="title is-6">Boards</h6>
               </Link>
               <Link to="/settings" className={settingsItemClasses}>
                 <h6 className="title is-6">Settings</h6>

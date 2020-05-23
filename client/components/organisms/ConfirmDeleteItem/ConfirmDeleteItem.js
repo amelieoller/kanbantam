@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function ConfirmDeleteTodo({ closeModal, deleteTodo }) {
+export default function ConfirmDeleteItem({ closeModal, deleteItem }) {
   return (
     <div className="card">
       <div className="card-content">
@@ -10,18 +10,10 @@ export default function ConfirmDeleteTodo({ closeModal, deleteTodo }) {
         </div>
       </div>
       <footer className="card-footer">
-        <a
-          className="card-footer-item"
-          onClick={closeModal}
-          onKeyPress={closeModal}
-        >
+        <a className="card-footer-item" onClick={closeModal} onKeyPress={closeModal}>
           Cancel
         </a>
-        <a
-          className="card-footer-item"
-          onClick={deleteTodo}
-          onKeyPress={deleteTodo}
-        >
+        <a className="card-footer-item" onClick={deleteItem} onKeyPress={deleteItem}>
           Delete
         </a>
       </footer>
@@ -29,7 +21,7 @@ export default function ConfirmDeleteTodo({ closeModal, deleteTodo }) {
   );
 }
 
-ConfirmDeleteTodo.propTypes = {
+ConfirmDeleteItem.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  deleteTodo: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired,
 };

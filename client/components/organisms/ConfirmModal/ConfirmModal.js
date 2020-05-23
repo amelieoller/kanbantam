@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import ConfirmDeleteTodo from '_organisms/ConfirmDeleteTodo';
+import ConfirmDeleteItem from '_organisms/ConfirmDeleteItem';
 
-export default function ConfirmModal({ confirm, closeModal, deleteTodo }) {
+export default function ConfirmModal({ confirm, closeModal, deleteItem }) {
   const modalClasses = classNames({
     modal: true,
     'confirm-modal': true,
@@ -15,7 +15,7 @@ export default function ConfirmModal({ confirm, closeModal, deleteTodo }) {
     <div className={modalClasses}>
       <div className="modal-background" />
       <div className="modal-content">
-        <ConfirmDeleteTodo closeModal={closeModal} deleteTodo={deleteTodo} />
+        <ConfirmDeleteItem closeModal={closeModal} deleteItem={deleteItem} />
       </div>
       <button
         type="button"
@@ -30,5 +30,5 @@ export default function ConfirmModal({ confirm, closeModal, deleteTodo }) {
 ConfirmModal.propTypes = {
   confirm: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
-  deleteTodo: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired,
 };

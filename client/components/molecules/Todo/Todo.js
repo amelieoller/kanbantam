@@ -19,8 +19,7 @@ import {
 } from '_thunks/todos';
 import ConfirmModal from '_organisms/ConfirmModal';
 
-const fromNow = (date) =>
-  formatDistanceToNow(parseISO(date), { addSuffix: true });
+const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
 
 export default function Todo({ id, text, completed, createdAt, updatedAt }) {
   const dispatch = useDispatch();
@@ -85,11 +84,7 @@ export default function Todo({ id, text, completed, createdAt, updatedAt }) {
               <small>{`created ${createdMessage}`}</small>
             </p>
             {edit ? (
-              <textarea
-                className="textarea"
-                value={currentText}
-                onChange={updateText}
-              />
+              <textarea className="textarea" value={currentText} onChange={updateText} />
             ) : (
               <p>{text}</p>
             )}
@@ -118,19 +113,11 @@ export default function Todo({ id, text, completed, createdAt, updatedAt }) {
                 </span>
               )}
               {edit ? (
-                <span
-                  className="icon"
-                  onClick={cancelEdit}
-                  onKeyPress={cancelEdit}
-                >
+                <span className="icon" onClick={cancelEdit} onKeyPress={cancelEdit}>
                   <FontAwesomeIcon icon={faBan} size="lg" />
                 </span>
               ) : (
-                <span
-                  className="icon"
-                  onClick={openModal}
-                  onKeyPress={cancelEdit}
-                >
+                <span className="icon" onClick={openModal} onKeyPress={cancelEdit}>
                   <FontAwesomeIcon icon={faTrashAlt} size="lg" />
                 </span>
               )}
@@ -138,11 +125,7 @@ export default function Todo({ id, text, completed, createdAt, updatedAt }) {
           </nav>
         </div>
       </article>
-      <ConfirmModal
-        confirm={confirm}
-        closeModal={closeModal}
-        deleteTodo={deleteTodo}
-      />
+      <ConfirmModal confirm={confirm} closeModal={closeModal} deleteItem={deleteTodo} />
     </li>
   );
 }

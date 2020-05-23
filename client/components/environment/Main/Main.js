@@ -12,6 +12,8 @@ import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
 import HomePage from '_pages/HomePage';
 import TodoPage from '_pages/TodoPage';
+import BoardPage from '_pages/BoardPage';
+import BoardsPage from '_pages/BoardsPage';
 import SettingsPage from '_pages/SettingsPage';
 import LostPage from '_pages/LostPage';
 
@@ -45,6 +47,8 @@ export default function Main({ location }) {
             <Route path="/register" component={RegisterPage} />
             <Route path="/home" component={HomePage} />
             <Route path="/todo" component={TodoPage} />
+            <Route path="/boards/:id" component={BoardPage} />
+            <Route path="/boards" component={BoardsPage} />
             <Route path="/settings" component={SettingsPage} />
             <Route path="*" component={LostPage} />
           </Switch>

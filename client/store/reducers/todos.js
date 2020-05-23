@@ -23,6 +23,8 @@ export function todo(
         id: { $set: action.id },
         text: { $set: action.text },
         createdAt: { $set: action.createdAt },
+        board: { $set: action.board },
+        list: { $set: action.list },
       });
     case TOGGLE_COMPLETE_TODO:
       return update(state, {
