@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export default function useKeyPress(key, callback, active = true) {
+function useKeyPress(key, callback, active = true) {
   useEffect(() => {
     const keypress = (e) => {
       if (e.key === key) {
@@ -19,3 +19,5 @@ export default function useKeyPress(key, callback, active = true) {
     };
   }, [callback, active]);
 }
+
+export default useKeyPress;
