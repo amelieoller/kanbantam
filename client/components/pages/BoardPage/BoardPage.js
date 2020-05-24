@@ -3,31 +3,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import * as R from 'ramda';
 
-import { attemptGetBoard } from '_thunks/boards';
+import { attemptGetBoards } from '_thunks/boards';
 import Board from '_molecules/Board';
 
 export default function BoardPage({ location }) {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
-  const { board } = useSelector(R.pick(['board']));
+  const { boards } = useSelector(R.pick(['boards']));
 
   const [loading, setLoading] = useState(true);
+  const [currentBoard, setCurrentBoard] = useState(null);
 
   useEffect(() => {
     if (R.isEmpty(user)) {
       dispatch(push('/login'));
     } else {
-      const boardId = location.pathname.split('/')[2];
-
-      dispatch(attemptGetBoard(boardId)).then(() => setLoading(false));
+      dispatch(attemptGetBoards()).then(() => setLoading(false));
     }
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      const boardId = location.pathname.split('/')[2];
+      const board = boards.find((b) => b.id === boardId);
+
+      if (board) {
+        setCurrentBoard(board);
+      } else {
+        dispatch(push('/boards'));
+      }
+    }
+  }, [location.pathname, loading]);
+
   return (
     !loading &&
-    !!board && (
+    !!currentBoard && (
       <div className="board-page page">
-        <Board key={board.id} {...board} />{' '}
+        <Board key={currentBoard.id} {...currentBoard} />
       </div>
     )
   );

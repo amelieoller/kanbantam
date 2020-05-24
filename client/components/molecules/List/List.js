@@ -12,18 +12,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 
-import {
-  attemptToggleCompleteList,
-  attemptUpdateList,
-  attemptDeleteList,
-} from '_thunks/lists';
+import { attemptUpdateList, attemptDeleteList } from '_thunks/lists';
 import ConfirmModal from '_organisms/ConfirmModal';
 import AddTodo from '_molecules/AddTodo';
 import TodoPage from '_pages/TodoPage';
 
 const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
 
-export default function List({ id, title, completed, createdAt, updatedAt, boardId }) {
+export default function List({ id, title, createdAt, updatedAt, boardId }) {
   const dispatch = useDispatch();
 
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -60,34 +56,19 @@ export default function List({ id, title, completed, createdAt, updatedAt, board
     }
   };
 
-  const toggleCompleteList = () => dispatch(attemptToggleCompleteList(id));
-
   const deleteList = () => dispatch(attemptDeleteList(id));
 
   return (
     <li className="list box">
       <article className="media">
-        <figure className="media-left">
-          <span
-            className="icon"
-            onClick={toggleCompleteList}
-            onKeyPress={toggleCompleteList}
-          >
-            {completed ? (
-              <FontAwesomeIcon icon={faCheckSquare} size="lg" />
-            ) : (
-              <FontAwesomeIcon icon={faSquare} size="lg" />
-            )}
-          </span>
-        </figure>
         <div className="media-content">
           <div className="content">
             <p>
               <small>{`created ${createdMessage}`}</small>
             </p>
             {edit ? (
-              <titlearea
-                className="titlearea"
+              <textarea
+                className="textarea"
                 value={currentTitle}
                 onChange={updateTitle}
               />
@@ -146,7 +127,6 @@ export default function List({ id, title, completed, createdAt, updatedAt, board
 List.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  completed: PropTypes.bool.isRequired,
   createdAt: PropTypes.string.isRequired,
   updatedAt: PropTypes.string,
   boardId: PropTypes.string.isRequired,

@@ -10,8 +10,8 @@ export const getTodos = (boardId) =>
 export const putToggleCompleteTodo = (info) =>
   request.put('/api/todos/complete').send(info).then(handleSuccess).catch(handleError);
 
-export const putTodo = (info) =>
-  request.put('/api/todos').send(info).then(handleSuccess).catch(handleError);
+export const putTodo = ({ id, ...rest }) =>
+  request.put(`/api/todos/${id}`).send(rest).then(handleSuccess).catch(handleError);
 
-export const deleteTodo = (info) =>
-  request.delete('/api/todos').send(info).then(handleSuccess).catch(handleError);
+export const deleteTodo = ({ id }) =>
+  request.delete(`/api/todos/${id}`).then(handleSuccess).catch(handleError);

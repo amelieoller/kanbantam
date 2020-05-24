@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { parseISO, formatDistanceToNow } from 'date-fns';
+import { push } from 'connected-react-router';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -54,7 +55,10 @@ export default function Board({ id, title, createdAt, updatedAt }) {
     }
   };
 
-  const deleteBoard = () => dispatch(attemptDeleteBoard(id));
+  const deleteBoard = () => {
+    dispatch(attemptDeleteBoard(id));
+    dispatch(push('/boards'));
+  };
 
   return (
     <li className="board box">
@@ -65,8 +69,8 @@ export default function Board({ id, title, createdAt, updatedAt }) {
               <small>{`created ${createdMessage}`}</small>
             </p>
             {edit ? (
-              <titlearea
-                className="titlearea"
+              <textarea
+                className="textarea"
                 value={currentTitle}
                 onChange={updateTitle}
               />

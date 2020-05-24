@@ -20,24 +20,21 @@ import { dispatchError } from '_utils/api';
 
 export const attemptGetTodos = (boardId) => (dispatch) =>
   getTodos(boardId)
-    .then((data) => {
+    .then(({ data }) => {
       const todos = R.map(
         (todo) => R.omit(['Id'], R.assoc('id', todo._id, snakeToCamelCase(todo))),
-        data.todos,
+        data,
       );
 
       dispatch(setTodos(todos));
-      return data.todos;
+      return data;
     })
     .catch(dispatchError(dispatch));
 
 export const attemptAddTodo = (text, board, list) => (dispatch) =>
   postTodo({ text, board, list })
-    .then((data) => {
-      const todo = R.omit(
-        ['Id'],
-        R.assoc('id', data.todo._id, snakeToCamelCase(data.todo)),
-      );
+    .then(({ data }) => {
+      const todo = R.omit(['Id'], R.assoc('id', data._id, snakeToCamelCase(data)));
 
       dispatch(addTodo(todo));
       return data.user;
@@ -54,16 +51,16 @@ export const attemptToggleCompleteTodo = (id) => (dispatch) =>
 
 export const attemptUpdateTodo = (id, text) => (dispatch) =>
   putTodo({ id, text })
-    .then((data) => {
-      dispatch(updateTodo({ id, text, updatedAt: data.todo.updated_at }));
+    .then(({ data, data: { _id, text, list, updated_at } }) => {
+      dispatch(updateTodo({ id: _id, text, updatedAt: updated_at, list }));
       return data;
     })
     .catch(dispatchError(dispatch));
 
 export const attemptDeleteTodo = (id) => (dispatch) =>
   deleteTodo({ id })
-    .then((data) => {
-      dispatch(removeTodo(id));
+    .then(({ data, data: { _id } }) => {
+      dispatch(removeTodo(_id));
       return data;
     })
     .catch(dispatchError(dispatch));

@@ -1,32 +1,17 @@
 import update from 'immutability-helper';
 import * as R from 'ramda';
 
-import {
-  SET_LISTS,
-  ADD_LIST,
-  TOGGLE_COMPLETE_LIST,
-  UPDATE_LIST,
-  REMOVE_LIST,
-} from '_actions/lists';
+import { SET_LISTS, ADD_LIST, UPDATE_LIST, REMOVE_LIST } from '_actions/lists';
 
 import { LOGOUT_USER } from '_actions/user';
 
-export function list(
-  state = {
-    completed: false,
-  },
-  action,
-) {
+export function list(state = {}, action) {
   switch (action.type) {
     case ADD_LIST:
       return update(state, {
         id: { $set: action.id },
         title: { $set: action.title },
         createdAt: { $set: action.createdAt },
-      });
-    case TOGGLE_COMPLETE_LIST:
-      return update(state, {
-        completed: { $apply: (x) => !x },
       });
     case UPDATE_LIST:
       return update(state, {
@@ -47,8 +32,6 @@ export default function lists(state = [], action) {
       return update(state, { $set: action.lists });
     case ADD_LIST:
       return update(state, { $push: [list(undefined, action)] });
-    case TOGGLE_COMPLETE_LIST:
-      return update(state, updatedAtIndex);
     case UPDATE_LIST:
       return update(state, updatedAtIndex);
     case REMOVE_LIST:

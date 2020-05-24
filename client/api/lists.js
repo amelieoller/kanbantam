@@ -7,11 +7,8 @@ export const postList = (info) =>
 export const getLists = (boardId) =>
   request.get(`/api/lists?boardId=${boardId}`).then(handleSuccess).catch(handleError);
 
-export const putToggleCompleteList = (info) =>
-  request.put('/api/lists/complete').send(info).then(handleSuccess).catch(handleError);
+export const putList = ({ id, ...rest }) =>
+  request.put(`/api/lists/${id}`).send(rest).then(handleSuccess).catch(handleError);
 
-export const putList = (info) =>
-  request.put('/api/lists').send(info).then(handleSuccess).catch(handleError);
-
-export const deleteList = (info) =>
-  request.delete('/api/lists').send(info).then(handleSuccess).catch(handleError);
+export const deleteList = ({ id }) =>
+  request.delete(`/api/lists/${id}`).then(handleSuccess).catch(handleError);

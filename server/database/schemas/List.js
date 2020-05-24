@@ -1,7 +1,6 @@
 const R = require('ramda');
 const mongoose = require('mongoose');
 const immutablePlugin = require('mongoose-immutable');
-const { Todo } = require('./');
 
 const { Schema } = mongoose;
 
@@ -9,7 +8,6 @@ const listSchema = new Schema({
   user: { type: Schema.ObjectId, ref: 'User', required: true },
   board: { type: Schema.ObjectId, ref: 'Board', required: true },
   title: { type: String },
-  completed: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
 });

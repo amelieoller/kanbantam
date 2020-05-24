@@ -7,11 +7,8 @@ export const postBoard = (info) =>
 export const getBoards = () =>
   request.get('/api/boards').then(handleSuccess).catch(handleError);
 
-export const getBoard = (boardId) =>
-  request.get(`/api/boards/${boardId}`).then(handleSuccess).catch(handleError);
+export const putBoard = ({ id, ...rest }) =>
+  request.put(`/api/boards/${id}`).send(rest).then(handleSuccess).catch(handleError);
 
-export const putBoard = (info) =>
-  request.put('/api/boards').send(info).then(handleSuccess).catch(handleError);
-
-export const deleteBoard = (info) =>
-  request.delete('/api/boards').send(info).then(handleSuccess).catch(handleError);
+export const deleteBoard = ({ id }) =>
+  request.delete(`/api/boards/${id}`).then(handleSuccess).catch(handleError);
