@@ -1,161 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
-import { useSelector } from 'react-redux';
 import * as R from 'ramda';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
-import UserDropdown from '_molecules/UserDropdown';
-import Button from '_atoms/Button';
+import Logout from '_assets/icons/log-out.svg';
+import Logo from '_assets/icons/logo.svg';
+import { attemptLogout } from '_thunks/auth';
 
-export default function Navigation({ pathname }) {
-  const { user } = useSelector(R.pick(['user']));
+export default function Navigation() {
+  const dispatch = useDispatch();
 
-  const [auth, setAuth] = useState(!R.isEmpty(user));
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setAuth(!R.isEmpty(user));
-  }, [user.username]);
-
-  const toggleDropdown = () => setOpen(!open);
-
-  const closeDropdown = () => setOpen(false);
-
-  const isHome =
-    pathname.length === 5 ? pathname === '/home' : R.slice(0, 6, pathname) === '/home/';
-
-  const isTodo =
-    pathname.length === 5 ? pathname === '/todo' : R.slice(0, 6, pathname) === '/todo/';
-
-  const isBoard =
-    pathname.length === 5 ? pathname === '/board' : R.slice(0, 6, pathname) === '/board/';
-
-  const isSettings =
-    pathname.length === 9
-      ? pathname === '/settings'
-      : R.slice(0, 10, pathname) === '/settings/';
-
-  const homeItemClasses = classNames({
-    'navbar-item': true,
-    'is-tab': true,
-    'is-hidden-mobile': true,
-    'is-active': isHome,
-  });
-
-  const todoItemClasses = classNames({
-    'navbar-item': true,
-    'is-tab': true,
-    'is-hidden-mobile': true,
-    'is-active': isTodo,
-  });
-
-  const boardItemClasses = classNames({
-    'navbar-item': true,
-    'is-tab': true,
-    'is-hidden-mobile': true,
-    'is-active': isBoard,
-  });
-
-  const settingsItemClasses = classNames({
-    'navbar-item': true,
-    'is-tab': true,
-    'is-hidden-mobile': true,
-    'is-active': isSettings,
-  });
+  const logout = () => {
+    dispatch(attemptLogout()).catch(R.identity);
+  };
 
   return (
-    <nav className="navbar is-fixed-top has-shadow" role="navigation">
-      <div className="container">
-        <div className="navbar-brand">
-          <Link
-            to={auth ? '/home' : '/'}
-            className="navbar-item"
-            aria-label="main navigation"
-          >
-            <h3 className="title is-3 logo">MERN Boilerplate</h3>
-          </Link>
-          <div className="navbar-brand-right">
-            {!auth && (
-              <Link to="/login" className="navbar-item is-hidden-desktop">
-                <h6 className="title is-6">Login</h6>
-              </Link>
-            )}
-            {!auth && (
-              <Link to="/register" className="navbar-item is-hidden-desktop">
-                <Button label="Sign Up" type="success" />
-              </Link>
-            )}
-            {auth && (
-              <a
-                className="navbar-item is-hoverable is-hidden-desktop"
-                onClick={toggleDropdown}
-                onKeyPress={toggleDropdown}
-              >
-                <figure className="image navbar-image is-32x32">
-                  <img
-                    className="profile-img"
-                    src={user.profilePic || '/images/default-profile.png'}
-                    alt=""
-                  />
-                </figure>
-                <span className="dropdown-caret" />
-              </a>
-            )}
-          </div>
-        </div>
+    <StyledNavigation role="navigation">
+      <Left to="/">
+        <Logo />
+        Kanban 2.0
+      </Left>
 
-        {auth ? (
-          <div className="navbar-menu">
-            <div className="navbar-start">
-              <Link to="/home" className={homeItemClasses}>
-                <h6 className="title is-6">Home</h6>
-              </Link>
-              <Link to="/todo" className={todoItemClasses}>
-                <h6 className="title is-6">Todo</h6>
-              </Link>
-              <Link to="/boards" className={boardItemClasses}>
-                <h6 className="title is-6">Boards</h6>
-              </Link>
-              <Link to="/settings" className={settingsItemClasses}>
-                <h6 className="title is-6">Settings</h6>
-              </Link>
-            </div>
-            <div className="navbar-end">
-              <a
-                className="navbar-item is-hoverable"
-                onClick={toggleDropdown}
-                onKeyPress={toggleDropdown}
-              >
-                <figure className="image navbar-image is-32x32">
-                  <img
-                    className="profile-img"
-                    src={user.profilePic || '/images/default-profile.png'}
-                    alt=""
-                  />
-                </figure>
-                <span className="dropdown-caret" />
-              </a>
-            </div>
-          </div>
-        ) : (
-          <div className="navbar-menu">
-            <div className="navbar-end">
-              <Link to="/login" className="navbar-item">
-                <h6 className="title is-6">Login</h6>
-              </Link>
-              <Link to="/register" className="navbar-item">
-                <Button label="Sign Up" type="success" />
-              </Link>
-            </div>
-          </div>
-        )}
-        <UserDropdown open={open} closeDropdown={closeDropdown} />
-      </div>
-    </nav>
+      <Right>
+        <Logout onClick={logout} />
+      </Right>
+    </StyledNavigation>
   );
 }
 
-Navigation.propTypes = {
-  pathname: PropTypes.string.isRequired,
-};
+const StyledNavigation = styled.nav`
+  height: 40px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.onPrimary};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${({ theme }) => theme.sizes.padding};
+`;
+
+const Left = styled(Link)`
+  font-family: 'Pacifico', cursive;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.onPrimary};
+
+  svg {
+    margin-right: 5px;
+
+    #triangle {
+      fill: ${({ theme }) => theme.colors.onPrimary};
+    }
+
+    #cards {
+      fill: ${({ theme }) => theme.colors.primary};
+    }
+  }
+`;
+
+const Right = styled.div`
+  svg {
+    cursor: pointer;
+  }
+`;

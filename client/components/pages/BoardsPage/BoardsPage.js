@@ -6,7 +6,7 @@ import * as R from 'ramda';
 import { attemptGetBoards } from '_thunks/boards';
 import BoardSection from '_templates/BoardSection';
 
-export default function BoardsPage() {
+function BoardsPage() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
 
@@ -18,13 +18,9 @@ export default function BoardsPage() {
     } else {
       dispatch(attemptGetBoards()).then(() => setLoading(false));
     }
-  }, []);
+  }, [dispatch, user]);
 
-  return (
-    !loading && (
-      <div className="board-page page">
-        <BoardSection />
-      </div>
-    )
-  );
+  return !loading && <BoardSection />;
 }
+
+export default BoardsPage;
