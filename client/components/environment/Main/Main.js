@@ -7,20 +7,16 @@ import * as R from 'ramda';
 
 import { attemptGetUser } from '_thunks/user';
 
-import WelcomePage from '_pages/WelcomePage';
 import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
-import HomePage from '_pages/HomePage';
-import TodoPage from '_pages/TodoPage';
 import BoardPage from '_pages/BoardPage';
 import BoardsPage from '_pages/BoardsPage';
 import SettingsPage from '_pages/SettingsPage';
 import LostPage from '_pages/LostPage';
 
 import Navigation from '_organisms/Navigation';
-import Footer from '_organisms/Footer';
 
-export default function Main({ location }) {
+function Main({ location }) {
   const dispatch = useDispatch();
   const { alerts } = useSelector(R.pick(['alerts']));
   const [loading, setLoading] = useState(true);
@@ -37,23 +33,19 @@ export default function Main({ location }) {
 
   return (
     !loading && (
-      <div className="has-navbar-fixed-top">
+      <div>
         <Notifications notifications={alerts} />
-        <Navigation pathname={location.pathname} />
-        <div className="main">
+        <Navigation />
+        <div>
           <Switch>
-            <Route exact path="/" component={WelcomePage} />
+            <Route exact path="/" component={BoardsPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
-            <Route path="/home" component={HomePage} />
-            <Route path="/todo" component={TodoPage} />
             <Route path="/boards/:id" component={BoardPage} />
-            <Route path="/boards" component={BoardsPage} />
             <Route path="/settings" component={SettingsPage} />
             <Route path="*" component={LostPage} />
           </Switch>
         </div>
-        <Footer />
       </div>
     )
   );
@@ -64,3 +56,5 @@ Main.propTypes = {
     pathname: PropTypes.string,
   }).isRequired,
 };
+
+export default Main;

@@ -30,7 +30,7 @@ export default function BoardPage({ location }) {
       if (board) {
         setCurrentBoard(board);
       } else {
-        dispatch(push('/boards'));
+        dispatch(push('/'));
       }
     }
   }, [location.pathname, loading]);

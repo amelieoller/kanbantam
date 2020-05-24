@@ -10,7 +10,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!R.isEmpty(user)) {
-      dispatch(push('/home'));
+      dispatch(push('/'));
     }
   }, []);
 

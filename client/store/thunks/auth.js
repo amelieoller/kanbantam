@@ -19,7 +19,7 @@ export const attemptLogin = (user) => (dispatch) =>
           autoDismiss: 3,
         }),
       );
-      dispatch(push('/home'));
+      dispatch(push('/'));
       return data;
     })
     .catch(dispatchError(dispatch));

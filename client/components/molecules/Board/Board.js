@@ -57,7 +57,7 @@ export default function Board({ id, title, createdAt, updatedAt }) {
 
   const deleteBoard = () => {
     dispatch(attemptDeleteBoard(id));
-    dispatch(push('/boards'));
+    dispatch(push('/'));
   };
 
   return (

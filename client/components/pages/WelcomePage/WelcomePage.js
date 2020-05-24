@@ -9,7 +9,7 @@ export default function WelcomePage() {
 
   useEffect(() => {
     if (!R.isEmpty(user)) {
-      dispatch(push('/home'));
+      dispatch(push('/'));
     }
   }, []);
 
