@@ -37,7 +37,6 @@
     "webpack",
     "express",
     "passport",
-    "bulma",
     "fontawesome",
     "ramda",
     "eslint",
@@ -56,7 +55,6 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "bulma": "0.8.1",
     "classnames": "^2.2.6",
     "clean-webpack-plugin": "^3.0.0",
     "connect-mongo": "^3.2.0",
@@ -90,11 +88,14 @@
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.5",
     "seamless-immutable": "^7.1.4",
+    "styled-components": "^5.1.0",
+    "styled-reset": "^4.1.4",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "uuid": "^7.0.3",
     "webpack": "^4.42.1",
     "webpack-bundle-analyzer": "^3.6.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "@svgr/webpack": "^5.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

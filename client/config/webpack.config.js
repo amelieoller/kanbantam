@@ -20,16 +20,16 @@ const MiniCssExtractPluginConfig = new MiniCssExtractPlugin({
 });
 
 const FaviconsWebpackPluginConfig = new FaviconsWebpackPlugin({
-  logo: resolve('client/assets/icons/favicon.ico'),
-  prefix: 'icons/',
+  logo: resolve('client/assets/favicons/favicon.ico'),
+  prefix: 'favicons/',
   emitStats: false,
   statsFilename: 'faviconstats.json',
   persistentCache: false,
   inject: true,
   icons: {
     android: false,
-    appleIcon: false,
-    appleStartup: false,
+    appleIcon: true,
+    appleStartup: true,
     coast: false,
     favicons: true,
     firefox: false,
@@ -46,11 +46,7 @@ const CleanWebpackPluginConfig = new CleanWebpackPlugin({
 });
 
 module.exports = {
-  entry: [
-    './client/styles/index.scss',
-    './client/assets/index.js',
-    './client/index.js',
-  ],
+  entry: ['./client/assets/index.js', './client/index.js'],
   output: {
     filename: isDev ? '[name].js' : '[name].[hash].js',
     path: resolve('dist'),
@@ -89,21 +85,11 @@ module.exports = {
       },
       {
         test: /\.scss$/i,
-        use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
-        ],
+        use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.less$/i,
-        use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'less-loader',
-        ],
+        use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
       },
       {
         test: /\.(jpe?g|png|gif)$/i,
@@ -134,8 +120,12 @@ module.exports = {
       },
       {
         test: /\.svg(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'file-loader',
-        options: { name: 'icons/[name].[ext]' },
+        use: {
+          loader: '@svgr/webpack',
+          options: {
+            svgo: false,
+          },
+        },
       },
       {
         test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
