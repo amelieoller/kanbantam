@@ -26,7 +26,6 @@ router.get('/api/tags', (req, res) => {
     'React',
     'Redux',
     'Mongoose',
-    'Bulma',
     'Fontawesome',
     'Ramda',
     'ESLint',
