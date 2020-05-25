@@ -2,15 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { parseISO, formatDistanceToNow } from 'date-fns';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faTrashAlt,
-  faBan,
-  faPencilAlt,
-  faSave,
-} from '@fortawesome/free-solid-svg-icons';
-import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
+import styled from 'styled-components';
 
 import { attemptUpdateList, attemptDeleteList } from '_thunks/lists';
 import ConfirmModal from '_organisms/ConfirmModal';
@@ -19,7 +11,7 @@ import TodoPage from '_pages/TodoPage';
 
 const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
 
-export default function List({ id, title, createdAt, updatedAt, boardId }) {
+function List({ id, title, createdAt, updatedAt, boardId }) {
   const dispatch = useDispatch();
 
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -59,7 +51,9 @@ export default function List({ id, title, createdAt, updatedAt, boardId }) {
   const deleteList = () => dispatch(attemptDeleteList(id));
 
   return (
-    <li className="list box">
+    <>
+      <StyledList>list</StyledList>
+      {/* <li className="list box">
       <article className="media">
         <div className="media-content">
           <div className="content">
@@ -119,10 +113,20 @@ export default function List({ id, title, createdAt, updatedAt, boardId }) {
       <h2>All todos for this list:</h2>
       <TodoPage boardId={boardId} listId={id} />
 
-      <ConfirmModal confirm={confirm} closeModal={closeModal} deleteItem={deleteList} />
-    </li>
+      <ConfirmModal confirm={confirm} closeModal={closeModal} deleteItem={deleteList} /> */}
+    </>
   );
 }
+
+const StyledList = styled.div`
+  background-color: rgb(235, 236, 240);
+  border-radius: 3px;
+  display: grid;
+  grid-auto-rows: max-content;
+  grid-gap: 10px;
+  height: max-content;
+  padding: 10px;
+`;
 
 List.propTypes = {
   id: PropTypes.string.isRequired,
@@ -135,3 +139,5 @@ List.propTypes = {
 List.defaultProps = {
   updatedAt: null,
 };
+
+export default List;
