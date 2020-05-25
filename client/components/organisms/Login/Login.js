@@ -47,8 +47,6 @@ export default function Login() {
 
   return (
     <Box className="login">
-      <h3 className="title is-3">Login</h3>
-      <hr className="separator" />
       <p className="has-space-below">
         Not Registered Yet?&nbsp;
         <Link to="/register">Create an account.</Link>

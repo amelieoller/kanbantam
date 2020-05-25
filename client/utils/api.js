@@ -20,7 +20,7 @@ export const handleError = (error) => {
 export const dispatchError = (dispatch) => (res) => {
   if (res.status === 401) {
     dispatch(logout());
-    dispatch(push('/login'));
+    dispatch(push('/'));
   }
 
   dispatch(
