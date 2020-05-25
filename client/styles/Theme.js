@@ -1,8 +1,13 @@
 // ************* COLORS *************
 // Variants: e.g. in dark theme - if you want to show the opposite, dark on a light surface
-const baseRgb = {
+const baseRgbDark = {
   black: [0, 0, 0],
   white: [255, 255, 255],
+  onBackground: [255, 255, 255],
+  onSurface: [255, 255, 255],
+  onPrimary: [0, 0, 0],
+  onSecondary: [0, 0, 0],
+  onError: [0, 0, 0],
 };
 
 const emphasisOpacity = {
@@ -32,19 +37,41 @@ const darkColors = {
 
   // ------------ "ON" COLORS (text, icon color etc.) ------------
   // On background
-  onBackground: `rgba(${baseRgb.white}, ${emphasisOpacity.high})`,
+  onBackground: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
 
   // On Surface
-  onSurface: `rgba(${baseRgb.white}, ${emphasisOpacity.high})`,
+  onSurface: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
 
   // On Primary
-  onPrimary: `rgba(${baseRgb.black}, ${emphasisOpacity.high})`,
+  onPrimary: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
 
   // On Secondary
-  onSecondary: `rgba(${baseRgb.black}, ${emphasisOpacity.high})`,
+  onSecondary: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
 
   // On Error
-  onError: `rgba(${baseRgb.black}, ${emphasisOpacity.high})`,
+  onError: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
+
+  // ------------ Text Emphasis ------------
+  medium: (color) => {
+    return `rgba(${baseRgbDark[color]}, ${emphasisOpacity.medium})`;
+  },
+
+  disabled: (color) => {
+    return `rgba(${baseRgbDark[color]}, ${emphasisOpacity.disabled})`;
+  },
+
+  // ------------ EXTRAS ------------
+  borderColor: '#dadada',
+};
+
+const baseRgbLight = {
+  black: [0, 0, 0],
+  white: [255, 255, 255],
+  onBackground: [0, 0, 0],
+  onSurface: [0, 0, 0],
+  onPrimary: [255, 255, 255],
+  onSecondary: [0, 0, 0],
+  onError: [255, 255, 255],
 };
 
 const lightColors = {
@@ -68,28 +95,31 @@ const lightColors = {
 
   // ------------ "ON" COLORS (text, icon color etc.) ------------
   // On background
-  onBackground: `rgba(${baseRgb.black}, ${emphasisOpacity.high})`,
+  onBackground: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
 
   // On Surface
-  onSurface: `rgba(${baseRgb.black}, ${emphasisOpacity.high})`,
+  onSurface: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
 
   // On Primary
-  onPrimary: `rgba(${baseRgb.white}, ${emphasisOpacity.high})`,
+  onPrimary: `rgba(${baseRgbLight.white}, ${emphasisOpacity.high})`,
 
   // On Secondary
-  onSecondary: `rgba(${baseRgb.black}, ${emphasisOpacity.high})`,
+  onSecondary: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
 
   // On Error
-  onError: `rgba(${baseRgb.white}, ${emphasisOpacity.high})`,
+  onError: `rgba(${baseRgbLight.white}, ${emphasisOpacity.high})`,
 
   // ------------ Text Emphasis ------------
   medium: (color) => {
-    return `rgba(${baseRgb[color]}, ${emphasisOpacity.medium})`;
+    return `rgba(${baseRgbLight[color]}, ${emphasisOpacity.medium})`;
   },
 
   disabled: (color) => {
-    return `rgba(${baseRgb[color]}, ${emphasisOpacity.disabled})`;
+    return `rgba(${baseRgbLight[color]}, ${emphasisOpacity.disabled})`;
   },
+
+  // ------------ EXTRAS ------------
+  borderColor: '#dadada',
 };
 
 // ************* SHADOWS *************
@@ -112,10 +142,22 @@ const sizes = {
   padding: '10px',
   paddingLarge: '15px',
   paddingInput: '8px 12px',
+  listWidth: '300px',
+  navbarHeight: '40px',
+  sidebarWidthLarge: '250px',
+  sidebarWidthSmall: '50px',
+};
+
+const media = {
+  desktop: `(max-width: 992px)`,
+  tablet: `(max-width: 768px)`,
+  tabletSmall: `(max-width: 600px)`,
+  phone: `(max-width: 480px)`,
+  phoneSmall: `(max-width: 376px)`,
 };
 
 // ************* EXPORTS *************
-const light = { colors: lightColors, shadows, sizes };
-const dark = { colors: darkColors, shadows, sizes };
+const light = { colors: lightColors, shadows, sizes, media };
+const dark = { colors: darkColors, shadows, sizes, media };
 
 export { light, dark };

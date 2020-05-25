@@ -30,7 +30,7 @@ export default function Navigation() {
 }
 
 const StyledNavigation = styled.nav`
-  height: 40px;
+  height: ${({ theme }) => theme.sizes.navbarHeight};
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.onPrimary};
   display: flex;

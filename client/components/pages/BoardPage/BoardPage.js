@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import * as R from 'ramda';
 
 import { attemptGetBoards } from '_thunks/boards';
-import Board from '_molecules/Board';
+import Board from '_templates/Board';
 
 export default function BoardPage({ location }) {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export default function BoardPage({ location }) {
     } else {
       dispatch(attemptGetBoards()).then(() => setLoading(false));
     }
-  }, []);
+  }, [dispatch, user]);
 
   useEffect(() => {
     if (!loading) {
@@ -33,14 +34,13 @@ export default function BoardPage({ location }) {
         dispatch(push('/'));
       }
     }
-  }, [location.pathname, loading]);
+  }, [location, loading, boards, dispatch]);
 
-  return (
-    !loading &&
-    !!currentBoard && (
-      <div className="board-page page">
-        <Board key={currentBoard.id} {...currentBoard} />
-      </div>
-    )
-  );
+  return !loading && !!currentBoard && <Board key={currentBoard.id} {...currentBoard} />;
 }
+
+BoardPage.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
+};
