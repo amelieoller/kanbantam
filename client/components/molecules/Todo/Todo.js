@@ -2,15 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { parseISO, formatDistanceToNow } from 'date-fns';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faTrashAlt,
-  faBan,
-  faPencilAlt,
-  faSave,
-} from '@fortawesome/free-solid-svg-icons';
-import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
+import styled from 'styled-components';
 
 import {
   attemptToggleCompleteTodo,
@@ -19,9 +11,37 @@ import {
 } from '_thunks/todos';
 import ConfirmModal from '_organisms/ConfirmModal';
 
+const Container = styled.a`
+  border-radius: 2px;
+  border: 2px solid transparent;
+  box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
+  padding: 8px;
+  min-height: 40px;
+  margin-bottom: 8px;
+  user-select: none;
+
+  &:hover,
+  &:active {
+    color: darkblue;
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* flexbox */
+  display: flex;
+`;
+
 const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
 
-export default function Todo({ id, text, completed, createdAt, updatedAt }) {
+const Todo = ({
+  todo: { id, text, completed, createdAt, updatedAt },
+  isDragging,
+  provided: { innerRef, draggableProps, dragHandleProps },
+}) => {
   const dispatch = useDispatch();
 
   const [currentText, setCurrentText] = useState(text);
@@ -63,7 +83,41 @@ export default function Todo({ id, text, completed, createdAt, updatedAt }) {
   const deleteTodo = () => dispatch(attemptDeleteTodo(id));
 
   return (
-    <li className="todo box">
+    <Container
+      isDragging={isDragging}
+      ref={innerRef}
+      {...draggableProps}
+      {...dragHandleProps}
+    >
+      <div>{text}</div>
+    </Container>
+  );
+};
+
+Todo.propTypes = {
+  todo: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string,
+  }),
+  isDragging: PropTypes.bool.isRequired,
+  provided: PropTypes.shape({
+    innerRef: PropTypes.func.isRequired,
+    draggableProps: PropTypes.shape({}),
+    dragHandleProps: PropTypes.shape({}),
+  }),
+};
+
+Todo.defaultProps = {
+  updatedAt: null,
+};
+
+export default Todo;
+
+{
+  /* <li className="todo box">
       <article className="media">
         <figure className="media-left">
           <span
@@ -126,18 +180,5 @@ export default function Todo({ id, text, completed, createdAt, updatedAt }) {
         </div>
       </article>
       <ConfirmModal confirm={confirm} closeModal={closeModal} deleteItem={deleteTodo} />
-    </li>
-  );
+    </li> */
 }
-
-Todo.propTypes = {
-  id: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  completed: PropTypes.bool.isRequired,
-  createdAt: PropTypes.string.isRequired,
-  updatedAt: PropTypes.string,
-};
-
-Todo.defaultProps = {
-  updatedAt: null,
-};

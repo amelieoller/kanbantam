@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import ChevronLeft from '_assets/icons/chevrons-left.svg';
@@ -7,17 +7,14 @@ import Repeat from '_assets/icons/repeat.svg';
 import Clock from '_assets/icons/clock.svg';
 import Calendar from '_assets/icons/calendar.svg';
 
-function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleIsOpen = () => {
-    setIsOpen((prevOpen) => !prevOpen);
-  };
-
+function Sidebar({ isSidebarOpen, toggleSidebar }) {
   return (
-    <SidebarWrapper isOpen={isOpen} onClick={() => !isOpen && toggleIsOpen()}>
-      <CollapseButton onClick={() => isOpen && toggleIsOpen()}>
-        {isOpen ? <ChevronLeft /> : <ChevronRight />}
+    <SidebarWrapper
+      isSidebarOpen={isSidebarOpen}
+      onClick={() => !isSidebarOpen && toggleSidebar()}
+    >
+      <CollapseButton onClick={() => isSidebarOpen && toggleSidebar()}>
+        {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
       </CollapseButton>
       <SidebarContent>
         <Clock />
@@ -31,15 +28,22 @@ function Sidebar() {
 const SidebarWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.secondary};
   padding: ${({ theme }) => theme.sizes.padding};
-  width: ${({ theme, isOpen }) =>
-    isOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
+  width: ${({ theme, isSidebarOpen }) =>
+    isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
   position: relative;
   transition: 1s ease;
+  height: 100%;
+
+  /* "hack" for getting drag and drop scroll to work horizontally and vertically */
+  position: fixed;
+  left: 0;
+  z-index: 1;
 `;
 
 const SidebarContent = styled.div`
   display: grid;
   grid-auto-rows: max-content;
+  overflow: hidden;
 
   svg {
     color: ${({ theme }) => theme.colors.medium('onSecondary')};

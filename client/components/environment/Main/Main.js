@@ -52,7 +52,7 @@ function Main({ location }) {
           </>
         ) : (
           <>
-            <Navigation />
+            <Navigation pathname={location.pathname} />
             <Switch>
               <Route exact path="/" component={BoardsPage} />
               <Route path="/boards/:id" component={BoardPage} />
