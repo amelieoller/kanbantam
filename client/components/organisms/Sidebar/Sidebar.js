@@ -34,7 +34,7 @@ const SidebarWrapper = styled.div`
   transition: 1s ease;
   height: 100%;
 
-  /* "hack" for getting drag and drop scroll to work horizontally and vertically */
+  /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   position: fixed;
   left: 0;
   z-index: 1;

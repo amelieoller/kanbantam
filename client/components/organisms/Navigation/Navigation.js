@@ -41,7 +41,7 @@ const StyledNavigation = styled.nav`
   align-items: center;
   padding: ${({ theme }) => theme.sizes.padding};
 
-  /* "hack" for getting drag and drop scroll to work horizontally and vertically */
+  /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   position: ${({ isHome }) => (isHome ? 'relative' : 'fixed')};
   width: 100%;
   top: 0;

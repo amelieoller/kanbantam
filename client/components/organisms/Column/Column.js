@@ -63,14 +63,16 @@ const Column = ({ title, todos, index, boardId, listHeight }) => (
 
 Column.propTypes = {
   title: PropTypes.string.isRequired,
-  todos: PropTypes.arrayOf({
-    board: PropTypes.string.isRequired,
-    completed: PropTypes.bool.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    list: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-  }),
+  todos: PropTypes.arrayOf(
+    PropTypes.shape({
+      board: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired,
+      createdAt: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      list: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+    }),
+  ),
   index: PropTypes.number.isRequired,
   boardId: PropTypes.string.isRequired,
   listHeight: PropTypes.number.isRequired,
