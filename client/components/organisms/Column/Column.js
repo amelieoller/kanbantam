@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 
@@ -10,6 +11,7 @@ const Title = styled.h4`
   flex-grow: 1;
   user-select: none;
   position: relative;
+
   &:focus {
     outline: 2px solid indigo;
     outline-offset: 2px;
@@ -17,7 +19,6 @@ const Title = styled.h4`
 `;
 
 const Container = styled.div`
-  margin: 8px;
   display: flex;
   flex-direction: column;
 `;
@@ -30,13 +31,14 @@ const Header = styled.div`
   border-top-right-radius: 2px;
   background-color: ${({ isDragging }) => (isDragging ? 'red' : 'yellow')};
   transition: background-color 0.2s ease;
+  height: ${({ theme }) => theme.sizes.listHeaderHeight};
 
   &:hover {
     background-color: 'purple';
   }
 `;
 
-const Column = ({ title, todos, index, boardId }) => (
+const Column = ({ title, todos, index, boardId, listHeight }) => (
   <Draggable draggableId={title} index={index}>
     {(provided, snapshot) => (
       <Container ref={provided.innerRef} {...provided.draggableProps}>
@@ -52,10 +54,26 @@ const Column = ({ title, todos, index, boardId }) => (
           }}
           todos={todos}
           boardId={boardId}
+          listHeight={listHeight}
         />
       </Container>
     )}
   </Draggable>
 );
+
+Column.propTypes = {
+  title: PropTypes.string.isRequired,
+  todos: PropTypes.arrayOf({
+    board: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    list: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+  }),
+  index: PropTypes.number.isRequired,
+  boardId: PropTypes.string.isRequired,
+  listHeight: PropTypes.number.isRequired,
+};
 
 export default Column;

@@ -16,18 +16,13 @@ const Wrapper = styled.div`
   flex-direction: column;
   transition: background-color 0.2s ease, opacity 0.1s ease;
   user-select: none;
-  /* width: 250px; */
   background-color: rgb(235, 236, 240);
-  border-radius: 3px;
-  padding: 10px;
   padding-bottom: 0;
 `;
 
-const scrollContainerHeight = 250;
-
 const DropZone = styled.div`
   /* stop the list collapsing when empty */
-  min-height: ${scrollContainerHeight}px;
+  min-height: 100px;
   /* not relying on the items for a margin-bottom as it will collapse when the list is empty */
   padding-bottom: 8px;
 `;
@@ -35,12 +30,12 @@ const DropZone = styled.div`
 const ScrollContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: ${scrollContainerHeight}px;
+  max-height: ${({ listHeight }) => listHeight}px;
 `;
 
 const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
 
-const List = ({ listId, todos, title, boardId }) => {
+const List = ({ listId, todos, title, boardId, listHeight }) => {
   const id = listId;
 
   const dispatch = useDispatch();
@@ -78,7 +73,7 @@ const List = ({ listId, todos, title, boardId }) => {
           isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
           {...dropProvided.droppableProps}
         >
-          <ScrollContainer>
+          <ScrollContainer listHeight={listHeight}>
             <>
               {title}
               <DropZone ref={dropProvided.innerRef}>

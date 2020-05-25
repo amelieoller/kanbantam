@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import * as R from 'ramda';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { attemptGetLists } from '_thunks/lists';
 import { attemptGetTodos } from '_thunks/todos';
-import List from '_organisms/List';
-import AddList from '_molecules/AddList';
 import Sidebar from '_organisms/Sidebar';
-import { handleDragEnd } from '_utils/dragAndDrop';
-import QuoteApp from '_templates/QuoteApp';
 import Column from '_organisms/Column';
 import reorder, { reorderQuoteMap } from '_utils/dragAndDrop';
+import useResize from '_hooks/useResize';
 
-const Container = styled.div`
-  display: inline-flex;
-`;
+function Board({ id, theme: { sizes } }) {
+  const boardRef = useRef(null);
+  const boundingRect = useResize(boardRef);
 
-function Board({ id }) {
   const dispatch = useDispatch();
+
   const { lists } = useSelector(R.pick(['lists']));
   const { todos } = useSelector(R.pick(['todos']));
   const { user } = useSelector(R.pick(['user']));
@@ -112,30 +109,43 @@ function Board({ id }) {
     setColumns(data.quoteMap);
   };
 
+  const calculateListHeight = () => {
+    const screenHeight = boundingRect.screenHeight;
+    const navHeight = sizes.navbarHeight.replace('px', '');
+    const listHeaderHeight = sizes.listHeaderHeight.replace('px', '');
+    const doublePadding = sizes.padding.replace('px', '') * 2;
+
+    const listHeight = screenHeight - navHeight - listHeaderHeight - doublePadding;
+
+    return listHeight;
+  };
+
   return (
     !loading && (
       <StyledBoard isSidebarOpen={isSidebarOpen}>
-        {/* {<QuoteApp incomingColumns={listsWithTodos} boardId={id} />} */}
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="board" type="COLUMN" direction="horizontal">
-            {(provided) => (
-              <ListsWrapper ref={provided.innerRef} {...provided.droppableProps}>
-                {orderedLists.map((key, index) => (
-                  <Column
-                    key={key}
-                    index={index}
-                    title={key}
-                    todos={columns[key]}
-                    boardId={id}
-                  />
-                ))}
-                {provided.placeholder}
-              </ListsWrapper>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <div ref={boardRef}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+              {(provided) => (
+                <ListsWrapper ref={provided.innerRef} {...provided.droppableProps}>
+                  {orderedLists.map((key, index) => (
+                    <Column
+                      key={key}
+                      index={index}
+                      title={key}
+                      todos={columns[key]}
+                      boardId={id}
+                      listHeight={calculateListHeight()}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </ListsWrapper>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
       </StyledBoard>
     )
   );
@@ -146,7 +156,7 @@ const StyledBoard = styled.div`
   grid-auto-flow: column;
   height: calc(100vh - ${({ theme }) => theme.sizes.navbarHeight});
 
-  /* "hack" for getting drag and drop scroll to work horizontally and vertically */
+  /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   margin-top: ${({ theme }) => theme.sizes.navbarHeight};
   margin-left: ${({ theme, isSidebarOpen }) =>
     isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
@@ -157,13 +167,21 @@ const ListsWrapper = styled.div`
   display: grid;
   grid-auto-columns: 272px;
   grid-auto-flow: column;
-  grid-gap: 8px;
-  /* overflow-y: scroll; */
   padding: ${({ theme }) => `${theme.sizes.padding} ${theme.sizes.paddingLarge}`};
+
+  & > *:not(:last-child) {
+    margin-right: 8px;
+  }
+
+  /* Don't use grid gap, it will add a choppy transition when lists are moved, instead margin has been added to each child */
+  /* Don't use overflow-y scroll, react dnd can't do 2-direction scrolls yet, "hack" implemented by adding fixed positions to nav and sidebar */
 `;
 
 Board.propTypes = {
   id: PropTypes.string.isRequired,
+  theme: PropTypes.shape({
+    sizes: PropTypes.object,
+  }),
 };
 
-export default Board;
+export default withTheme(Board);
