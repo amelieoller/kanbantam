@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router';
 import Notifications from 'react-notification-system-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
+import { withTheme } from 'styled-components';
 
 import { attemptGetUser } from '_thunks/user';
 
@@ -16,7 +17,7 @@ import LostPage from '_pages/LostPage';
 import Navigation from '_organisms/Navigation';
 import WelcomePage from '_pages/WelcomePage/WelcomePage';
 
-function Main({ location }) {
+function Main({ location, theme: { colors } }) {
   const dispatch = useDispatch();
   const { alerts } = useSelector(R.pick(['alerts']));
   const { user } = useSelector(R.pick(['user']));
@@ -38,10 +39,53 @@ function Main({ location }) {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
+  var style = {
+    NotificationItem: {
+      success: {
+        color: colors.onSuccess,
+        borderTop: '2px solid ' + colors.success,
+        backgroundColor: colors.lighter(5, 'success'),
+      },
+      error: {
+        color: colors.onError,
+        borderTop: '2px solid ' + colors.error,
+        backgroundColor: colors.lighter(5, 'error'),
+      },
+      warning: {
+        color: colors.onWarning,
+        borderTop: '2px solid ' + colors.warning,
+        backgroundColor: colors.lighter(5, 'warning'),
+      },
+      info: {
+        color: colors.onInfo,
+        borderTop: '2px solid ' + colors.info,
+        backgroundColor: colors.lighter(5, 'info'),
+      },
+    },
+    Dismiss: {
+      success: {
+        color: colors.lighter(6, 'success'),
+        backgroundColor: colors.lighter(3, 'success'),
+      },
+      error: {
+        color: colors.lighter(6, 'error'),
+        backgroundColor: colors.lighter(3, 'error'),
+      },
+      warning: {
+        color: colors.lighter(6, 'warning'),
+        backgroundColor: colors.lighter(3, 'warning'),
+      },
+      info: {
+        color: colors.lighter(6, 'info'),
+        backgroundColor: colors.lighter(3, 'info'),
+      },
+    },
+  };
+
   return (
     !loading && (
       <>
-        <Notifications notifications={alerts} />
+        <Notifications notifications={alerts} style={style} />
 
         {!auth ? (
           <>
@@ -72,4 +116,4 @@ Main.propTypes = {
   }).isRequired,
 };
 
-export default Main;
+export default withTheme(Main);

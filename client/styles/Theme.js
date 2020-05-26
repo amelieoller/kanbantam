@@ -1,3 +1,5 @@
+import { lighten } from 'polished';
+
 // ************* COLORS *************
 // Variants: e.g. in dark theme - if you want to show the opposite, dark on a light surface
 const baseRgbDark = {
@@ -8,6 +10,9 @@ const baseRgbDark = {
   onPrimary: [0, 0, 0],
   onSecondary: [0, 0, 0],
   onError: [0, 0, 0],
+  onSuccess: [0, 0, 0],
+  onWarning: [0, 0, 0],
+  onInfo: [0, 0, 0],
 };
 
 const emphasisOpacity = {
@@ -32,8 +37,11 @@ const darkColors = {
   secondary: '#03DAC5',
   secondaryVariant: '#03DAC5',
 
-  // Error
-  error: '#CF6679',
+  // Notification Colors
+  error: '#f44336',
+  success: '#4caf50',
+  warning: '#ff9800',
+  info: '#2196f3',
 
   // ------------ "ON" COLORS (text, icon color etc.) ------------
   // On background
@@ -48,8 +56,11 @@ const darkColors = {
   // On Secondary
   onSecondary: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
 
-  // On Error
-  onError: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
+  // On Notification Colors
+  onError: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
+  onSuccess: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
+  onWarning: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
+  onInfo: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
 
   // ------------ Text Emphasis ------------
   medium: (color) => {
@@ -58,6 +69,10 @@ const darkColors = {
 
   disabled: (color) => {
     return `rgba(${baseRgbDark[color]}, ${emphasisOpacity.disabled})`;
+  },
+
+  lighter: (amount, color) => {
+    return lighten(+`0.${amount}`, lightColors[color]);
   },
 
   // ------------ EXTRAS ------------
@@ -72,6 +87,9 @@ const baseRgbLight = {
   onPrimary: [255, 255, 255],
   onSecondary: [0, 0, 0],
   onError: [255, 255, 255],
+  onSuccess: [255, 255, 255],
+  onWarning: [255, 255, 255],
+  onInfo: [255, 255, 255],
 };
 
 const lightColors = {
@@ -90,8 +108,11 @@ const lightColors = {
   secondary: '#03DAC6',
   secondaryVariant: '#018786',
 
-  // Error
-  error: '#B00020',
+  // Notification Colors
+  error: '#f44336',
+  success: '#4caf50',
+  warning: '#ff9800',
+  info: '#2196f3',
 
   // ------------ "ON" COLORS (text, icon color etc.) ------------
   // On background
@@ -106,8 +127,11 @@ const lightColors = {
   // On Secondary
   onSecondary: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
 
-  // On Error
-  onError: `rgba(${baseRgbLight.white}, ${emphasisOpacity.high})`,
+  // On Notification Colors
+  onError: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
+  onSuccess: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
+  onWarning: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
+  onInfo: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
 
   // ------------ Text Emphasis ------------
   medium: (color) => {
@@ -116,6 +140,10 @@ const lightColors = {
 
   disabled: (color) => {
     return `rgba(${baseRgbLight[color]}, ${emphasisOpacity.disabled})`;
+  },
+
+  lighter: (amount, color) => {
+    return lighten(+`0.${amount}`, lightColors[color]);
   },
 
   // ------------ EXTRAS ------------
@@ -139,14 +167,18 @@ const shadows = {
 // ************* SIZES *************
 const sizes = {
   borderRadius: '5px',
-  padding: '10px',
-  paddingLarge: '15px',
-  paddingInput: '8px 12px',
+  borderRadiusSmall: '4px',
+  spacing: '10px',
+  spacingSmall: '5px',
+  spacingLarge: '15px',
+  spacingInput: '8px 12px',
   listWidth: '300px',
   navbarHeight: '40px',
   sidebarWidthLarge: '250px',
   sidebarWidthSmall: '50px',
   listHeaderHeight: '30px',
+  listFooterHeight: '40px',
+  minCardHeight: '30px',
 };
 
 const media = {
