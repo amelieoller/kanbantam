@@ -20,7 +20,7 @@ export const attemptGetBoards = () => (dispatch) =>
     .catch(dispatchError(dispatch));
 
 export const attemptAddBoard = (title) => (dispatch) =>
-  postBoard({ title })
+  postBoard({ title, orderedTodos: {}, orderedLists: [] })
     .then(({ data }) => {
       const board = R.omit(['Id'], R.assoc('id', data._id, snakeToCamelCase(data)));
 
@@ -29,10 +29,18 @@ export const attemptAddBoard = (title) => (dispatch) =>
     })
     .catch(dispatchError(dispatch));
 
-export const attemptUpdateBoard = (id, title) => (dispatch) =>
-  putBoard({ id, title })
-    .then(({ data, data: { _id, title, updated_at } }) => {
-      dispatch(updateBoard({ id: _id, title, updatedAt: updated_at }));
+export const attemptUpdateBoard = (id, title, orderedTodos, orderedLists) => (dispatch) =>
+  putBoard({ id, title, orderedTodos, orderedLists })
+    .then(({ data, data: { _id, title, updated_at, orderedTodos, orderedLists } }) => {
+      dispatch(
+        updateBoard({
+          id: _id,
+          title,
+          updatedAt: updated_at,
+          orderedTodos,
+          orderedLists,
+        }),
+      );
       return data;
     })
     .catch(dispatchError(dispatch));

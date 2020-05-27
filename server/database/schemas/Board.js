@@ -9,6 +9,8 @@ const boardSchema = new Schema({
   title: { type: String },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
+  orderedTodos: { type: Map },
+  orderedLists: { type: Array },
 });
 
 boardSchema.plugin(immutablePlugin);
@@ -18,7 +20,7 @@ boardSchema.methods.hide = function () {
 };
 
 boardSchema.pre('deleteOne', async function (next) {
-  const boardId = this.getQuery()['_id'];
+  const boardId = this.getFilter()['_id'];
   const lists = await mongoose.model('List').find({ board: boardId }).exec();
 
   for (let i = 0; i < lists.length; i++) {

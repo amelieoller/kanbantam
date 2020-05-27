@@ -8,12 +8,15 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { attemptGetLists } from '_thunks/lists';
 import { attemptGetTodos } from '_thunks/todos';
+import { attemptUpdateBoard } from '_thunks/boards';
 import Sidebar from '_organisms/Sidebar';
 import Column from '_organisms/Column';
 import reorder, { reorderQuoteMap } from '_utils/dragAndDrop';
 import useResize from '_hooks/useResize';
+import AddList from '_molecules/AddList';
+import { compareSync } from 'bcryptjs';
 
-function Board({ id, theme: { sizes } }) {
+function Board({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
   const boundingRect = useResize(boardRef);
 
@@ -33,28 +36,42 @@ function Board({ id, theme: { sizes } }) {
   };
 
   useEffect(() => {
-    const listsWithTodos = lists.reduce(
+    // Rehydrate
+    const rehydratedLists = board.orderedLists.map((list) =>
+      lists.find((l) => l.id === list),
+    );
+    const rehydratedTodos = board.orderedLists.reduce(
       (acc, curr) => ({
         ...acc,
-        [curr.id]: todos.filter((todo) => todo.list === curr.id),
+        [curr]: board.orderedTodos[curr].map((todo) => todos.find((t) => t.id === todo)),
       }),
       {},
     );
+    setOrderedLists(rehydratedLists);
+    setColumns(rehydratedTodos);
 
-    setColumns(listsWithTodos);
-    setOrderedLists(Object.keys(listsWithTodos));
-  }, [lists, todos]);
+    // const listsWithTodos = lists.reduce(
+    //   (acc, curr) => ({
+    //     ...acc,
+    //     [curr.id]: todos.filter((todo) => todo.list === curr.id),
+    //   }),
+    //   {},
+    // );
+
+    // setColumns(listsWithTodos);
+    // setOrderedLists(lists);
+  }, [lists, todos, board.orderedLists, board.orderedTodos]);
 
   useEffect(() => {
     if (R.isEmpty(user)) {
       dispatch(push('/login'));
     } else {
       Promise.all([
-        dispatch(attemptGetLists(id)),
-        dispatch(attemptGetTodos(id)),
+        dispatch(attemptGetLists(board.id)),
+        dispatch(attemptGetTodos(board.id)),
       ]).then(() => setLoading(false));
     }
-  }, [id, dispatch, user]);
+  }, [board.id, dispatch, user]);
 
   const onDragEnd = (result) => {
     if (result.combine) {
@@ -70,10 +87,12 @@ function Board({ id, theme: { sizes } }) {
       const withItemRemoved = [...column];
       withItemRemoved.splice(result.source.index, 1);
 
-      setColumns({
+      const newColumnsWithTodos = {
         ...columns,
         [result.source.droppableId]: withItemRemoved,
-      });
+      };
+
+      setColumns(newColumnsWithTodos);
       return;
     }
 
@@ -94,6 +113,11 @@ function Board({ id, theme: { sizes } }) {
     // reordering column
     if (result.type === 'COLUMN') {
       const newOrderedLists = reorder(orderedLists, source.index, destination.index);
+      const newOrderedListArr = newOrderedLists.map((l) => l.id);
+
+      dispatch(
+        attemptUpdateBoard(board.id, board.title, board.orderedTodos, newOrderedListArr),
+      );
 
       setOrderedLists(newOrderedLists);
 
@@ -106,6 +130,15 @@ function Board({ id, theme: { sizes } }) {
       destination,
     });
 
+    const dehydratedArr = Object.keys(data.quoteMap).reduce(
+      (acc, listId) => ({ ...acc, [listId]: data.quoteMap[listId].map((t) => t.id) }),
+      {},
+    );
+
+    dispatch(
+      attemptUpdateBoard(board.id, board.title, dehydratedArr, board.orderedLists),
+    );
+
     setColumns(data.quoteMap);
   };
 
@@ -113,9 +146,11 @@ function Board({ id, theme: { sizes } }) {
     const screenHeight = boundingRect.screenHeight;
     const navHeight = sizes.navbarHeight.replace('px', '');
     const listHeaderHeight = sizes.listHeaderHeight.replace('px', '');
-    const doublePadding = sizes.padding.replace('px', '') * 2;
+    const listFooterHeight = sizes.listFooterHeight.replace('px', '');
+    const doublePadding = sizes.spacing.replace('px', '') * 2;
 
-    const listHeight = screenHeight - navHeight - listHeaderHeight - doublePadding;
+    const listHeight =
+      screenHeight - navHeight - listHeaderHeight - listFooterHeight - doublePadding;
 
     return listHeight;
   };
@@ -130,17 +165,22 @@ function Board({ id, theme: { sizes } }) {
             <Droppable droppableId="board" type="COLUMN" direction="horizontal">
               {(provided) => (
                 <ListsWrapper ref={provided.innerRef} {...provided.droppableProps}>
-                  {orderedLists.map((key, index) => (
+                  {orderedLists.map((list, index) => (
                     <Column
-                      key={key}
+                      key={list.id}
                       index={index}
-                      title={key}
-                      todos={columns[key]}
-                      boardId={id}
+                      title={list.title}
+                      id={list.id}
+                      todos={columns[list.id]}
+                      boardId={board.id}
                       listHeight={calculateListHeight()}
                     />
                   ))}
                   {provided.placeholder}
+
+                  <div>
+                    <AddList boardId={board.id} />
+                  </div>
                 </ListsWrapper>
               )}
             </Droppable>
@@ -165,9 +205,9 @@ const StyledBoard = styled.div`
 
 const ListsWrapper = styled.div`
   display: grid;
-  grid-auto-columns: 272px;
+  grid-auto-columns: ${({ theme }) => theme.sizes.listWidth};
   grid-auto-flow: column;
-  padding: ${({ theme }) => `${theme.sizes.padding} ${theme.sizes.paddingLarge}`};
+  padding: ${({ theme }) => `${theme.sizes.spacing} ${theme.sizes.spacingLarge}`};
 
   & > *:not(:last-child) {
     margin-right: 8px;
@@ -178,7 +218,9 @@ const ListsWrapper = styled.div`
 `;
 
 Board.propTypes = {
-  id: PropTypes.string.isRequired,
+  board: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }),
   theme: PropTypes.shape({
     sizes: PropTypes.object,
   }),

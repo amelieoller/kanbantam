@@ -61,7 +61,7 @@ const NewBoardForm = styled.form`
 
 const NewBoardInput = styled.input`
   width: 100%;
-  margin-bottom: ${({ theme }) => theme.sizes.padding};
+  margin-bottom: ${({ theme }) => theme.sizes.spacing};
 `;
 
 const NewBoardButton = styled.input`

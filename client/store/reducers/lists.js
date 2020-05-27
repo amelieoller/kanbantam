@@ -31,7 +31,8 @@ export default function lists(state = [], action) {
     case SET_LISTS:
       return update(state, { $set: action.lists });
     case ADD_LIST:
-      return update(state, { $push: [list(undefined, action)] });
+      return [...state, action.list];
+    // return update(state, { $push: [list(undefined, action)] });
     case UPDATE_LIST:
       return update(state, updatedAtIndex);
     case REMOVE_LIST:

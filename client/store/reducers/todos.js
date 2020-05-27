@@ -7,6 +7,7 @@ import {
   TOGGLE_COMPLETE_TODO,
   UPDATE_TODO,
   REMOVE_TODO,
+  UPDATE_TODO_ID,
 } from '_actions/todos';
 
 import { LOGOUT_USER } from '_actions/user';
@@ -31,9 +32,10 @@ export function todo(
         completed: { $apply: (x) => !x },
       });
     case UPDATE_TODO:
+      return action.todo;
+    case UPDATE_TODO_ID:
       return update(state, {
-        text: { $set: action.text },
-        updatedAt: { $set: action.updatedAt },
+        id: { $set: action.newId },
       });
     default:
       return state;
@@ -55,6 +57,8 @@ export default function todos(state = [], action) {
       return update(state, updatedAtIndex);
     case REMOVE_TODO:
       return update(state, { $splice: [[index, 1]] });
+    case UPDATE_TODO_ID:
+      return update(state, updatedAtIndex);
     case LOGOUT_USER:
       return [];
     default:

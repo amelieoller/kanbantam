@@ -27,7 +27,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
 
 const SidebarWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.secondary};
-  padding: ${({ theme }) => theme.sizes.padding};
+  padding: ${({ theme }) => theme.sizes.spacing};
   width: ${({ theme, isSidebarOpen }) =>
     isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
   position: relative;

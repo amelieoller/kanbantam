@@ -36,7 +36,9 @@ export default function BoardPage({ location }) {
     }
   }, [location, loading, boards, dispatch]);
 
-  return !loading && !!currentBoard && <Board key={currentBoard.id} {...currentBoard} />;
+  return (
+    !loading && !!currentBoard && <Board key={currentBoard.id} board={currentBoard} />
+  );
 }
 
 BoardPage.propTypes = {

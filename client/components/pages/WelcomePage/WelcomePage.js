@@ -49,7 +49,7 @@ const Buttons = styled.div`
 `;
 
 const Button = styled.button`
-  padding: ${({ theme }) => theme.sizes.paddingInput};
+  padding: ${({ theme }) => theme.sizes.spacingInput};
   border-width: 0;
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.onSurface};
@@ -59,12 +59,12 @@ const Button = styled.button`
   align-items: center;
   cursor: pointer;
   transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-right: ${({ theme }) => theme.sizes.padding};
-  margin-top: ${({ theme }) => theme.sizes.padding};
+  margin-right: ${({ theme }) => theme.sizes.spacing};
+  margin-top: ${({ theme }) => theme.sizes.spacing};
   font-size: 1rem;
 
   svg {
-    margin-right: ${({ theme }) => theme.sizes.padding};
+    margin-right: ${({ theme }) => theme.sizes.spacing};
   }
 
   &:hover {

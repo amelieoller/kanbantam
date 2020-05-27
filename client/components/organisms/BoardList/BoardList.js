@@ -19,7 +19,7 @@ const StyledBoardList = styled.div`
     color: ${({ theme }) => theme.colors.onSurface};
     font-size: 15px;
     font-weight: 500;
-    padding: ${({ theme }) => theme.sizes.padding};
+    padding: ${({ theme }) => theme.sizes.spacing};
 
     &:hover {
       background: ${({ theme }) => theme.colors.surfaceHover};

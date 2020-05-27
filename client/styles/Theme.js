@@ -1,4 +1,4 @@
-import { lighten } from 'polished';
+import { lighten, darken } from 'polished';
 
 // ************* COLORS *************
 // Variants: e.g. in dark theme - if you want to show the opposite, dark on a light surface
@@ -75,6 +75,10 @@ const darkColors = {
     return lighten(+`0.${amount}`, lightColors[color]);
   },
 
+  darker: (amount, color) => {
+    return darken(+`0.${amount}`, lightColors[color]);
+  },
+
   // ------------ EXTRAS ------------
   borderColor: '#dadada',
 };
@@ -146,6 +150,10 @@ const lightColors = {
     return lighten(+`0.${amount}`, lightColors[color]);
   },
 
+  darker: (amount, color) => {
+    return darken(+`0.${amount}`, lightColors[color]);
+  },
+
   // ------------ EXTRAS ------------
   borderColor: '#dadada',
 };
@@ -172,7 +180,7 @@ const sizes = {
   spacingSmall: '5px',
   spacingLarge: '15px',
   spacingInput: '8px 12px',
-  listWidth: '300px',
+  listWidth: '285px',
   navbarHeight: '40px',
   sidebarWidthLarge: '250px',
   sidebarWidthSmall: '50px',

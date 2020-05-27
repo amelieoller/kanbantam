@@ -7,7 +7,9 @@ import { useDispatch } from 'react-redux';
 
 import Logout from '_assets/icons/log-out.svg';
 import Logo from '_assets/icons/logo.svg';
+import Trash from '_assets/icons/trash-2.svg';
 import { attemptLogout } from '_thunks/auth';
+import { attemptDeleteBoard } from '_thunks/boards';
 
 function Navigation({ pathname }) {
   const dispatch = useDispatch();
@@ -18,6 +20,9 @@ function Navigation({ pathname }) {
 
   const isHome = pathname === '/';
 
+  const boardId = pathname.split('/')[2];
+  const deleteBoard = () => dispatch(attemptDeleteBoard(boardId));
+
   return (
     <StyledNavigation role="navigation" isHome={isHome}>
       <Left to="/">
@@ -26,6 +31,7 @@ function Navigation({ pathname }) {
       </Left>
 
       <Right>
+        <Trash onClick={() => boardId && deleteBoard()} />
         <Logout onClick={logout} />
       </Right>
     </StyledNavigation>
@@ -39,7 +45,7 @@ const StyledNavigation = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${({ theme }) => theme.sizes.padding};
+  padding: ${({ theme }) => theme.sizes.spacing};
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   position: ${({ isHome }) => (isHome ? 'relative' : 'fixed')};

@@ -23,10 +23,14 @@ export const dispatchError = (dispatch) => (res) => {
     dispatch(push('/'));
   }
 
+  const message =
+    res.body && res.body.message ? res.body.message : 'An error has ocurred';
+  const status = res.status ? res.status : 'Status unknown';
+
   dispatch(
     Notifications.error({
-      title: `Error: ${res.status}`,
-      message: res.body.message,
+      title: `Error: ${status}`,
+      message: message,
       position: 'tr',
       autoDismiss: 5,
     }),

@@ -1,43 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
 
 import { attemptAddList } from '_thunks/lists';
-import useKeyPress from '_hooks/useKeyPress';
-import Button from '_atoms/Button';
+import useOnClickOutside from '_hooks/useOnClickOutside';
 
-export default function AddList({ boardId }) {
+function AddList({ boardId }) {
+  const formRef = useRef();
+
   const dispatch = useDispatch();
-  const [title, setTitle] = useState('');
 
-  const handleAddList = () => {
+  const [title, setTitle] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
+  useOnClickOutside(formRef, () => setIsOpen(false));
+
+  const handleAddList = (e) => {
+    e.preventDefault();
+
     if (title) {
       dispatch(attemptAddList(title, boardId));
       setTitle('');
     }
   };
 
-  useKeyPress('Enter', handleAddList);
-
   const updateTitle = (e) => setTitle(e.target.value);
 
-  return (
-    <div className="add-list columns is-gapless">
-      <div className="column is-10">
-        <input className="input" type="title" value={title} onChange={updateTitle} />
-      </div>
-      <div className="column is-2">
-        <Button
-          style={{ width: '100%' }}
-          onClick={handleAddList}
-          label="Add"
-          type="success"
-        />
-      </div>
-    </div>
+  const toggleIsOpen = () => setIsOpen((prevOpen) => !prevOpen);
+
+  return isOpen ? (
+    <NewListForm onSubmit={handleAddList} ref={formRef}>
+      <NewListInput
+        type="text"
+        onChange={updateTitle}
+        value={title}
+        placeholder="New list..."
+        autoFocus
+      />
+    </NewListForm>
+  ) : (
+    <Button onClick={toggleIsOpen}>Add a new list...</Button>
   );
 }
 
 AddList.propTypes = {
   boardId: PropTypes.string.isRequired,
 };
+
+const NewListForm = styled.form``;
+
+const NewListInput = styled.input`
+  width: 100%;
+  font-size: 1.2rem;
+  outline: none;
+  border: 0;
+  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+  padding: ${({ theme }) => theme.sizes.spacingInput};
+  text-transform: uppercase;
+`;
+
+const Button = styled.button`
+  border: none;
+  background: ${({ theme }) => theme.colors.surface};
+  cursor: pointer;
+  width: 100%;
+  padding: ${({ theme }) => theme.sizes.spacingInput};
+  text-align: left;
+  font-size: 1.2rem;
+  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+`;
+
+export default AddList;

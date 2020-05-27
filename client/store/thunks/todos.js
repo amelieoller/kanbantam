@@ -1,5 +1,6 @@
 import { snakeToCamelCase } from 'json-style-converter/es5';
 import * as R from 'ramda';
+import uniqid from 'uniqid';
 
 import {
   getTodos,
@@ -14,7 +15,13 @@ import {
   toggleCompleteTodo,
   updateTodo,
   removeTodo,
+  updateTodoId,
 } from '_actions/todos';
+import {
+  addTodoToBoard,
+  removeTodoFromBoard,
+  updateTodoIdOnBoard,
+} from '_actions/boards';
 
 import { dispatchError } from '_utils/api';
 
@@ -31,15 +38,38 @@ export const attemptGetTodos = (boardId) => (dispatch) =>
     })
     .catch(dispatchError(dispatch));
 
-export const attemptAddTodo = (text, board, list) => (dispatch) =>
-  postTodo({ text, board, list })
+export const attemptAddTodo = (newTodo) => (dispatch) => {
+  const tempId = uniqid();
+
+  dispatch(addTodoToBoard({ id: tempId, ...newTodo }));
+  dispatch(addTodo({ ...newTodo, id: tempId, createdAt: new Date().toJSON() }));
+
+  return postTodo(newTodo)
     .then(({ data }) => {
       const todo = R.omit(['Id'], R.assoc('id', data._id, snakeToCamelCase(data)));
 
-      dispatch(addTodo(todo));
+      dispatch(
+        updateTodoIdOnBoard({
+          oldId: tempId,
+          newId: todo.id,
+          listId: todo.list,
+          id: todo.board,
+        }),
+      );
+      dispatch(updateTodoId({ id: tempId, newId: todo.id }));
+
       return data.user;
     })
-    .catch(dispatchError(dispatch));
+    .catch((res) => {
+      // Remove todo from redux
+      dispatch(
+        removeTodoFromBoard({ todoId: tempId, id: newTodo.board, listId: newTodo.list }),
+      );
+      dispatch(removeTodo(tempId));
+
+      dispatchError(dispatch)(res);
+    });
+};
 
 export const attemptToggleCompleteTodo = (id) => (dispatch) =>
   putToggleCompleteTodo({ id })
@@ -49,10 +79,12 @@ export const attemptToggleCompleteTodo = (id) => (dispatch) =>
     })
     .catch(dispatchError(dispatch));
 
-export const attemptUpdateTodo = (id, text) => (dispatch) =>
-  putTodo({ id, text })
-    .then(({ data, data: { _id, text, list, updated_at } }) => {
-      dispatch(updateTodo({ id: _id, text, updatedAt: updated_at, list }));
+export const attemptUpdateTodo = (todo) => (dispatch) =>
+  putTodo(todo)
+    .then(({ data }) => {
+      const newTodo = R.omit(['Id'], R.assoc('id', data._id, snakeToCamelCase(data)));
+
+      dispatch(updateTodo(newTodo));
       return data;
     })
     .catch(dispatchError(dispatch));
@@ -60,7 +92,11 @@ export const attemptUpdateTodo = (id, text) => (dispatch) =>
 export const attemptDeleteTodo = (id) => (dispatch) =>
   deleteTodo({ id })
     .then(({ data, data: { _id } }) => {
+      dispatch(
+        removeTodoFromBoard({ listId: data.list, todoId: data._id, id: data.board }),
+      );
       dispatch(removeTodo(_id));
+
       return data;
     })
     .catch(dispatchError(dispatch));

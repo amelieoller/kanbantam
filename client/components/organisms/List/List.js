@@ -8,7 +8,6 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { attemptUpdateList, attemptDeleteList } from '_thunks/lists';
 import ConfirmModal from '_organisms/ConfirmModal';
-import AddTodo from '_molecules/AddTodo';
 import Todo from '_molecules/Todo';
 
 const Wrapper = styled.div`
@@ -18,13 +17,15 @@ const Wrapper = styled.div`
   user-select: none;
   background-color: rgb(235, 236, 240);
   padding-bottom: 0;
+  border-bottom-right-radius: ${({ theme }) => theme.sizes.borderRadius};
+  border-bottom-left-radius: ${({ theme }) => theme.sizes.borderRadius};
 `;
 
 const DropZone = styled.div`
   /* stop the list collapsing when empty */
   min-height: 100px;
   /* not relying on the items for a margin-bottom as it will collapse when the list is empty */
-  padding-bottom: 8px;
+  margin: 5px;
 `;
 
 const ScrollContainer = styled.div`
@@ -60,8 +61,6 @@ const List = ({ listId, todos, title, boardId, listHeight }) => {
     }
   };
 
-  const deleteList = () => dispatch(attemptDeleteList(id));
-
   return (
     <Droppable
       droppableId={listId}
@@ -96,7 +95,6 @@ const List = ({ listId, todos, title, boardId, listHeight }) => {
                 ))}
                 {dropProvided.placeholder}
               </DropZone>
-              <AddTodo boardId={boardId} listId={id} />
             </>
           </ScrollContainer>
         </Wrapper>

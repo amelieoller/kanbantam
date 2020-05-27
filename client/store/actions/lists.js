@@ -9,11 +9,9 @@ export const setLists = (lists) => ({
   lists,
 });
 
-export const addList = ({ id, title, createdAt }) => ({
+export const addList = (list) => ({
   type: ADD_LIST,
-  createdAt,
-  id,
-  title,
+  list,
 });
 
 export const updateList = ({ id, title, updatedAt }) => ({

@@ -9,35 +9,14 @@ import {
   attemptUpdateTodo,
   attemptDeleteTodo,
 } from '_thunks/todos';
-import ConfirmModal from '_organisms/ConfirmModal';
-
-const Container = styled.a`
-  border-radius: 2px;
-  border: 2px solid transparent;
-  box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
-  padding: 8px;
-  min-height: 40px;
-  margin-bottom: 8px;
-  user-select: none;
-
-  &:hover,
-  &:active {
-    color: darkblue;
-    text-decoration: none;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  /* flexbox */
-  display: flex;
-`;
+import Trash from '_assets/icons/trash-2.svg';
+import Calendar from '_assets/icons/calendar.svg';
+import TodoModal from '_organisms/TodoModal';
 
 const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
 
 const Todo = ({
+  todo,
   todo: { id, text, completed, createdAt, updatedAt },
   isDragging,
   provided: { innerRef, draggableProps, dragHandleProps },
@@ -88,11 +67,126 @@ const Todo = ({
       ref={innerRef}
       {...draggableProps}
       {...dragHandleProps}
+      onClick={() => 'open the modal...'}
     >
-      <div>{text}</div>
+      <Header>
+        {!!todo.difficulty && (
+          <Badge
+            color={
+              todo.difficulty === 1
+                ? 'mediumturquoise'
+                : todo.difficulty === 2
+                ? 'orange'
+                : 'coral'
+            }
+          >
+            Important
+          </Badge>
+        )}
+        {todo.dueDate && (
+          <DueDate>
+            <Calendar /> {fromNow(todo.dueDate)}
+          </DueDate>
+        )}
+      </Header>
+      <Main>{text}</Main>
+      <Footer>
+        <FooterLeft>
+          {/* {!!updatedAt && <small>{`edited ${updatedMessage}`}</small>} */}
+          <TodoModal todo={todo} />
+        </FooterLeft>
+        <FooterRight>
+          <Trash onClick={deleteTodo} />
+        </FooterRight>
+      </Footer>
     </Container>
   );
 };
+
+const Container = styled.a`
+  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+  border: 2px solid transparent;
+  box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
+  padding: ${({ theme }) => theme.sizes.spacingSmall};
+  min-height: ${({ theme }) => theme.sizes.minCardHeight};
+  margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};
+  user-select: none;
+  background: ${({ theme }) => theme.colors.surface};
+  display: flex;
+  flex-direction: column;
+  box-shadow: ${({ theme }) => theme.shadows.one};
+
+  & > *:not(:last-child) {
+    margin-bottom: 3px;
+  }
+
+  &:hover,
+  &:active {
+    box-shadow: ${({ theme }) => theme.shadows.three};
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: ${({ theme }) => theme.shadows.two};
+    background: ${({ theme }) => theme.colors.darker(1, 'surface')};
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Badge = styled.span`
+  background: lightcoral;
+  background: ${({ color }) => color};
+  color: white;
+  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+  padding: 2px 4px;
+  font-size: 0.85rem;
+`;
+
+const DueDate = styled.span`
+  color: darkgray;
+  padding: 1px 4px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+
+  svg {
+    height: 14px;
+    width: 14px;
+    margin-right: 2px;
+  }
+`;
+
+const Main = styled.div`
+  font-size: 1.2rem;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  svg {
+    height: 16px;
+    width: 16px;
+    color: lightgray;
+    cursor: pointer;
+  }
+`;
+
+const FooterLeft = styled.span`
+  display: flex;
+  align-items: center;
+`;
+
+const FooterRight = styled.span`
+  display: flex;
+  align-items: center;
+`;
 
 Todo.propTypes = {
   todo: PropTypes.shape({

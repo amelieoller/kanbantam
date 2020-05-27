@@ -4,6 +4,7 @@ export const TOGGLE_COMPLETE_TODO = 'TOGGLE_COMPLETE_TODO';
 export const UPDATE_TODO = 'UPDATE_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 export const INCREMENT_TODO_ID = 'INCREMENT_TODO_ID';
+export const UPDATE_TODO_ID = 'UPDATE_TODO_ID';
 
 export const setTodos = (todos) => ({
   type: SET_TODOS,
@@ -24,15 +25,19 @@ export const toggleCompleteTodo = (id) => ({
   id,
 });
 
-export const updateTodo = ({ id, text, updatedAt, list }) => ({
+export const updateTodo = (todo) => ({
   type: UPDATE_TODO,
-  updatedAt,
-  id,
-  text,
-  list,
+  todo,
+  id: todo.id,
 });
 
 export const removeTodo = (id) => ({
   type: REMOVE_TODO,
+  id,
+});
+
+export const updateTodoId = ({ newId, id }) => ({
+  type: UPDATE_TODO_ID,
+  newId,
   id,
 });
