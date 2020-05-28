@@ -18,7 +18,7 @@ function AddBoardTile() {
     e.preventDefault();
 
     if (title) {
-      dispatch(attemptAddBoard(title));
+      dispatch(attemptAddBoard({ title }));
       setTitle('');
     }
   };

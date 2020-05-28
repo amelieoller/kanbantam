@@ -7,7 +7,7 @@ import { attemptAddTodo } from '_thunks/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 import Plus from '_assets/icons/plus.svg';
 
-function AddTodo({ boardId, listId }) {
+function AddTodo({ boardId, listId, lastCardSortVal }) {
   const formRef = useRef();
 
   const dispatch = useDispatch();
@@ -21,7 +21,9 @@ function AddTodo({ boardId, listId }) {
     e.preventDefault();
 
     if (text) {
-      dispatch(attemptAddTodo({ text, board: boardId, list: listId }));
+      dispatch(
+        attemptAddTodo({ text, board: boardId, list: listId, sort: lastCardSortVal + 1 }),
+      );
       setText('');
     }
   };
@@ -82,6 +84,7 @@ const Button = styled.button`
 AddTodo.propTypes = {
   boardId: PropTypes.string.isRequired,
   listId: PropTypes.string.isRequired,
+  lastCardSortVal: PropTypes.number.isRequired,
 };
 
 export default AddTodo;

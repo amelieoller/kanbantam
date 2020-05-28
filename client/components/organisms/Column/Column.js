@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import List from '_organisms/List';
 import Trash from '_assets/icons/trash-2.svg';
-import { attemptUpdateList, attemptDeleteList } from '_thunks/lists';
+import { attemptDeleteList, attemptUpdateList } from '_thunks/lists';
 import AddTodo from '_molecules/AddTodo';
 
 const Container = styled.div`
@@ -52,21 +52,58 @@ const DeleteButton = styled.button`
   }
 `;
 
+const EditListInput = styled.input`
+  background: transparent;
+  width: 100%;
+  height: inherit;
+  border: none;
+  outline: none;
+  text-transform: uppercase;
+  font-size: 1rem;
+  padding: 0;
+`;
+
 const Column = ({ id, title, todos, index, boardId, listHeight }) => {
   const dispatch = useDispatch();
 
+  const [currentTitle, setCurrentTitle] = useState(title);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
   const deleteList = () => dispatch(attemptDeleteList(id));
+  const updateTitle = (e) => setCurrentTitle(e.target.value);
+  const editList = () => setIsEditOpen(true);
+
+  const handleUpdateList = () => {
+    if (currentTitle) {
+      dispatch(attemptUpdateList({ id, title: currentTitle })).then(() =>
+        setIsEditOpen(false),
+      );
+    }
+  };
 
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => (
         <Container ref={provided.innerRef} {...provided.draggableProps}>
-          <ListHeader isDragging={snapshot.isDragging} {...provided.dragHandleProps}>
-            {title}
-            <DeleteButton onClick={deleteList}>
-              <Trash />
-            </DeleteButton>
+          <ListHeader
+            isDragging={snapshot.isDragging}
+            {...provided.dragHandleProps}
+            onDoubleClick={editList}
+            onBlur={handleUpdateList}
+            onKeyDown={(e) => e.keyCode === 13 && handleUpdateList()}
+          >
+            {isEditOpen ? (
+              <EditListInput type="text" value={currentTitle} onChange={updateTitle} />
+            ) : (
+              <>
+                {currentTitle}
+                <DeleteButton onClick={deleteList}>
+                  <Trash />
+                </DeleteButton>
+              </>
+            )}
           </ListHeader>
+
           <List
             listId={id}
             style={{
@@ -77,7 +114,11 @@ const Column = ({ id, title, todos, index, boardId, listHeight }) => {
             listHeight={listHeight}
           />
           <ListFooter>
-            <AddTodo boardId={boardId} listId={id} />
+            <AddTodo
+              boardId={boardId}
+              listId={id}
+              lastCardSortVal={todos.length === 0 ? 0 : todos[todos.length - 1].sort}
+            />
           </ListFooter>
         </Container>
       )}
@@ -101,6 +142,7 @@ Column.propTypes = {
       id: PropTypes.string.isRequired,
       list: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
+      sort: PropTypes.number.isRequired,
     }),
   ),
   index: PropTypes.number.isRequired,

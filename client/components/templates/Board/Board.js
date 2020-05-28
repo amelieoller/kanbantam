@@ -7,14 +7,14 @@ import styled, { withTheme } from 'styled-components';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { attemptGetLists } from '_thunks/lists';
-import { attemptGetTodos } from '_thunks/todos';
-import { attemptUpdateBoard } from '_thunks/boards';
+import { attemptGetTodos, attemptUpdateTodo } from '_thunks/todos';
+import { attemptUpdateList } from '_thunks/lists';
 import Sidebar from '_organisms/Sidebar';
 import Column from '_organisms/Column';
 import reorder, { reorderQuoteMap } from '_utils/dragAndDrop';
 import useResize from '_hooks/useResize';
 import AddList from '_molecules/AddList';
-import { compareSync } from 'bcryptjs';
+import { calculateIndex } from '_utils/sorting';
 
 function Board({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
@@ -26,8 +26,8 @@ function Board({ board, theme: { sizes } }) {
   const { todos } = useSelector(R.pick(['todos']));
   const { user } = useSelector(R.pick(['user']));
 
-  const [columns, setColumns] = useState({});
-  const [orderedLists, setOrderedLists] = useState([]);
+  const [listsWithTodos, setListsWithTodos] = useState({});
+  const [orderedLists, setSortedLists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -36,31 +36,21 @@ function Board({ board, theme: { sizes } }) {
   };
 
   useEffect(() => {
-    // Rehydrate
-    const rehydratedLists = board.orderedLists.map((list) =>
-      lists.find((l) => l.id === list),
-    );
-    const rehydratedTodos = board.orderedLists.reduce(
-      (acc, curr) => ({
+    const sorted = lists.sort((a, b) => a.sort - b.sort);
+
+    const todosByListId = sorted.reduce(
+      (acc, list) => ({
         ...acc,
-        [curr]: board.orderedTodos[curr].map((todo) => todos.find((t) => t.id === todo)),
+        [list.id]: todos
+          .filter((t) => t.list === list.id)
+          .sort((a, b) => a.sort - b.sort),
       }),
       {},
     );
-    setOrderedLists(rehydratedLists);
-    setColumns(rehydratedTodos);
 
-    // const listsWithTodos = lists.reduce(
-    //   (acc, curr) => ({
-    //     ...acc,
-    //     [curr.id]: todos.filter((todo) => todo.list === curr.id),
-    //   }),
-    //   {},
-    // );
-
-    // setColumns(listsWithTodos);
-    // setOrderedLists(lists);
-  }, [lists, todos, board.orderedLists, board.orderedTodos]);
+    setSortedLists(sorted);
+    setListsWithTodos(todosByListId);
+  }, [lists, todos]);
 
   useEffect(() => {
     if (R.isEmpty(user)) {
@@ -79,20 +69,20 @@ function Board({ board, theme: { sizes } }) {
         const shallow = [...orderedLists];
         shallow.splice(result.source.index, 1);
 
-        setOrderedLists(shallow);
+        setSortedLists(shallow);
         return;
       }
 
-      const column = columns[result.source.droppableId];
+      const column = listsWithTodos[result.source.droppableId];
       const withItemRemoved = [...column];
       withItemRemoved.splice(result.source.index, 1);
 
-      const newColumnsWithTodos = {
-        ...columns,
+      const newListsWithTodos = {
+        ...listsWithTodos,
         [result.source.droppableId]: withItemRemoved,
       };
 
-      setColumns(newColumnsWithTodos);
+      setListsWithTodos(newListsWithTodos);
       return;
     }
 
@@ -113,33 +103,27 @@ function Board({ board, theme: { sizes } }) {
     // reordering column
     if (result.type === 'COLUMN') {
       const newOrderedLists = reorder(orderedLists, source.index, destination.index);
-      const newOrderedListArr = newOrderedLists.map((l) => l.id);
 
-      dispatch(
-        attemptUpdateBoard(board.id, board.title, board.orderedTodos, newOrderedListArr),
-      );
+      const prevList = newOrderedLists[destination.index - 1];
+      const nextList = newOrderedLists[destination.index + 1];
+      const currentList = newOrderedLists[destination.index];
+      const newListSort = calculateIndex(prevList, nextList, newOrderedLists.length);
 
-      setOrderedLists(newOrderedLists);
+      dispatch(attemptUpdateList({ ...currentList, sort: newListSort.base }));
+      setSortedLists(newOrderedLists);
 
       return;
     }
 
     const data = reorderQuoteMap({
-      quoteMap: columns,
+      quoteMap: listsWithTodos,
       source,
       destination,
     });
 
-    const dehydratedArr = Object.keys(data.quoteMap).reduce(
-      (acc, listId) => ({ ...acc, [listId]: data.quoteMap[listId].map((t) => t.id) }),
-      {},
-    );
+    dispatch(attemptUpdateTodo(data.updatedTodo));
 
-    dispatch(
-      attemptUpdateBoard(board.id, board.title, dehydratedArr, board.orderedLists),
-    );
-
-    setColumns(data.quoteMap);
+    setListsWithTodos(data.quoteMap);
   };
 
   const calculateListHeight = () => {
@@ -171,7 +155,7 @@ function Board({ board, theme: { sizes } }) {
                       index={index}
                       title={list.title}
                       id={list.id}
-                      todos={columns[list.id]}
+                      todos={listsWithTodos[list.id]}
                       boardId={board.id}
                       listHeight={calculateListHeight()}
                     />
@@ -179,7 +163,14 @@ function Board({ board, theme: { sizes } }) {
                   {provided.placeholder}
 
                   <div>
-                    <AddList boardId={board.id} />
+                    <AddList
+                      boardId={board.id}
+                      lastListSortVal={
+                        orderedLists.length === 0
+                          ? 0
+                          : orderedLists[orderedLists.length - 1].sort
+                      }
+                    />
                   </div>
                 </ListsWrapper>
               )}

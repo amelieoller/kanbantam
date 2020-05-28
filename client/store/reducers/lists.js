@@ -7,17 +7,8 @@ import { LOGOUT_USER } from '_actions/user';
 
 export function list(state = {}, action) {
   switch (action.type) {
-    case ADD_LIST:
-      return update(state, {
-        id: { $set: action.id },
-        title: { $set: action.title },
-        createdAt: { $set: action.createdAt },
-      });
     case UPDATE_LIST:
-      return update(state, {
-        title: { $set: action.title },
-        updatedAt: { $set: action.updatedAt },
-      });
+      return { ...state, ...action.list };
     default:
       return state;
   }
@@ -32,7 +23,6 @@ export default function lists(state = [], action) {
       return update(state, { $set: action.lists });
     case ADD_LIST:
       return [...state, action.list];
-    // return update(state, { $push: [list(undefined, action)] });
     case UPDATE_LIST:
       return update(state, updatedAtIndex);
     case REMOVE_LIST:

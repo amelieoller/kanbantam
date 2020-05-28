@@ -14,11 +14,10 @@ export const addList = (list) => ({
   list,
 });
 
-export const updateList = ({ id, title, updatedAt }) => ({
+export const updateList = (list) => ({
   type: UPDATE_LIST,
-  updatedAt,
-  id,
-  title,
+  id: list.id,
+  list,
 });
 
 export const removeList = (id) => ({

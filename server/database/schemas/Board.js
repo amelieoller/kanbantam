@@ -9,8 +9,6 @@ const boardSchema = new Schema({
   title: { type: String },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
-  orderedTodos: { type: Map },
-  orderedLists: { type: Array },
 });
 
 boardSchema.plugin(immutablePlugin);

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { attemptAddList } from '_thunks/lists';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 
-function AddList({ boardId }) {
+function AddList({ boardId, lastListSortVal }) {
   const formRef = useRef();
 
   const dispatch = useDispatch();
@@ -20,7 +20,8 @@ function AddList({ boardId }) {
     e.preventDefault();
 
     if (title) {
-      dispatch(attemptAddList(title, boardId));
+      dispatch(attemptAddList({ title, board: boardId, sort: lastListSortVal + 1 }));
+
       setTitle('');
     }
   };
@@ -46,6 +47,7 @@ function AddList({ boardId }) {
 
 AddList.propTypes = {
   boardId: PropTypes.string.isRequired,
+  lastListSortVal: PropTypes.number.isRequired,
 };
 
 const NewListForm = styled.form``;

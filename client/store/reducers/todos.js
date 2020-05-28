@@ -7,7 +7,6 @@ import {
   TOGGLE_COMPLETE_TODO,
   UPDATE_TODO,
   REMOVE_TODO,
-  UPDATE_TODO_ID,
 } from '_actions/todos';
 
 import { LOGOUT_USER } from '_actions/user';
@@ -20,23 +19,13 @@ export function todo(
 ) {
   switch (action.type) {
     case ADD_TODO:
-      return update(state, {
-        id: { $set: action.id },
-        text: { $set: action.text },
-        createdAt: { $set: action.createdAt },
-        board: { $set: action.board },
-        list: { $set: action.list },
-      });
+      return action.todo;
     case TOGGLE_COMPLETE_TODO:
       return update(state, {
         completed: { $apply: (x) => !x },
       });
     case UPDATE_TODO:
-      return action.todo;
-    case UPDATE_TODO_ID:
-      return update(state, {
-        id: { $set: action.newId },
-      });
+      return { ...state, ...action.todo };
     default:
       return state;
   }
@@ -57,8 +46,6 @@ export default function todos(state = [], action) {
       return update(state, updatedAtIndex);
     case REMOVE_TODO:
       return update(state, { $splice: [[index, 1]] });
-    case UPDATE_TODO_ID:
-      return update(state, updatedAtIndex);
     case LOGOUT_USER:
       return [];
     default:
