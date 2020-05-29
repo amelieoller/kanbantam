@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as R from 'ramda';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Logout from '_assets/icons/log-out.svg';
 import Logo from '_assets/icons/logo.svg';
+import Settings from '_assets/icons/settings.svg';
 import Trash from '_assets/icons/trash-2.svg';
+import Moon from '_assets/icons/Moon.svg';
+import Sun from '_assets/icons/Sun.svg';
 import { attemptLogout } from '_thunks/auth';
-import { attemptDeleteBoard } from '_thunks/boards';
+import { attemptDeleteBoard, attemptUpdateBoard } from '_thunks/boards';
+import UpdateTextButton from '_molecules/UpdateTextButton';
 
 function Navigation({ pathname }) {
   const dispatch = useDispatch();
+  const [currentBoard, setCurrentBoard] = useState(null);
+  const [currentCategory, setCurrentCategory] = useState(null);
+
+  const { boards } = useSelector(R.pick(['boards']));
+  const { categories } = useSelector(R.pick(['categories']));
+
+  const boardId = pathname.split('/')[2];
+
+  useEffect(() => {
+    if (boards.length !== 0 && boardId) {
+      const board = boards.find((b) => b.id === boardId);
+
+      setCurrentBoard(board);
+    }
+  }, [boardId, boards]);
+
+  useEffect(() => {
+    currentBoard && setCurrentCategory(currentBoard.category);
+  }, [currentBoard]);
 
   const logout = () => {
     dispatch(attemptLogout()).catch(R.identity);
@@ -20,9 +43,12 @@ function Navigation({ pathname }) {
 
   const isHome = pathname === '/';
 
-  const boardId = pathname.split('/')[2];
   const deleteBoard = () => dispatch(attemptDeleteBoard(boardId));
 
+  const handleUpdateBoard = (attribute) => {
+    dispatch(attemptUpdateBoard({ id: boardId, ...attribute }));
+  };
+  console.log(currentBoard && currentBoard);
   return (
     <StyledNavigation role="navigation" isHome={isHome}>
       <Left to="/">
@@ -31,7 +57,42 @@ function Navigation({ pathname }) {
       </Left>
 
       <Right>
-        <Trash onClick={() => boardId && deleteBoard()} />
+        {currentBoard && !isHome && (
+          <>
+            <UpdateTextButton
+              text={currentBoard.title}
+              handleUpdate={(newText) => handleUpdateBoard({ title: newText })}
+            />
+
+            <select
+              value={currentCategory}
+              onChange={(e) => {
+                const newCat = e.target.value;
+
+                if (currentCategory !== newCat) {
+                  setCurrentCategory(newCat);
+                  handleUpdateBoard({ category: newCat });
+                }
+              }}
+            >
+              <option value="">none</option>
+
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.title}
+                </option>
+              ))}
+            </select>
+
+            <Settings />
+            {currentBoard.theme === 'light' ? (
+              <Moon onClick={() => handleUpdateBoard({ theme: 'dark' })} />
+            ) : (
+              <Sun onClick={() => handleUpdateBoard({ theme: 'light' })} />
+            )}
+            <Trash onClick={() => boardId && deleteBoard()} />
+          </>
+        )}
         <Logout onClick={logout} />
       </Right>
     </StyledNavigation>
@@ -75,6 +136,14 @@ const Left = styled(Link)`
 `;
 
 const Right = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+
+  & > *:not(:last-child) {
+    margin-right: 6px;
+  }
+
   svg {
     cursor: pointer;
   }

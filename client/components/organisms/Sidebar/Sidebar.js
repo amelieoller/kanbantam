@@ -1,25 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import ChevronLeft from '_assets/icons/chevrons-left.svg';
 import ChevronRight from '_assets/icons/chevrons-right.svg';
 import Repeat from '_assets/icons/repeat.svg';
 import Clock from '_assets/icons/clock.svg';
 import Calendar from '_assets/icons/calendar.svg';
+import Categories from '_organisms/Categories';
+import { attemptUpdateBoard } from '_thunks/boards';
 
-function Sidebar({ isSidebarOpen, toggleSidebar }) {
+function Sidebar({ isSidebarOpen, boardId }) {
+  const dispatch = useDispatch();
+
+  const handleUpdateBoard = (attribute) => {
+    dispatch(attemptUpdateBoard({ id: boardId, ...attribute }));
+  };
+
+  const handleToggleClick = () => {
+    handleUpdateBoard({ sidebarOpen: !isSidebarOpen });
+  };
+
   return (
     <SidebarWrapper
       isSidebarOpen={isSidebarOpen}
-      onClick={() => !isSidebarOpen && toggleSidebar()}
+      onClick={() => !isSidebarOpen && handleToggleClick()}
     >
-      <CollapseButton onClick={() => isSidebarOpen && toggleSidebar()}>
+      <CollapseButton onClick={() => isSidebarOpen && handleToggleClick()}>
         {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
       </CollapseButton>
       <SidebarContent>
         <Clock />
         <Calendar />
         <Repeat />
+        <Categories boardId={boardId} />
       </SidebarContent>
     </SidebarWrapper>
   );
@@ -76,5 +91,10 @@ const CollapseButton = styled.button`
     height: 13px;
   }
 `;
+
+Sidebar.propTypes = {
+  isSidebarOpen: PropTypes.bool.isRequired,
+  boardId: PropTypes.string.isRequired,
+};
 
 export default Sidebar;

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import * as R from 'ramda';
+import { ThemeProvider } from 'styled-components';
 
+import { light, dark } from '_styles/Theme';
 import { attemptGetBoards } from '_thunks/boards';
 import Board from '_templates/Board';
 
@@ -37,7 +39,12 @@ export default function BoardPage({ location }) {
   }, [location, loading, boards, dispatch]);
 
   return (
-    !loading && !!currentBoard && <Board key={currentBoard.id} board={currentBoard} />
+    !loading &&
+    !!currentBoard && (
+      <ThemeProvider theme={currentBoard.theme === 'light' ? light : dark}>
+        <Board key={currentBoard.id} board={currentBoard} />
+      </ThemeProvider>
+    )
   );
 }
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
+import * as R from 'ramda';
 
 import { attemptUpdateTodo, attemptDeleteTodo } from '_thunks/todos';
 
@@ -22,13 +23,15 @@ Modal.setAppElement('#app');
 function TodoModal({ todo }) {
   const dispatch = useDispatch();
 
+  const { categories } = useSelector(R.pick(['categories']));
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [updatedTodo, setUpdatedTodo] = React.useState({
     text: '',
     minutes: 0,
     category: '',
     dueDate: '',
-    difficulty: 0,
+    priority: 0,
     completed: false,
     ...todo,
   });
@@ -81,13 +84,24 @@ function TodoModal({ todo }) {
           placeholder="Minutes"
         />
         <br />
-        <input
+
+        <select value={updatedTodo.category} onChange={updateTodo} name="category">
+          <option value="">none</option>
+
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.title}
+            </option>
+          ))}
+        </select>
+
+        {/* <input
           type="text"
           name="category"
           value={updatedTodo.category}
           onChange={updateTodo}
           placeholder="Category"
-        />
+        /> */}
         <br />
         <input
           type="date"
@@ -101,10 +115,10 @@ function TodoModal({ todo }) {
         <br />
         <input
           type="number"
-          name="difficulty"
-          value={updatedTodo.difficulty}
+          name="priority"
+          value={updatedTodo.priority}
           onChange={updateTodo}
-          placeholder="Difficulty"
+          placeholder="priority"
           max="3"
         />
         <br />

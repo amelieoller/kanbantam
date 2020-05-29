@@ -29,19 +29,16 @@ function Board({ board, theme: { sizes } }) {
   const [listsWithTodos, setListsWithTodos] = useState({});
   const [orderedLists, setSortedLists] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prevOpen) => !prevOpen);
-  };
 
   useEffect(() => {
     const sorted = lists.sort((a, b) => a.sort - b.sort);
+    const filteredTodos =
+      board.category === '' ? todos : todos.filter((t) => t.category === board.category);
 
     const todosByListId = sorted.reduce(
       (acc, list) => ({
         ...acc,
-        [list.id]: todos
+        [list.id]: filteredTodos
           .filter((t) => t.list === list.id)
           .sort((a, b) => a.sort - b.sort),
       }),
@@ -50,7 +47,7 @@ function Board({ board, theme: { sizes } }) {
 
     setSortedLists(sorted);
     setListsWithTodos(todosByListId);
-  }, [lists, todos]);
+  }, [lists, todos, board.category]);
 
   useEffect(() => {
     if (R.isEmpty(user)) {
@@ -141,8 +138,8 @@ function Board({ board, theme: { sizes } }) {
 
   return (
     !loading && (
-      <StyledBoard isSidebarOpen={isSidebarOpen}>
-        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <StyledBoard isSidebarOpen={board.sidebarOpen}>
+        <Sidebar isSidebarOpen={board.sidebarOpen} boardId={board.id} />
 
         <div ref={boardRef}>
           <DragDropContext onDragEnd={onDragEnd}>
@@ -211,6 +208,8 @@ const ListsWrapper = styled.div`
 Board.propTypes = {
   board: PropTypes.shape({
     id: PropTypes.string.isRequired,
+    sidebarOpen: PropTypes.bool.isRequired,
+    category: PropTypes.string,
   }),
   theme: PropTypes.shape({
     sizes: PropTypes.object,

@@ -9,13 +9,14 @@ const todoSchema = new Schema({
   board: { type: Schema.ObjectId, ref: 'Board', required: true },
   list: { type: Schema.ObjectId, ref: 'List', required: true },
   text: { type: String },
-  difficulty: { type: Number },
+  priority: { type: Number },
   minutes: { type: Number },
   dueDate: { type: Date },
   completed: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
   sort: { type: Number, decimal: true, defaultValue: '' },
+  category: { type: Schema.ObjectId, ref: 'Category' },
 });
 
 todoSchema.plugin(immutablePlugin);

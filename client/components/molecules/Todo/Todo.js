@@ -4,11 +4,7 @@ import { useDispatch } from 'react-redux';
 import { parseISO, formatDistanceToNow } from 'date-fns';
 import styled from 'styled-components';
 
-import {
-  attemptToggleCompleteTodo,
-  attemptUpdateTodo,
-  attemptDeleteTodo,
-} from '_thunks/todos';
+import { attemptDeleteTodo } from '_thunks/todos';
 import Trash from '_assets/icons/trash-2.svg';
 import Calendar from '_assets/icons/calendar.svg';
 import TodoModal from '_organisms/TodoModal';
@@ -41,24 +37,6 @@ const Todo = ({
     return () => clearInterval(interval);
   }, [updatedAt]);
 
-  const openModal = () => setConfirm(true);
-  const closeModal = () => setConfirm(false);
-  const updateText = (e) => setCurrentText(e.target.value);
-  const editTodo = () => setEdit(true);
-
-  const cancelEdit = () => {
-    setEdit(false);
-    setCurrentText(text);
-  };
-
-  const handleUpdateTodo = () => {
-    if (currentText) {
-      dispatch(attemptUpdateTodo(id, currentText)).then(() => setEdit(false));
-    }
-  };
-
-  const toggleCompleteTodo = () => dispatch(attemptToggleCompleteTodo(id));
-
   const deleteTodo = () => dispatch(attemptDeleteTodo(id));
 
   return (
@@ -70,12 +48,12 @@ const Todo = ({
       onClick={() => 'open the modal...'}
     >
       <Header>
-        {!!todo.difficulty && (
+        {!!todo.priority && (
           <Badge
             color={
-              todo.difficulty === 1
+              todo.priority === 1
                 ? 'mediumturquoise'
-                : todo.difficulty === 2
+                : todo.priority === 2
                 ? 'orange'
                 : 'coral'
             }

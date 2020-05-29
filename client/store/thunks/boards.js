@@ -45,16 +45,15 @@ export const attemptAddBoard = (newBoard) => (dispatch) => {
     });
 };
 
-export const attemptUpdateBoard = (id, title) => (dispatch) =>
-  putBoard({ id, title })
-    .then(({ data, data: { _id, title, updated_at } }) => {
-      dispatch(
-        updateBoard({
-          id: _id,
-          title,
-          updatedAt: updated_at,
-        }),
+export const attemptUpdateBoard = (board) => (dispatch) =>
+  putBoard(board)
+    .then(({ data }) => {
+      const newBoard = R.omit(
+        ['Id', '_v'],
+        R.assoc('id', data._id, snakeToCamelCase(data)),
       );
+
+      dispatch(updateBoard(newBoard));
       return data;
     })
     .catch(dispatchError(dispatch));

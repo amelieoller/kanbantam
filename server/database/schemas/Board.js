@@ -6,9 +6,12 @@ const { Schema } = mongoose;
 
 const boardSchema = new Schema({
   user: { type: Schema.ObjectId, ref: 'User', required: true },
+  category: { type: String, default: '' },
   title: { type: String },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
+  theme: { type: String },
+  sidebarOpen: { type: Boolean },
 });
 
 boardSchema.plugin(immutablePlugin);
