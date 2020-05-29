@@ -6,6 +6,7 @@ import user from './user';
 import todos from './todos';
 import boards from './boards';
 import lists from './lists';
+import categories from './categories';
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -15,6 +16,7 @@ const createRootReducer = (history) =>
     todos,
     boards,
     lists,
+    categories,
   });
 
 export default createRootReducer;

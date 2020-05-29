@@ -3,6 +3,7 @@ const User = require('./User');
 const Todo = require('./Todo');
 const Board = require('./Board');
 const List = require('./List');
+const Category = require('./Category');
 
 module.exports = {
   Session,
@@ -10,4 +11,5 @@ module.exports = {
   Todo,
   Board,
   List,
+  Category,
 };
