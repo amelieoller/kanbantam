@@ -218,7 +218,6 @@ const Settings = ({ board }) => {
               setFocusMode(!focusMode);
             }}
             checked={focusMode}
-            name="focusMode"
           />
 
           {/* Delete Board */}
@@ -227,11 +226,7 @@ const Settings = ({ board }) => {
             Danger Zone
           </h2>
           <DeleteSection>
-            Delete this board:
             <Trash
-              role="button"
-              tabIndex={0}
-              className="delete-button"
               onClick={() => {
                 if (
                   window.confirm(
@@ -241,27 +236,35 @@ const Settings = ({ board }) => {
                   deleteBoard();
               }}
             />
+            Delete this board
           </DeleteSection>
         </StyledSettings>
       </SlideOutMenu>
 
-      <Tooltip tooltipText="Settings">
-        <IconButton
-          onClick={() => toggleSettingsMenu(true)}
-          color="background"
-          className="no-focus-mode"
-        >
-          <SettingsIcon />
-        </IconButton>
-      </Tooltip>
+      <IconButton
+        onClick={() => toggleSettingsMenu(true)}
+        color="background"
+        className="no-focus-mode"
+      >
+        <SettingsIcon />
+      </IconButton>
     </>
   );
 };
 
 const DeleteSection = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.medium('onSurface')};
+
+  svg {
+    margin-right: 6px;
+  }
+
+  &:hover svg {
+    color: ${(props) => props.theme.colors.error};
+  }
 `;
 
 const InputWrapper = styled.div`

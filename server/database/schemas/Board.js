@@ -12,6 +12,10 @@ const boardSchema = new Schema({
   updated_at: { type: Date },
   theme: { type: String },
   sidebarOpen: { type: Boolean },
+  defaultTime: { type: Number },
+  defaultCategory: { type: String },
+  focusMode: { type: Boolean },
+  defaultFocusList: { type: String },
 });
 
 boardSchema.plugin(immutablePlugin);
