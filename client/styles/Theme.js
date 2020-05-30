@@ -129,7 +129,7 @@ const lightColors = {
   onPrimary: `rgba(${baseRgbLight.white}, ${emphasisOpacity.high})`,
 
   // On Secondary
-  onSecondary: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
+  onSecondary: `rgba(${baseRgbLight.white}, ${emphasisOpacity.high})`,
 
   // On Notification Colors
   onError: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
@@ -179,7 +179,7 @@ const sizes = {
   spacing: '10px',
   spacingSmall: '5px',
   spacingLarge: '15px',
-  spacingInput: '8px 12px',
+  spacingInput: '6px 11px',
   listWidth: '285px',
   navbarHeight: '40px',
   sidebarWidthLarge: '250px',

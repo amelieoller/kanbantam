@@ -7,18 +7,17 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Logout from '_assets/icons/log-out.svg';
 import Logo from '_assets/icons/logo.svg';
-import Settings from '_assets/icons/settings.svg';
-import Trash from '_assets/icons/trash-2.svg';
 import Moon from '_assets/icons/Moon.svg';
 import Sun from '_assets/icons/Sun.svg';
 import { attemptLogout } from '_thunks/auth';
-import { attemptDeleteBoard, attemptUpdateBoard } from '_thunks/boards';
+import { attemptUpdateBoard } from '_thunks/boards';
 import UpdateTextButton from '_molecules/UpdateTextButton';
+import Settings from '_organisms/Settings';
 
 function Navigation({ pathname }) {
   const dispatch = useDispatch();
   const [currentBoard, setCurrentBoard] = useState(null);
-  const [currentCategory, setCurrentCategory] = useState(null);
+  const [currentCategory, setCurrentCategory] = useState('');
 
   const { boards } = useSelector(R.pick(['boards']));
   const { categories } = useSelector(R.pick(['categories']));
@@ -43,12 +42,10 @@ function Navigation({ pathname }) {
 
   const isHome = pathname === '/';
 
-  const deleteBoard = () => dispatch(attemptDeleteBoard(boardId));
-
   const handleUpdateBoard = (attribute) => {
     dispatch(attemptUpdateBoard({ id: boardId, ...attribute }));
   };
-  console.log(currentBoard && currentBoard);
+
   return (
     <StyledNavigation role="navigation" isHome={isHome}>
       <Left to="/">
@@ -78,19 +75,19 @@ function Navigation({ pathname }) {
               <option value="">none</option>
 
               {categories.map((c) => (
-                <option key={c.id} value={c.id}>
+                <CategoryOption key={c.id} value={c.id}>
                   {c.title}
-                </option>
+                </CategoryOption>
               ))}
             </select>
 
-            <Settings />
+            <Settings board={currentBoard} />
+
             {currentBoard.theme === 'light' ? (
               <Moon onClick={() => handleUpdateBoard({ theme: 'dark' })} />
             ) : (
               <Sun onClick={() => handleUpdateBoard({ theme: 'light' })} />
             )}
-            <Trash onClick={() => boardId && deleteBoard()} />
           </>
         )}
         <Logout onClick={logout} />
@@ -98,6 +95,10 @@ function Navigation({ pathname }) {
     </StyledNavigation>
   );
 }
+
+const CategoryOption = styled.option`
+  background: blue;
+`;
 
 const StyledNavigation = styled.nav`
   height: ${({ theme }) => theme.sizes.navbarHeight};

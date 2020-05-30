@@ -8,7 +8,6 @@ import ChevronRight from '_assets/icons/chevrons-right.svg';
 import Repeat from '_assets/icons/repeat.svg';
 import Clock from '_assets/icons/clock.svg';
 import Calendar from '_assets/icons/calendar.svg';
-import Categories from '_organisms/Categories';
 import { attemptUpdateBoard } from '_thunks/boards';
 
 function Sidebar({ isSidebarOpen, boardId }) {
@@ -34,7 +33,6 @@ function Sidebar({ isSidebarOpen, boardId }) {
         <Clock />
         <Calendar />
         <Repeat />
-        <Categories boardId={boardId} />
       </SidebarContent>
     </SidebarWrapper>
   );
