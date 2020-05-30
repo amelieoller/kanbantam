@@ -85,7 +85,7 @@ Dropdown.propTypes = {
   children: PropTypes.node,
   handleOnBlur: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
-  required: PropTypes.boolean,
+  required: PropTypes.bool,
   defaultValue: PropTypes.string,
   helpText: PropTypes.string,
 };

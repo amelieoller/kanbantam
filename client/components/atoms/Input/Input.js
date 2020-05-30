@@ -84,9 +84,9 @@ Input.propTypes = {
   handleOnBlur: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  required: PropTypes.boolean,
+  required: PropTypes.bool,
   type: PropTypes.oneOf(['email', 'money', 'number', 'password', 'phone', 'text', 'zip']),
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   helpText: PropTypes.string,
 };
 

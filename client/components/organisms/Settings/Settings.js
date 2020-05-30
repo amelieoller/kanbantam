@@ -16,9 +16,7 @@ import Categories from '_organisms/Categories';
 import Dropdown from '_atoms/Dropdown';
 import Checkbox from '_atoms/Checkbox';
 import SlideOutMenu from '_organisms/SlideOutMenu';
-import IconButton from '_atoms/IconButton';
 import Input from '_atoms/Input';
-import Tooltip from '_atoms/Tooltip';
 import { attemptDeleteBoard, attemptUpdateBoard } from '_thunks/boards';
 
 const StyledSettings = styled.div`
@@ -241,13 +239,7 @@ const Settings = ({ board }) => {
         </StyledSettings>
       </SlideOutMenu>
 
-      <IconButton
-        onClick={() => toggleSettingsMenu(true)}
-        color="background"
-        className="no-focus-mode"
-      >
-        <SettingsIcon />
-      </IconButton>
+      <SettingsIcon onClick={() => toggleSettingsMenu(true)} />
     </>
   );
 };
