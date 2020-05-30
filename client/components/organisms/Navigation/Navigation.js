@@ -13,14 +13,13 @@ import { attemptLogout } from '_thunks/auth';
 import { attemptUpdateBoard } from '_thunks/boards';
 import UpdateTextButton from '_molecules/UpdateTextButton';
 import Settings from '_organisms/Settings';
+import CategorySelect from '_molecules/CategorySelect';
 
 function Navigation({ pathname }) {
   const dispatch = useDispatch();
   const [currentBoard, setCurrentBoard] = useState(null);
-  const [currentCategory, setCurrentCategory] = useState('');
 
   const { boards } = useSelector(R.pick(['boards']));
-  const { categories } = useSelector(R.pick(['categories']));
 
   const boardId = pathname.split('/')[2];
 
@@ -31,10 +30,6 @@ function Navigation({ pathname }) {
       setCurrentBoard(board);
     }
   }, [boardId, boards]);
-
-  useEffect(() => {
-    currentBoard && setCurrentCategory(currentBoard.category);
-  }, [currentBoard]);
 
   const logout = () => {
     dispatch(attemptLogout()).catch(R.identity);
@@ -61,25 +56,10 @@ function Navigation({ pathname }) {
               handleUpdate={(newText) => handleUpdateBoard({ title: newText })}
             />
 
-            <select
-              value={currentCategory}
-              onChange={(e) => {
-                const newCat = e.target.value;
-
-                if (currentCategory !== newCat) {
-                  setCurrentCategory(newCat);
-                  handleUpdateBoard({ category: newCat });
-                }
-              }}
-            >
-              <option value="">none</option>
-
-              {categories.map((c) => (
-                <CategoryOption key={c.id} value={c.id}>
-                  {c.title}
-                </CategoryOption>
-              ))}
-            </select>
+            <CategorySelect
+              currentCategoryId={currentBoard.category}
+              onChange={(newCategoryId) => handleUpdateBoard({ category: newCategoryId })}
+            />
 
             <Settings board={currentBoard} />
 
@@ -95,10 +75,6 @@ function Navigation({ pathname }) {
     </StyledNavigation>
   );
 }
-
-const CategoryOption = styled.option`
-  background: blue;
-`;
 
 const StyledNavigation = styled.nav`
   height: ${({ theme }) => theme.sizes.navbarHeight};
@@ -141,8 +117,8 @@ const Right = styled.div`
   align-items: center;
   font-size: 1.4rem;
 
-  & > *:not(:last-child) {
-    margin-right: 6px;
+  & > *:not(:last-child):not(.cheeseburger-menu) {
+    margin-right: 10px;
   }
 
   svg {

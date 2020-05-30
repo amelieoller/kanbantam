@@ -65,11 +65,6 @@ const NewCategoryWrapper = styled.div`
   display: flex;
   position: relative;
   margin-bottom: ${({ theme }) => theme.sizes.spacing};
-
-  .twitter-picker {
-    position: absolute !important;
-    top: 45px;
-  }
 `;
 
 AddCategory.propTypes = {
