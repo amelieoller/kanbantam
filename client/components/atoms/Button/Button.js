@@ -1,103 +1,108 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import styled, { css } from 'styled-components';
 
-export default function Button(props) {
-  const {
-    className,
-    onClick,
-    label,
-    style,
-    type,
-    size,
-    outlined,
-    inverted,
-    rounded,
-    hovered,
-    focused,
-    active,
-    loading,
-    disabled,
-  } = props;
+const withOnText = (string) => `on${string.charAt(0).toUpperCase() + string.slice(1)}`;
 
-  const typeMap = {
-    info: 'is-info',
-    primary: 'is-primary',
-    success: 'is-success',
-    warning: 'is-warning',
-    danger: 'is-danger',
-  };
+const propsCSS = {
+  outline: css`
+    background-color: transparent;
+    color: ${({ theme }) => theme.colors.onSurface};
+    border: 2px solid
+      ${({ theme, buttonType }) =>
+        buttonType ? theme.colors[buttonType] : theme.colors.secondary};
 
-  const sizeMap = {
-    small: 'is-small',
-    normal: '',
-    medium: 'is-medium',
-    large: 'is-large',
-  };
+    &:hover {
+      background-color: ${({ theme, buttonType }) =>
+        buttonType ? theme.colors[buttonType] : theme.colors.secondary};
+      color: ${({ theme, buttonType }) =>
+        buttonType ? theme.colors[withOnText(buttonType)] : theme.colors.onSecondary};
+    }
+  `,
 
-  const isType = typeMap[type] || 'is-info';
-  const isSize = sizeMap[size] || '';
+  small: css`
+    font-size: 1.1rem;
+    padding: 4px 9px;
 
-  const buttonClasses = classNames({
-    [className]: !!className,
-    button: true,
-    [isType]: true,
-    [isSize]: true,
-    'is-outlined': outlined,
-    'is-inverted': inverted,
-    'is-rounded': rounded,
-    'is-hovered': hovered,
-    'is-focused': focused,
-    'is-active': active,
-    'is-loading': loading,
-    'is-static': props.static,
-  });
+    svg {
+      height: 15px;
+    }
+  `,
 
-  return (
-    <button
-      style={style}
-      type="button"
-      className={buttonClasses}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {label}
-    </button>
-  );
-}
+  large: css`
+    font-size: 1.5rem;
+    padding: 8px 13px;
+
+    svg {
+      height: 20px;
+    }
+  `,
+
+  buttonType: css`
+    background: ${({ theme, buttonType }) => theme.colors[buttonType]};
+    color: ${({ theme, buttonType }) => theme.colors[withOnText(buttonType)]};
+
+    &:hover {
+      background: ${({ theme, buttonType }) => theme.colors.darker(1, buttonType)};
+    }
+  `,
+};
+
+const StyledButton = styled.button`
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
+  padding: ${({ theme }) => theme.sizes.spacingInput};
+  background: ${({ theme }) => theme.colors.secondary};
+  border: none;
+  color: ${({ theme }) => theme.colors.onSecondary};
+  cursor: pointer;
+  font-size: 1.3rem;
+  border: 2px solid
+    ${({ theme, buttonType }) =>
+      buttonType ? theme.colors[buttonType] : theme.colors.secondary};
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.darker(1, 'secondary')};
+    border: 2px solid
+      ${({ theme, buttonType }) =>
+        buttonType
+          ? theme.colors.darker(1, buttonType)
+          : theme.colors.darker(1, 'secondary')};
+  }
+
+  svg {
+    height: 17px;
+  }
+
+  & > *:not(:last-child) {
+    margin-right: 6px;
+  }
+
+  ${(props) => props.buttonType && propsCSS.buttonType};
+  ${(props) => props.size === 'small' && propsCSS.small};
+  ${(props) => props.size === 'large' && propsCSS.large};
+  ${(props) => props.outline && propsCSS.outline};
+`;
+
+const Button = ({ children, ...buttonProps }) => (
+  <StyledButton type="button" {...buttonProps}>
+    {children}
+  </StyledButton>
+);
 
 Button.propTypes = {
-  className: PropTypes.string,
-  style: PropTypes.object,
-  onClick: PropTypes.func,
-  label: PropTypes.string,
-  type: PropTypes.string,
-  size: PropTypes.string,
-  outlined: PropTypes.bool,
-  inverted: PropTypes.bool,
-  rounded: PropTypes.bool,
-  hovered: PropTypes.bool,
-  focused: PropTypes.bool,
-  active: PropTypes.bool,
-  loading: PropTypes.bool,
-  static: PropTypes.bool,
-  disabled: PropTypes.bool,
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func.isRequired,
+  buttonType: PropTypes.oneOf(['error', 'success', 'warning', 'info']),
+  size: PropTypes.oneOf(['small', 'normal', 'large']),
+  outline: PropTypes.bool,
 };
 
 Button.defaultProps = {
-  className: '',
-  style: {},
-  label: '',
   type: 'info',
   size: 'normal',
-  onClick: () => {},
-  outlined: false,
-  inverted: false,
-  rounded: false,
-  hovered: false,
-  focused: false,
-  active: false,
-  loading: false,
-  static: false,
-  disabled: false,
+  outline: false,
 };
+
+export default Button;
