@@ -12,6 +12,7 @@ const getMany = (model) => async (req, res) => {
 
     res.status(200).send({ message: 'Docs retrieved successfully', data: docs });
   } catch (e) {
+    console.log('ERROR', e);
     res.status(400).send({ message: 'Retrieving of docs failed', e });
   }
 };
@@ -24,6 +25,7 @@ const createOne = (model) => async (req, res) => {
 
     res.status(201).send({ message: 'Doc created successfully', data: doc });
   } catch (e) {
+    console.log('ERROR', e);
     res.status(400).send({ message: 'Creation of doc failed', e });
   }
 };
@@ -48,6 +50,7 @@ const updateOne = (model) => async (req, res) => {
 
     res.status(200).send({ message: 'Doc updated successfully', data: updatedDoc });
   } catch (e) {
+    console.log('ERROR', e);
     res.status(400).send({ message: 'Update of doc failed' });
   }
 };
@@ -65,6 +68,7 @@ const removeOne = (model) => async (req, res) => {
 
     return res.status(200).send({ message: 'Doc removed successfully', data: removed });
   } catch (e) {
+    console.log('ERROR', e);
     res.status(400).send({ message: 'Removing of doc failed', e });
   }
 };
