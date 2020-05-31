@@ -16,7 +16,7 @@ const todoSchema = new Schema({
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
   sort: { type: Number, decimal: true, defaultValue: '' },
-  category: { type: Schema.ObjectId, ref: 'Category' },
+  category: { type: String },
 });
 
 todoSchema.plugin(immutablePlugin);
