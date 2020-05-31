@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
 import useOnClickOutside from '_hooks/useOnClickOutside';
+import List from '_assets/icons/list.svg';
 
 const CategorySelect = ({ onChange, currentCategoryId }) => {
   const colorRef = useRef();
@@ -37,9 +38,10 @@ const CategorySelect = ({ onChange, currentCategoryId }) => {
       <CategoryOption
         color={currentCategory && currentCategory.color}
         onClick={() => setIsCategoryPickerOpen((prevState) => !prevState)}
+        isEmpty={!currentCategory}
         isInPicker={false}
       >
-        {currentCategory && currentCategory.title[0]}
+        {currentCategory ? currentCategory.title[0] : <List />}
       </CategoryOption>
 
       {isCategoryPickerOpen && (
@@ -48,9 +50,11 @@ const CategorySelect = ({ onChange, currentCategoryId }) => {
             <CategoryOption
               value=""
               onClick={() => handleChangeComplete('')}
-              isEmpty
+              isEmpty={true}
               isInPicker
-            ></CategoryOption>
+            >
+              <List />
+            </CategoryOption>
 
             {categories.map((c) => (
               <CategoryOption
@@ -58,6 +62,7 @@ const CategorySelect = ({ onChange, currentCategoryId }) => {
                 key={c.id}
                 value={c.id}
                 onClick={() => handleChangeComplete(c.id)}
+                isEmpty={false}
                 isInPicker
               >
                 {c.title[0]}
@@ -85,6 +90,7 @@ const CategoryOptions = styled.div`
   border-radius: 4px;
   display: flex;
   right: 0;
+  z-index: 1;
 
   & > * {
     margin: 0px 6px 6px 0px;
@@ -96,7 +102,6 @@ const CategoryOption = styled.div`
   background: ${({ color }) => (color ? color : 'white')};
   height: ${({ isInPicker }) => (isInPicker ? '30px' : '28px')};
   width: ${({ isInPicker }) => (isInPicker ? '30px' : '28px')};
-  cursor: pointer;
   position: relative;
   outline: none;
   float: left;
@@ -105,7 +110,8 @@ const CategoryOption = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  border: ${({ isEmpty }) => isEmpty && '#6100ee 2px solid'};
+  border: 2px solid ${({ isEmpty, color }) => (isEmpty ? 'black' : color)};
+  color: ${({ isEmpty }) => isEmpty && 'black'};
 `;
 
 CategorySelect.propTypes = {

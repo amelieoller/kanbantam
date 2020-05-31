@@ -61,6 +61,7 @@ const StyledButton = styled.button`
       buttonType ? theme.colors[buttonType] : theme.colors.secondary};
   display: flex;
   align-items: center;
+  display: inline-block;
 
   &:hover {
     background: ${({ theme }) => theme.colors.darker(1, 'secondary')};

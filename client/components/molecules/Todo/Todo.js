@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { parseISO, formatDistanceToNow } from 'date-fns';
@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import { attemptDeleteTodo } from '_thunks/todos';
 import Trash from '_assets/icons/trash-2.svg';
 import Calendar from '_assets/icons/calendar.svg';
+import Flag from '_assets/icons/flag.svg';
 import TodoModal from '_organisms/TodoModal';
 
 const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
@@ -20,7 +21,11 @@ const Todo = ({
 }) => {
   const dispatch = useDispatch();
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const deleteTodo = () => dispatch(attemptDeleteTodo(id));
+
+  const openModal = () => setIsOpen(true);
 
   return (
     <Container
@@ -28,7 +33,7 @@ const Todo = ({
       ref={innerRef}
       {...draggableProps}
       {...dragHandleProps}
-      onClick={() => 'open the modal...'}
+      onClick={openModal}
     >
       <Header>
         {!!todo.priority && (
@@ -41,7 +46,7 @@ const Todo = ({
                 : 'coral'
             }
           >
-            Important
+            <Flag />
           </Badge>
         )}
         {todo.dueDate && (
@@ -57,7 +62,7 @@ const Todo = ({
 
       <Footer>
         <FooterLeft>
-          <TodoModal todo={todo} />
+          <TodoModal todo={todo} isOpen={isOpen} setIsOpen={setIsOpen} />
         </FooterLeft>
         <FooterRight>
           <Trash onClick={deleteTodo} />
@@ -103,12 +108,17 @@ const Header = styled.div`
 `;
 
 const Badge = styled.span`
-  background: lightcoral;
-  background: ${({ color }) => color};
   color: white;
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
   padding: 2px 4px;
   font-size: 0.85rem;
+
+  svg {
+    height: 14px;
+    width: 14px;
+    color: ${({ color }) => color};
+    fill: ${({ color }) => color};
+  }
 `;
 
 const DueDate = styled.span`

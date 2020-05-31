@@ -85,7 +85,16 @@ Input.propTypes = {
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
-  type: PropTypes.oneOf(['email', 'money', 'number', 'password', 'phone', 'text', 'zip']),
+  type: PropTypes.oneOf([
+    'email',
+    'money',
+    'number',
+    'password',
+    'phone',
+    'text',
+    'zip',
+    'date',
+  ]),
   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   helpText: PropTypes.string,
 };

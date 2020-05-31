@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
-import * as R from 'ramda';
 
 import { attemptUpdateTodo, attemptDeleteTodo } from '_thunks/todos';
+import CategorySelect from '_molecules/CategorySelect';
+import Input from '_atoms/Input';
+import Button from '_atoms/Button';
 
 const customStyles = {
   content: {
@@ -21,13 +24,10 @@ const customStyles = {
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#app');
 
-function TodoModal({ todo }) {
+function TodoModal({ todo, isOpen, setIsOpen }) {
   const dispatch = useDispatch();
 
-  const { categories } = useSelector(R.pick(['categories']));
-
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [updatedTodo, setUpdatedTodo] = React.useState({
+  const [updatedTodo, setUpdatedTodo] = useState({
     text: '',
     minutes: 0,
     category: '',
@@ -37,21 +37,13 @@ function TodoModal({ todo }) {
     ...todo,
   });
 
-  const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  const updateTodo = (e) => {
-    const { name, value } = e.target;
-
+  const updateTodo = (name, value) => {
     setUpdatedTodo((prevTodo) => ({ ...prevTodo, [name]: value }));
   };
 
-  const setDate = (e) => {
-    const { value } = e.target;
-    let newValue = new Date(value.replace(/-/g, '/').replace(/T.+/, ''));
-
-    setUpdatedTodo((prevTodo) => ({ ...prevTodo, dueDate: newValue }));
-  };
+  const formatDate = (value) => new Date(value.replace(/-/g, '/').replace(/T.+/, ''));
 
   const toggleCompleted = () => {
     setUpdatedTodo((prevTodo) => ({ ...prevTodo, completed: !prevTodo.completed }));
@@ -66,76 +58,85 @@ function TodoModal({ todo }) {
   const deleteTodo = () => dispatch(attemptDeleteTodo(todo.id));
 
   return (
-    <div>
-      <button onClick={openModal}>Edit</button>
+    <ModalWrapper>
       <Modal isOpen={isOpen} onRequestClose={handleUpdateTodo} style={customStyles}>
-        <input
-          type="text"
-          name="text"
-          value={updatedTodo.text}
-          onChange={updateTodo}
-          placeholder="Edit Todo"
+        <InputWrapper>
+          <Input
+            label="Text"
+            handleOnBlur={(value) => updateTodo('text', value)}
+            defaultValue={updatedTodo.text}
+          />
+        </InputWrapper>
+
+        <InputWrapper>
+          <Input
+            label="Minutes"
+            handleOnBlur={(value) => updateTodo('minutes', value)}
+            defaultValue={updatedTodo.minutes}
+            type="number"
+          />
+        </InputWrapper>
+
+        <CategorySelect
+          onChange={(newCategoryId) => updateTodo('category', newCategoryId)}
+          currentCategoryId={updatedTodo.category}
         />
         <br />
-        <input
-          type="number"
-          name="minutes"
-          value={updatedTodo.minutes}
-          onChange={updateTodo}
-          placeholder="Minutes"
-        />
         <br />
 
-        <select value={updatedTodo.category} onChange={updateTodo} name="category">
-          <option value="">none</option>
+        <InputWrapper>
+          <Input
+            label="Due Date"
+            handleOnBlur={(value) => updateTodo('dueDate', formatDate(value))}
+            defaultValue={
+              updatedTodo.dueDate
+                ? format(new Date(updatedTodo.dueDate), 'yyyy-MM-dd')
+                : ''
+            }
+            type="date"
+          />
+        </InputWrapper>
 
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.title}
-            </option>
-          ))}
-        </select>
+        <InputWrapper>
+          <Input
+            label="Priority"
+            handleOnBlur={(value) => updateTodo('priority', value)}
+            defaultValue={updatedTodo.priority}
+            type="number"
+          />
+        </InputWrapper>
 
-        <br />
-        <input
-          type="date"
-          name="dueDate"
-          value={
-            updatedTodo.dueDate ? format(new Date(updatedTodo.dueDate), 'yyyy-MM-dd') : ''
-          }
-          onChange={setDate}
-          placeholder="Due Date"
-        />
-        <br />
-        <input
-          type="number"
-          name="priority"
-          value={updatedTodo.priority}
-          onChange={updateTodo}
-          placeholder="priority"
-          max="3"
-        />
-        <br />
         {updatedTodo.completed ? (
-          <button name="completed" onClick={toggleCompleted}>
-            Undo Done
-          </button>
+          <Button onClick={toggleCompleted}>Undo Done</Button>
         ) : (
-          <button name="completed" onClick={toggleCompleted}>
-            Done
-          </button>
+          <Button onClick={toggleCompleted}>Done</Button>
         )}
-        <button onClick={deleteTodo}>Delete</button>
-        <button onClick={handleUpdateTodo}>Save</button>
+        <Button onClick={deleteTodo} buttonType="error">
+          Delete
+        </Button>
+
+        <Button onClick={handleUpdateTodo} buttonType="success">
+          Save
+        </Button>
       </Modal>
-    </div>
+    </ModalWrapper>
   );
 }
+
+const InputWrapper = styled.div`
+  margin: 15px 0;
+`;
+
+const ModalWrapper = styled.div`
+  color: blue;
+`;
 
 TodoModal.propTypes = {
   todo: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }),
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 export default TodoModal;
