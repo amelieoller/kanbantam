@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
@@ -67,7 +68,7 @@ function TodoModal({ todo }) {
   return (
     <div>
       <button onClick={openModal}>Edit</button>
-      <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
+      <Modal isOpen={isOpen} onRequestClose={handleUpdateTodo} style={customStyles}>
         <input
           type="text"
           name="text"
@@ -95,19 +96,12 @@ function TodoModal({ todo }) {
           ))}
         </select>
 
-        {/* <input
-          type="text"
-          name="category"
-          value={updatedTodo.category}
-          onChange={updateTodo}
-          placeholder="Category"
-        /> */}
         <br />
         <input
           type="date"
           name="dueDate"
           value={
-            updatedTodo.dueDate && format(new Date(updatedTodo.dueDate), 'yyyy-MM-dd')
+            updatedTodo.dueDate ? format(new Date(updatedTodo.dueDate), 'yyyy-MM-dd') : ''
           }
           onChange={setDate}
           placeholder="Due Date"
@@ -137,5 +131,11 @@ function TodoModal({ todo }) {
     </div>
   );
 }
+
+TodoModal.propTypes = {
+  todo: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }),
+};
 
 export default TodoModal;

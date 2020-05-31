@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { parseISO, formatDistanceToNow } from 'date-fns';
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
 
 import { attemptDeleteTodo } from '_thunks/todos';
 import Trash from '_assets/icons/trash-2.svg';
@@ -13,29 +14,11 @@ const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true 
 
 const Todo = ({
   todo,
-  todo: { id, text, completed, createdAt, updatedAt },
+  todo: { id, text },
   isDragging,
   provided: { innerRef, draggableProps, dragHandleProps },
 }) => {
   const dispatch = useDispatch();
-
-  const [currentText, setCurrentText] = useState(text);
-  const [edit, setEdit] = useState(false);
-  const [confirm, setConfirm] = useState(false);
-  const [updatedMessage, setUpdatedMessage] = useState('');
-  const [createdMessage, setCreatedMessage] = useState('');
-
-  const updateMessages = () => {
-    setUpdatedMessage(updatedAt ? fromNow(updatedAt) : '');
-    setCreatedMessage(fromNow(createdAt));
-  };
-
-  useEffect(() => {
-    updateMessages();
-    const interval = window.setInterval(updateMessages, 1000);
-
-    return () => clearInterval(interval);
-  }, [updatedAt]);
 
   const deleteTodo = () => dispatch(attemptDeleteTodo(id));
 
@@ -67,10 +50,13 @@ const Todo = ({
           </DueDate>
         )}
       </Header>
-      <Main>{text}</Main>
+
+      <Main>
+        <ReactMarkdown source={text} linkTarget="_blank" />
+      </Main>
+
       <Footer>
         <FooterLeft>
-          {/* {!!updatedAt && <small>{`edited ${updatedMessage}`}</small>} */}
           <TodoModal todo={todo} />
         </FooterLeft>
         <FooterRight>
@@ -81,7 +67,7 @@ const Todo = ({
   );
 };
 
-const Container = styled.a`
+const Container = styled.div`
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
   border: 2px solid transparent;
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
@@ -173,6 +159,8 @@ Todo.propTypes = {
     completed: PropTypes.bool.isRequired,
     createdAt: PropTypes.string.isRequired,
     updatedAt: PropTypes.string,
+    dueDate: PropTypes.string,
+    priority: PropTypes.number,
   }),
   isDragging: PropTypes.bool.isRequired,
   provided: PropTypes.shape({
@@ -187,70 +175,3 @@ Todo.defaultProps = {
 };
 
 export default Todo;
-
-{
-  /* <li className="todo box">
-      <article className="media">
-        <figure className="media-left">
-          <span
-            className="icon"
-            onClick={toggleCompleteTodo}
-            onKeyPress={toggleCompleteTodo}
-          >
-            {completed ? (
-              <FontAwesomeIcon icon={faCheckSquare} size="lg" />
-            ) : (
-              <FontAwesomeIcon icon={faSquare} size="lg" />
-            )}
-          </span>
-        </figure>
-        <div className="media-content">
-          <div className="content">
-            <p>
-              <small>{`created ${createdMessage}`}</small>
-            </p>
-            {edit ? (
-              <textarea className="textarea" value={currentText} onChange={updateText} />
-            ) : (
-              <p>{text}</p>
-            )}
-          </div>
-
-          <nav className="level is-mobile">
-            <div className="level-left">
-              {!!updatedAt && <small>{`edited ${updatedMessage}`}</small>}
-            </div>
-            <div className="level-right">
-              {edit ? (
-                <span
-                  className="icon space-right"
-                  onClick={handleUpdateTodo}
-                  onKeyPress={handleUpdateTodo}
-                >
-                  <FontAwesomeIcon icon={faSave} size="lg" />
-                </span>
-              ) : (
-                <span
-                  className="icon space-right"
-                  onClick={editTodo}
-                  onKeyPress={editTodo}
-                >
-                  <FontAwesomeIcon icon={faPencilAlt} size="lg" />
-                </span>
-              )}
-              {edit ? (
-                <span className="icon" onClick={cancelEdit} onKeyPress={cancelEdit}>
-                  <FontAwesomeIcon icon={faBan} size="lg" />
-                </span>
-              ) : (
-                <span className="icon" onClick={openModal} onKeyPress={cancelEdit}>
-                  <FontAwesomeIcon icon={faTrashAlt} size="lg" />
-                </span>
-              )}
-            </div>
-          </nav>
-        </div>
-      </article>
-      <ConfirmModal confirm={confirm} closeModal={closeModal} deleteItem={deleteTodo} />
-    </li> */
-}
