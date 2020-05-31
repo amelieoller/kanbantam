@@ -11,6 +11,7 @@ const todoSchema = new Schema({
   text: { type: String },
   priority: { type: Number },
   minutes: { type: Number },
+  elapsedMinutes: { type: Number },
   dueDate: { type: Date },
   completed: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now, immutable: true },

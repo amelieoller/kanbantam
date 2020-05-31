@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { parseISO, formatDistanceToNow } from 'date-fns';
@@ -10,6 +10,7 @@ import Trash from '_assets/icons/trash-2.svg';
 import Calendar from '_assets/icons/calendar.svg';
 import Flag from '_assets/icons/flag.svg';
 import TodoModal from '_organisms/TodoModal';
+import useCombinedRefs from '_hooks/useCombinedRefs';
 
 const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
 
@@ -19,56 +20,71 @@ const Todo = ({
   isDragging,
   provided: { innerRef, draggableProps, dragHandleProps },
 }) => {
+  const cardRef = useRef(null);
+  const combinedRef = useCombinedRefs(innerRef, cardRef);
+
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [boundingRect, setBoundingRect] = useState();
+
+  useLayoutEffect(() => {
+    setBoundingRect(combinedRef.current.getBoundingClientRect());
+  }, [combinedRef, isOpen]);
 
   const deleteTodo = () => dispatch(attemptDeleteTodo(id));
 
   const openModal = () => setIsOpen(true);
 
   return (
-    <Container
-      isDragging={isDragging}
-      ref={innerRef}
-      {...draggableProps}
-      {...dragHandleProps}
-      onClick={openModal}
-    >
-      <Header>
-        {!!todo.priority && (
-          <Badge
-            color={
-              todo.priority === 1
-                ? 'mediumturquoise'
-                : todo.priority === 2
-                ? 'orange'
-                : 'coral'
-            }
-          >
-            <Flag />
-          </Badge>
-        )}
-        {todo.dueDate && (
-          <DueDate>
-            <Calendar /> {fromNow(todo.dueDate)}
-          </DueDate>
-        )}
-      </Header>
+    <>
+      <Container
+        isDragging={isDragging}
+        ref={combinedRef}
+        {...draggableProps}
+        {...dragHandleProps}
+        onClick={openModal}
+      >
+        <Header>
+          {!!todo.priority && (
+            <Badge
+              color={
+                todo.priority === 1
+                  ? 'mediumturquoise'
+                  : todo.priority === 2
+                  ? 'orange'
+                  : 'coral'
+              }
+            >
+              <Flag />
+            </Badge>
+          )}
+          {todo.dueDate && (
+            <DueDate>
+              <Calendar /> {fromNow(todo.dueDate)}
+            </DueDate>
+          )}
+        </Header>
 
-      <Main>
-        <ReactMarkdown source={text} linkTarget="_blank" />
-      </Main>
+        <Main>
+          <ReactMarkdown source={text} linkTarget="_blank" />
+        </Main>
 
-      <Footer>
-        <FooterLeft>
-          <TodoModal todo={todo} isOpen={isOpen} setIsOpen={setIsOpen} />
-        </FooterLeft>
-        <FooterRight>
-          <Trash onClick={deleteTodo} />
-        </FooterRight>
-      </Footer>
-    </Container>
+        <Footer>
+          <FooterLeft></FooterLeft>
+          <FooterRight>
+            <Trash onClick={deleteTodo} />
+          </FooterRight>
+        </Footer>
+      </Container>
+
+      <TodoModal
+        todo={todo}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        cardBounds={boundingRect}
+      />
+    </>
   );
 };
 
