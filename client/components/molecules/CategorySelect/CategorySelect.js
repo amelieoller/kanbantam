@@ -77,6 +77,7 @@ const CategorySelect = ({ onChange, currentCategoryId }) => {
 
 const CategorySelectWrapper = styled.div`
   position: relative;
+  display: inline-block;
 `;
 
 const CategoryOptions = styled.div`

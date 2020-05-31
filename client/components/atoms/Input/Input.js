@@ -59,10 +59,11 @@ const StyledLabel = styled.label`
   text-transform: uppercase;
   position: absolute;
   left: 14px;
-  top: -5px;
+  top: -6px;
   background: white;
-  padding: 0 6px;
+  padding: 2px 6px;
   color: ${({ theme }) => theme.colors.medium('onSurface')};
+  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
 `;
 
 const StyledInput = styled.input`

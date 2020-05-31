@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { light, dark } from '_styles/Theme';
 import GlobalStyles from '_styles/GlobalStyles';
+import ModalStyles from '_styles/ModalStyles';
 
 import Main from '_environment/Main';
 
@@ -15,6 +16,8 @@ export default function Root({ history, store }) {
       <ConnectedRouter history={history}>
         <ThemeProvider theme={light}>
           <GlobalStyles />
+          <ModalStyles />
+
           <Main />
         </ThemeProvider>
       </ConnectedRouter>

@@ -175,7 +175,7 @@ const shadows = {
 // ************* SIZES *************
 const sizes = {
   borderRadius: '5px',
-  borderRadiusSmall: '4px',
+  borderRadiusSmall: '3px',
   spacing: '10px',
   spacingSmall: '5px',
   spacingLarge: '15px',
