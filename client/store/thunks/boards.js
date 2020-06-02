@@ -4,6 +4,7 @@ import uniqid from 'uniqid';
 
 import { getBoards, postBoard, putBoard, deleteBoard } from '_api/boards';
 import { setBoards, addBoard, updateBoard, removeBoard } from '_actions/boards';
+import { attemptAddList } from '_thunks/lists';
 
 import { dispatchError } from '_utils/api';
 
@@ -34,6 +35,8 @@ export const attemptAddBoard = (newBoard) => (dispatch) => {
   return postBoard(newBoard)
     .then(({ data }) => {
       const board = R.omit(['Id', '_v'], R.assoc('id', data._id, snakeToCamelCase(data)));
+
+      dispatch(attemptAddList({ title: 'complete', board: data._id, special: true }));
 
       dispatch(updateBoard(board));
       return data.user;
