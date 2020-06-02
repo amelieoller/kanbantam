@@ -10,7 +10,8 @@ const listSchema = new Schema({
   title: { type: String },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
-  sort: { type: Number, decimal: true, defaultValue: '' },
+  order: { type: Number, decimal: true, defaultValue: '' },
+  special: { type: Boolean, default: false },
 });
 
 listSchema.plugin(immutablePlugin);

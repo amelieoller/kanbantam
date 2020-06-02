@@ -7,7 +7,7 @@ import { attemptAddTodo } from '_thunks/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 import Plus from '_assets/icons/plus.svg';
 
-function AddTodo({ boardId, listId, lastCardSortVal }) {
+function AddTodo({ board, listId, lastCardSortVal }) {
   const formRef = useRef();
 
   const dispatch = useDispatch();
@@ -22,7 +22,14 @@ function AddTodo({ boardId, listId, lastCardSortVal }) {
 
     if (text) {
       dispatch(
-        attemptAddTodo({ text, board: boardId, list: listId, sort: lastCardSortVal + 1 }),
+        attemptAddTodo({
+          text,
+          board: board.id,
+          list: listId,
+          order: lastCardSortVal + 1,
+          minutes: board.defaultTime || 0,
+          category: board.defaultCategory || '',
+        }),
       );
       setText('');
     }
@@ -82,7 +89,11 @@ const Button = styled.button`
 `;
 
 AddTodo.propTypes = {
-  boardId: PropTypes.string.isRequired,
+  board: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    defaultTime: PropTypes.number,
+    defaultCategory: PropTypes.string,
+  }),
   listId: PropTypes.string.isRequired,
   lastCardSortVal: PropTypes.number.isRequired,
 };

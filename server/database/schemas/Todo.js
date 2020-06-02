@@ -11,12 +11,12 @@ const todoSchema = new Schema({
   text: { type: String },
   priority: { type: Number },
   minutes: { type: Number },
-  elapsedMinutes: { type: Number },
+  elapsedMinutes: { type: Number, defaultValue: 0 },
   dueDate: { type: Date },
   completed: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
-  sort: { type: Number, decimal: true, defaultValue: '' },
+  order: { type: Number, decimal: true, defaultValue: '' },
   category: { type: String },
 });
 

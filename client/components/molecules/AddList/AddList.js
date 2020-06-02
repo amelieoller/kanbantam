@@ -20,7 +20,7 @@ function AddList({ boardId, lastListSortVal }) {
     e.preventDefault();
 
     if (title) {
-      dispatch(attemptAddList({ title, board: boardId, sort: lastListSortVal + 1 }));
+      dispatch(attemptAddList({ title, board: boardId, order: lastListSortVal + 1 }));
 
       setTitle('');
     }

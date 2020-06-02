@@ -14,7 +14,7 @@ import Column from '_organisms/Column';
 import reorder, { reorderQuoteMap } from '_utils/dragAndDrop';
 import useResize from '_hooks/useResize';
 import AddList from '_molecules/AddList';
-import { calculateIndex } from '_utils/sorting';
+import { calculateIndex, sortItemsByOrder } from '_utils/sorting';
 
 function Board({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
@@ -27,25 +27,28 @@ function Board({ board, theme: { sizes } }) {
   const { user } = useSelector(R.pick(['user']));
 
   const [listsWithTodos, setListsWithTodos] = useState({});
-  const [orderedLists, setSortedLists] = useState([]);
+  const [orderedLists, setOrderedLists] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const sorted = lists.sort((a, b) => a.sort - b.sort);
+    const filteredListsWithoutSpecial = lists.filter((l) => !l.special);
+    const sortedLists = sortItemsByOrder(filteredListsWithoutSpecial);
+
+    // Category filter
     const filteredTodos =
       board.category === '' ? todos : todos.filter((t) => t.category === board.category);
 
-    const todosByListId = sorted.reduce(
-      (acc, list) => ({
-        ...acc,
-        [list.id]: filteredTodos
-          .filter((t) => t.list === list.id)
-          .sort((a, b) => a.sort - b.sort),
-      }),
-      {},
-    );
+    const todosByListId = sortedLists.reduce((acc, list) => {
+      const todosFilteredByList = filteredTodos.filter((t) => t.list === list.id);
+      const sortedAndFilteredTodos = sortItemsByOrder(todosFilteredByList);
 
-    setSortedLists(sorted);
+      return {
+        ...acc,
+        [list.id]: sortedAndFilteredTodos,
+      };
+    }, {});
+
+    setOrderedLists(sortedLists);
     setListsWithTodos(todosByListId);
   }, [lists, todos, board.category]);
 
@@ -66,7 +69,7 @@ function Board({ board, theme: { sizes } }) {
         const shallow = [...orderedLists];
         shallow.splice(result.source.index, 1);
 
-        setSortedLists(shallow);
+        setOrderedLists(shallow);
         return;
       }
 
@@ -106,8 +109,8 @@ function Board({ board, theme: { sizes } }) {
       const currentList = newOrderedLists[destination.index];
       const newListSort = calculateIndex(prevList, nextList, newOrderedLists.length);
 
-      dispatch(attemptUpdateList({ ...currentList, sort: newListSort.base }));
-      setSortedLists(newOrderedLists);
+      dispatch(attemptUpdateList({ ...currentList, order: newListSort.base }));
+      setOrderedLists(newOrderedLists);
 
       return;
     }
@@ -153,7 +156,7 @@ function Board({ board, theme: { sizes } }) {
                       title={list.title}
                       id={list.id}
                       todos={listsWithTodos[list.id]}
-                      boardId={board.id}
+                      board={board}
                       listHeight={calculateListHeight()}
                     />
                   ))}
@@ -165,7 +168,7 @@ function Board({ board, theme: { sizes } }) {
                       lastListSortVal={
                         orderedLists.length === 0
                           ? 0
-                          : orderedLists[orderedLists.length - 1].sort
+                          : orderedLists[orderedLists.length - 1].order
                       }
                     />
                   </div>

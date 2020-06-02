@@ -33,7 +33,7 @@ export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
       [source.droppableId]: reordered,
     };
 
-    const updatedTodo = { ...currentTodo, sort: newTodoSort.base };
+    const updatedTodo = { ...currentTodo, order: newTodoSort.base };
 
     return {
       quoteMap: result,
@@ -52,7 +52,7 @@ export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
 
   const updatedTodo = {
     ...currentTodo,
-    sort: newTodoSort.base,
+    order: newTodoSort.base,
     list: destination.droppableId,
   };
 

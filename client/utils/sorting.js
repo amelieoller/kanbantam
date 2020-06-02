@@ -33,18 +33,18 @@ export const calculateIndex = (prevTodo, nextTodo, nCards = 1) => {
     increment = 1;
     // If we drop the card in the first position
   } else if (!prevTodo) {
-    base = nextTodo.sort - 1;
+    base = nextTodo.order - 1;
     increment = -1;
     // If we drop the card in the last position
   } else if (!nextTodo) {
-    base = prevTodo.sort + 1;
+    base = prevTodo.order + 1;
     increment = 1;
   }
   // In the general case take the average of the previous and next element
   // sort indexes.
   else {
-    const prevSortIndex = prevTodo.sort;
-    const nextSortIndex = nextTodo.sort;
+    const prevSortIndex = prevTodo.order;
+    const nextSortIndex = nextTodo.order;
     increment = (nextSortIndex - prevSortIndex) / (nCards + 1);
     base = prevSortIndex + increment;
   }
