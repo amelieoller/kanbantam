@@ -1,40 +1,57 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { parseISO, formatDistanceToNow } from 'date-fns';
+import { parseISO } from 'date-fns';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown';
+import { useSelector, useDispatch } from 'react-redux';
+import * as R from 'ramda';
 
-import { attemptDeleteTodo } from '_thunks/todos';
-import Trash from '_assets/icons/trash-2.svg';
 import Calendar from '_assets/icons/calendar.svg';
 import Flag from '_assets/icons/flag.svg';
+import CheckCircle from '_assets/icons/check-circle.svg';
 import TodoModal from '_organisms/TodoModal';
 import useCombinedRefs from '_hooks/useCombinedRefs';
+import ProgressBar from '_molecules/ProgressBar';
+import { attemptToggleCompleteTodo } from '_thunks/todos';
+import { formatDaysToNow } from '_utils/dates.js';
 
-const fromNow = (date) => formatDistanceToNow(parseISO(date), { addSuffix: true });
+const fromNow = (date) => formatDaysToNow(parseISO(date));
 
 const Todo = ({
   todo,
-  todo: { id, text },
   isDragging,
   provided: { innerRef, draggableProps, dragHandleProps },
 }) => {
+  const dispatch = useDispatch();
+
   const cardRef = useRef(null);
   const combinedRef = useCombinedRefs(innerRef, cardRef);
 
-  const dispatch = useDispatch();
+  const { categories } = useSelector(R.pick(['categories']));
 
   const [isOpen, setIsOpen] = useState(false);
   const [boundingRect, setBoundingRect] = useState();
+  const [todoCategory, setTodoCategory] = useState();
+
+  useEffect(() => {
+    if (categories) {
+      const cat = categories.find((c) => c.id === todo.category);
+
+      setTodoCategory(cat);
+    }
+  }, [categories, todo]);
 
   useLayoutEffect(() => {
     setBoundingRect(combinedRef.current.getBoundingClientRect());
   }, [combinedRef, isOpen]);
 
-  const deleteTodo = () => dispatch(attemptDeleteTodo(id));
+  const handleClick = (e) => {
+    const elAttribute = e.target.dataset.type;
+    const elAttributeParent = e.target.parentElement.dataset.type;
+    if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
 
-  const openModal = () => setIsOpen(true);
+    setIsOpen(true);
+  };
 
   return (
     <>
@@ -43,39 +60,57 @@ const Todo = ({
         ref={combinedRef}
         {...draggableProps}
         {...dragHandleProps}
-        onClick={openModal}
+        onClick={handleClick}
+        data-type="isCard"
+        categoryColor={todoCategory && todoCategory.color}
       >
-        <Header>
-          {!!todo.priority && (
-            <Badge
-              color={
-                todo.priority === 1
-                  ? 'mediumturquoise'
-                  : todo.priority === 2
-                  ? 'orange'
-                  : 'coral'
-              }
-            >
-              <Flag />
-            </Badge>
-          )}
-          {todo.dueDate && (
-            <DueDate>
-              <Calendar /> {fromNow(todo.dueDate)}
-            </DueDate>
-          )}
-        </Header>
-
+        <DoneButton
+          onClick={() => dispatch(attemptToggleCompleteTodo(todo.id))}
+          data-type="isClickable"
+          id="done-button"
+        >
+          <CheckCircle data-type="isClickable" />
+        </DoneButton>
         <Main>
-          <ReactMarkdown source={text} linkTarget="_blank" />
+          <ReactMarkdown source={todo.text} linkTarget="_blank" />
         </Main>
 
-        <Footer>
-          <FooterLeft></FooterLeft>
-          <FooterRight>
-            <Trash onClick={deleteTodo} />
-          </FooterRight>
-        </Footer>
+        {!!(!!todo.priority || !!todo.dueDate | !!todo.minutes) && (
+          <Footer>
+            <FooterLeft>
+              {!!todo.priority && (
+                <TopBadge
+                  color={
+                    todo.priority === 1
+                      ? 'mediumturquoise'
+                      : todo.priority === 2
+                      ? 'orange'
+                      : 'coral'
+                  }
+                >
+                  <Flag />
+                </TopBadge>
+              )}
+
+              {!!todo.dueDate && (
+                <TopBadge>
+                  <Calendar />
+                  <span>due {fromNow(todo.dueDate)}</span>
+                </TopBadge>
+              )}
+            </FooterLeft>
+
+            <FooterRight>
+              {!!todo.minutes && (
+                <ProgressBar
+                  minutes={todo.minutes}
+                  elapsedMinutes={todo.elapsedMinutes}
+                  todoId={todo.id}
+                />
+              )}
+            </FooterRight>
+          </Footer>
+        )}
       </Container>
 
       <TodoModal
@@ -88,11 +123,51 @@ const Todo = ({
   );
 };
 
+const DoneButton = styled.button`
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  display: none;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    color: ${({ theme }) => theme.colors.lighter(8, 'onSurface')};
+  }
+`;
+
+const TopBadge = styled.span`
+  background: ${({ color, theme }) =>
+    color ? color : theme.colors.lighter(8, 'onSurface')};
+  border-radius: 7px;
+  padding: 2px 5px;
+  font-size: 0.8rem;
+  color: white;
+  margin-right: ${({ theme }) => theme.sizes.spacingSmall};
+  z-index: 2;
+
+  &.pointer {
+    cursor: pointer;
+  }
+
+  & > *:not(:last-child) {
+    margin-right: 3px;
+  }
+
+  svg {
+    width: 8px;
+    height: 8px;
+  }
+`;
+
 const Container = styled.div`
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-  border: 2px solid transparent;
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
-  padding: ${({ theme }) => theme.sizes.spacingSmall};
+  padding: ${({ theme }) => theme.sizes.spacingSmall};\
   min-height: ${({ theme }) => theme.sizes.minCardHeight};
   margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};
   user-select: none;
@@ -100,9 +175,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: ${({ theme }) => theme.shadows.one};
+  position: relative;
+  border-left: 3px solid
+    ${({ categoryColor }) => (categoryColor ? categoryColor : 'transparent')};
 
   & > *:not(:last-child) {
-    margin-bottom: 3px;
+    margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};
   }
 
   &:hover,
@@ -116,38 +194,9 @@ const Container = styled.div`
     box-shadow: ${({ theme }) => theme.shadows.two};
     background: ${({ theme }) => theme.colors.darker(1, 'surface')};
   }
-`;
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Badge = styled.span`
-  color: white;
-  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-  padding: 2px 4px;
-  font-size: 0.85rem;
-
-  svg {
-    height: 14px;
-    width: 14px;
-    color: ${({ color }) => color};
-    fill: ${({ color }) => color};
-  }
-`;
-
-const DueDate = styled.span`
-  color: darkgray;
-  padding: 1px 4px;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-
-  svg {
-    height: 14px;
-    width: 14px;
-    margin-right: 2px;
+  &:hover #done-button {
+    display: block;
   }
 `;
 
@@ -158,24 +207,23 @@ const Main = styled.div`
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 
-  svg {
-    height: 16px;
-    width: 16px;
-    color: lightgray;
-    cursor: pointer;
+  & > *:not(:last-child) {
+    margin-right: 10px;
   }
 `;
 
 const FooterLeft = styled.span`
   display: flex;
   align-items: center;
+  width: 60%;
 `;
 
 const FooterRight = styled.span`
   display: flex;
   align-items: center;
+  width: 40%;
 `;
 
 Todo.propTypes = {
@@ -187,6 +235,9 @@ Todo.propTypes = {
     updatedAt: PropTypes.string,
     dueDate: PropTypes.string,
     priority: PropTypes.number,
+    minutes: PropTypes.number,
+    elapsedMinutes: PropTypes.number,
+    category: PropTypes.string,
   }),
   isDragging: PropTypes.bool.isRequired,
   provided: PropTypes.shape({
