@@ -60,8 +60,13 @@ export const attemptAddTodo = (newTodo) => (dispatch) => {
 
 export const attemptToggleCompleteTodo = (id) => (dispatch) =>
   putToggleCompleteTodo({ id })
-    .then((data) => {
-      dispatch(toggleCompleteTodo(id));
+    .then(({ data }) => {
+      const newTodo = R.omit(
+        ['Id', '_v'],
+        R.assoc('id', data._id, snakeToCamelCase(data)),
+      );
+
+      dispatch(toggleCompleteTodo(newTodo));
       return data;
     })
     .catch(dispatchError(dispatch));

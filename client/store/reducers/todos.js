@@ -21,9 +21,7 @@ export function todo(
     case ADD_TODO:
       return action.todo;
     case TOGGLE_COMPLETE_TODO:
-      return update(state, {
-        completed: { $apply: (x) => !x },
-      });
+      return { ...state, ...action.todo };
     case UPDATE_TODO:
       return { ...state, ...action.todo };
     default:

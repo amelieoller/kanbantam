@@ -16,9 +16,10 @@ export const addTodo = (todo) => ({
   todo,
 });
 
-export const toggleCompleteTodo = (id) => ({
+export const toggleCompleteTodo = (todo) => ({
   type: TOGGLE_COMPLETE_TODO,
-  id,
+  id: todo.id,
+  todo,
 });
 
 export const updateTodo = (todo) => ({

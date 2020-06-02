@@ -5,7 +5,11 @@ import Modal from 'react-modal';
 import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 
-import { attemptUpdateTodo, attemptDeleteTodo } from '_thunks/todos';
+import {
+  attemptUpdateTodo,
+  attemptDeleteTodo,
+  attemptToggleCompleteTodo,
+} from '_thunks/todos';
 import CategorySelect from '_molecules/CategorySelect';
 import Input from '_atoms/Input';
 import TextArea from '_atoms/TextArea';
@@ -46,7 +50,8 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
   const formatDate = (value) => new Date(value.replace(/-/g, '/').replace(/T.+/, ''));
 
   const toggleCompleted = () => {
-    setUpdatedTodo((prevTodo) => ({ ...prevTodo, completed: !prevTodo.completed }));
+    dispatch(attemptToggleCompleteTodo(updatedTodo.id));
+    // setUpdatedTodo((prevTodo) => ({ ...prevTodo, completed: !prevTodo.completed }));
   };
 
   const handleUpdateTodo = () => {
@@ -127,7 +132,9 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
 
           <Input
             label="Due Date"
-            handleOnBlur={(value) => updateTodo('dueDate', formatDate(value))}
+            handleOnBlur={(value) =>
+              updateTodo('dueDate', value ? formatDate(value) : '')
+            }
             defaultValue={
               updatedTodo.dueDate
                 ? format(new Date(updatedTodo.dueDate), 'yyyy-MM-dd')
@@ -148,7 +155,17 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
             currentCategoryId={updatedTodo.category}
           />
 
-          <Button onClick={deleteTodo} buttonType="error">
+          <Button
+            onClick={() => {
+              if (
+                window.confirm(
+                  `Are you sure you want to delete the board "${updatedTodo.text}"?`,
+                )
+              )
+                deleteTodo();
+            }}
+            buttonType="error"
+          >
             Delete
           </Button>
 
