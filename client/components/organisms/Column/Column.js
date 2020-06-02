@@ -9,7 +9,7 @@ import Trash from '_assets/icons/trash-2.svg';
 import { attemptDeleteList, attemptUpdateList } from '_thunks/lists';
 import AddTodo from '_molecules/AddTodo';
 
-const Column = ({ id, title, todos, index, boardId, listHeight }) => {
+const Column = ({ id, title, todos, index, listHeight, board }) => {
   const dispatch = useDispatch();
 
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -57,14 +57,14 @@ const Column = ({ id, title, todos, index, boardId, listHeight }) => {
               backgroundColor: snapshot.isDragging ? 'blue' : null,
             }}
             todos={todos}
-            boardId={boardId}
+            boardId={board.id}
             listHeight={listHeight}
           />
           <ListFooter>
             <AddTodo
-              boardId={boardId}
+              board={board}
               listId={id}
-              lastCardSortVal={todos.length === 0 ? 0 : todos[todos.length - 1].sort}
+              lastCardSortVal={todos.length === 0 ? 0 : todos[todos.length - 1].order}
             />
           </ListFooter>
         </Container>
@@ -148,11 +148,13 @@ Column.propTypes = {
       id: PropTypes.string.isRequired,
       list: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
-      sort: PropTypes.number.isRequired,
+      order: PropTypes.number.isRequired,
     }),
   ),
   index: PropTypes.number.isRequired,
-  boardId: PropTypes.string.isRequired,
+  board: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }),
   listHeight: PropTypes.number.isRequired,
 };
 

@@ -269,7 +269,7 @@ Settings.propTypes = {
     title: PropTypes.string.isRequired,
     defaultTime: PropTypes.number.isRequired,
     defaultCategory: PropTypes.string.isRequired,
-    focusMode: PropTypes.bool.isRequired,
+    focusMode: PropTypes.bool,
     defaultFocusList: PropTypes.string.isRequired,
   }).isRequired,
 };

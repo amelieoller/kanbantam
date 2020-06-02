@@ -20,7 +20,7 @@ const DropZone = styled.div`
   /* stop the list collapsing when empty */
   min-height: 100px;
   /* not relying on the items for a margin-bottom as it will collapse when the list is empty */
-  margin: 5px;
+  margin: ${({ theme }) => theme.sizes.spacingSmall};
 `;
 
 const ScrollContainer = styled.div`
@@ -79,7 +79,7 @@ List.propTypes = {
       id: PropTypes.string.isRequired,
       list: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
-      sort: PropTypes.number.isRequired,
+      order: PropTypes.number.isRequired,
     }),
   ),
   listHeight: PropTypes.number.isRequired,

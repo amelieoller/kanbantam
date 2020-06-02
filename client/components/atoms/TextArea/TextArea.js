@@ -45,7 +45,7 @@ const InputWrapper = styled.div`
 
   textarea {
     width: 100%;
-    padding: ${({ theme }) => theme.sizes.spacingInput};
+    padding: 5px;
     border: 1px solid #dadada;
     border-radius: ${({ theme }) => theme.sizes.borderRadius};
     font-size: 1.2rem;
