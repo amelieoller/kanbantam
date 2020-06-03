@@ -7,6 +7,7 @@ import todos from './todos';
 import boards from './boards';
 import lists from './lists';
 import categories from './categories';
+import currentBoard from './currentBoard';
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -17,6 +18,7 @@ const createRootReducer = (history) =>
     boards,
     lists,
     categories,
+    currentBoard,
   });
 
 export default createRootReducer;
