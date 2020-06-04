@@ -21,6 +21,18 @@ const Input = ({
 
   const handleInputChange = (e) => setInputValue(e.target.value);
 
+  const handleSubmit = (e) => {
+    let { value } = e.target;
+
+    if (type === 'number' && value === '') {
+      handleOnBlur(0);
+    } else if (!value) {
+      handleOnBlur(defaultValue);
+    } else if (value !== defaultValue) {
+      handleOnBlur(value);
+    }
+  };
+
   const renderInputNode = () => {
     const inputID = label.toLowerCase();
 
@@ -36,7 +48,10 @@ const Input = ({
           name={inputID}
           placeholder={placeholder}
           onChange={handleInputChange}
-          onBlur={(e) => handleOnBlur(e.target.value)}
+          onBlur={handleSubmit}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') handleSubmit(e);
+          }}
           required={required}
           value={inputValue}
         />
