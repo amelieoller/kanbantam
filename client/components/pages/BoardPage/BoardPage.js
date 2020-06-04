@@ -7,40 +7,64 @@ import { ThemeProvider } from 'styled-components';
 
 import { light, dark } from '_styles/Theme';
 import { attemptGetBoards } from '_thunks/boards';
+import { setBoard } from '_actions/currentBoard';
 import Board from '_templates/Board';
+import { attemptGetLists } from '_thunks/lists';
+import { attemptGetTodos } from '_thunks/todos';
+import { attemptGetCategories } from '_thunks/categories';
 
-export default function BoardPage({ location }) {
+function BoardPage({ boardId }) {
   const dispatch = useDispatch();
+
   const { user } = useSelector(R.pick(['user']));
   const { boards } = useSelector(R.pick(['boards']));
+  const { currentBoard } = useSelector(R.pick(['currentBoard']));
 
   const [loading, setLoading] = useState(true);
-  const [currentBoard, setCurrentBoard] = useState(null);
 
+  // Get boards effect
   useEffect(() => {
     if (R.isEmpty(user)) {
+      // If user is not logged in, send them to the login page
       dispatch(push('/login'));
     } else {
-      dispatch(attemptGetBoards()).then(() => setLoading(false));
+      if (boards.length === 0) {
+        // If there are no boards yet, get boards
+        dispatch(attemptGetBoards());
+      }
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, boards]);
 
+  // Get current board effect
   useEffect(() => {
-    if (!loading) {
-      const boardId = location.pathname.split('/')[2];
+    if (boards.length !== 0) {
+      // When boards come in, find currentBoard
       const board = boards.find((b) => b.id === boardId);
 
       if (board) {
-        setCurrentBoard(board);
+        // If board is found, set currentBoard in redux
+        dispatch(setBoard(board));
       } else {
+        // If board cannot be found, send user back to boards overview
         dispatch(push('/'));
       }
     }
-  }, [location, loading, boards, dispatch]);
+  }, [boards, dispatch, boardId]);
+
+  // Get lists and todos and set loading to false effect
+  useEffect(() => {
+    if (currentBoard.id) {
+      // If there is a currentBoard, get lists and todos for that board
+      Promise.all([
+        dispatch(attemptGetLists(currentBoard.id)),
+        dispatch(attemptGetTodos(currentBoard.id)),
+        dispatch(attemptGetCategories(currentBoard.id)),
+      ]).then(() => setLoading(false));
+    }
+  }, [currentBoard.id, dispatch]);
 
   return (
-    !loading &&
-    !!currentBoard && (
+    !loading && (
       <ThemeProvider theme={currentBoard.theme === 'light' ? light : dark}>
         <Board key={currentBoard.id} board={currentBoard} />
       </ThemeProvider>
@@ -49,7 +73,7 @@ export default function BoardPage({ location }) {
 }
 
 BoardPage.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }),
+  boardId: PropTypes.string.isRequired,
 };
+
+export default BoardPage;

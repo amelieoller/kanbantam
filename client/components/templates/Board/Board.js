@@ -1,20 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import * as R from 'ramda';
-import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
 import styled, { withTheme } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import * as R from 'ramda';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { attemptGetLists } from '_thunks/lists';
-import { attemptGetTodos, attemptUpdateTodo } from '_thunks/todos';
+import { attemptUpdateTodo } from '_thunks/todos';
 import { attemptUpdateList } from '_thunks/lists';
-import Sidebar from '_organisms/Sidebar';
-import Column from '_organisms/Column';
 import reorder, { reorderQuoteMap } from '_utils/dragAndDrop';
+import { calculateIndex, sortItemsByOrder } from '_utils/sorting';
 import useResize from '_hooks/useResize';
 import AddList from '_molecules/AddList';
-import { calculateIndex, sortItemsByOrder } from '_utils/sorting';
+import Sidebar from '_organisms/Sidebar';
+import Column from '_organisms/Column';
 
 function Board({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
@@ -24,11 +22,9 @@ function Board({ board, theme: { sizes } }) {
 
   const { lists } = useSelector(R.pick(['lists']));
   const { todos } = useSelector(R.pick(['todos']));
-  const { user } = useSelector(R.pick(['user']));
 
   const [listsWithTodos, setListsWithTodos] = useState({});
   const [orderedLists, setOrderedLists] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const filteredListsWithoutSpecial = lists.filter((l) => !l.special);
@@ -51,17 +47,6 @@ function Board({ board, theme: { sizes } }) {
     setOrderedLists(sortedLists);
     setListsWithTodos(todosByListId);
   }, [lists, todos, board.category]);
-
-  useEffect(() => {
-    if (R.isEmpty(user)) {
-      dispatch(push('/login'));
-    } else {
-      Promise.all([
-        dispatch(attemptGetLists(board.id)),
-        dispatch(attemptGetTodos(board.id)),
-      ]).then(() => setLoading(false));
-    }
-  }, [board.id, dispatch, user]);
 
   const onDragEnd = (result) => {
     if (result.combine) {
@@ -140,45 +125,43 @@ function Board({ board, theme: { sizes } }) {
   };
 
   return (
-    !loading && (
-      <StyledBoard isSidebarOpen={board.sidebarOpen}>
-        <Sidebar isSidebarOpen={board.sidebarOpen} boardId={board.id} />
+    <StyledBoard isSidebarOpen={board.sidebarOpen}>
+      <Sidebar isSidebarOpen={board.sidebarOpen} currentBoard={board} />
 
-        <div ref={boardRef}>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="board" type="COLUMN" direction="horizontal">
-              {(provided) => (
-                <ListsWrapper ref={provided.innerRef} {...provided.droppableProps}>
-                  {orderedLists.map((list, index) => (
-                    <Column
-                      key={list.id}
-                      index={index}
-                      title={list.title}
-                      id={list.id}
-                      todos={listsWithTodos[list.id]}
-                      board={board}
-                      listHeight={calculateListHeight()}
-                    />
-                  ))}
-                  {provided.placeholder}
+      <div ref={boardRef}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+            {(provided) => (
+              <ListsWrapper ref={provided.innerRef} {...provided.droppableProps}>
+                {orderedLists.map((list, index) => (
+                  <Column
+                    key={list.id}
+                    index={index}
+                    title={list.title}
+                    id={list.id}
+                    todos={listsWithTodos[list.id]}
+                    board={board}
+                    listHeight={calculateListHeight()}
+                  />
+                ))}
+                {provided.placeholder}
 
-                  <div>
-                    <AddList
-                      boardId={board.id}
-                      lastListSortVal={
-                        orderedLists.length === 0
-                          ? 0
-                          : orderedLists[orderedLists.length - 1].order
-                      }
-                    />
-                  </div>
-                </ListsWrapper>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
-      </StyledBoard>
-    )
+                <div>
+                  <AddList
+                    boardId={board.id}
+                    lastListSortVal={
+                      orderedLists.length === 0
+                        ? 0
+                        : orderedLists[orderedLists.length - 1].order
+                    }
+                  />
+                </div>
+              </ListsWrapper>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
+    </StyledBoard>
   );
 }
 
