@@ -1,10 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Register from '_organisms/Register';
 
-export default function RegisterSection() {
+function RegisterSection({ setIsLogin }) {
   return (
     <div className="register-secction section">
-      <Register />
+      <Register setIsLogin={setIsLogin} />
     </div>
   );
 }
+
+RegisterSection.propTypes = {
+  setIsLogin: PropTypes.func.isRequired,
+};
+
+export default RegisterSection;

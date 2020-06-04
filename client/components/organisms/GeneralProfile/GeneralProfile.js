@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import * as R from 'ramda';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSync } from '@fortawesome/free-solid-svg-icons';
-
 import { validateName } from '_utils/validation';
-import { attemptGetUser, attemptUpdateUser } from '_thunks/user';
-import Box from '_molecules/Box';
+import { attemptUpdateUser } from '_thunks/user';
+import Input from '_atoms/Input';
+import Button from '_atoms/Button';
 
-export default function GeneralProfile() {
+function GeneralProfile() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
 
@@ -56,12 +55,10 @@ export default function GeneralProfile() {
     setBioEdited(true);
   };
 
-  const updateProfilePic = (e) => {
-    setProfilePic(e.target.value);
+  const updateProfilePic = (value) => {
+    setProfilePic(value);
     setProfilePicEdited(true);
   };
-
-  const refresh = () => dispatch(attemptGetUser()).then(resetState).catch(R.identity);
 
   const save = () => {
     const updatedUser = {};
@@ -84,112 +81,37 @@ export default function GeneralProfile() {
     }
   };
 
-  const charactersRemaining = 240 - bio.length;
   const edited = firstNameEdited || lastNameEdited || bioEdited || profilePicEdited;
 
   return (
-    <Box className="general-profile">
-      <span
-        className="icon is-medium is-pulled-right"
-        onClick={refresh}
-        onKeyPress={refresh}
-      >
-        <FontAwesomeIcon icon={faSync} size="lg" />
-      </span>
-      <h3 className="title is-3">General</h3>
-      <hr className="separator" />
-      <div className="columns">
-        <div className="column is-4">
-          <h3 className="title is-3 has-text-centered">{user.usernameCase}</h3>
-          <figure className="image">
-            <img
-              className="profile-img"
-              src={profilePic || '/images/default-profile.png'}
-              alt="Profile"
-            />
-          </figure>
-          <div className="field">
-            <label htmlFor="profile-pic-url" className="label">
-              Picture URL
-            </label>
-            <p className="control">
-              <input
-                id="profile-pic-url"
-                className="input"
-                type="text"
-                placeholder="Picture URL"
-                value={profilePic}
-                onChange={updateProfilePic}
-              />
-            </p>
-          </div>
-        </div>
+    <StyledProfile>
+      <h3 className="title is-3 has-text-centered">{user.usernameCase}</h3>
+      <ProfilePicture
+        className="profile-img"
+        src={profilePic || '/images/default-profile.png'}
+        alt="Profile"
+      />
 
-        <div className="column is-8">
-          <div className="columns">
-            <div className="column is-6">
-              <div className="field">
-                <label htmlFor="first-name" className="label">
-                  First Name
-                </label>
-                <p className="control">
-                  <input
-                    id="first-name"
-                    className="input"
-                    type="text"
-                    placeholder="First Name"
-                    value={firstName}
-                    onChange={updateFirstName}
-                  />
-                </p>
-              </div>
-            </div>
-            <div className="column is-6">
-              <div className="field">
-                <label htmlFor="last-name" className="label">
-                  Last Name
-                </label>
-                <p className="control">
-                  <input
-                    id="last-name"
-                    className="input"
-                    type="text"
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChange={updateLastName}
-                  />
-                </p>
-              </div>
-            </div>
-          </div>
+      <Input
+        label="Profile URL"
+        handleOnBlur={updateProfilePic}
+        defaultValue={profilePic}
+      />
+      <Input label="First Name" handleOnBlur={updateFirstName} defaultValue={firstName} />
+      <Input label="Last Name" handleOnBlur={updateLastName} defaultValue={lastName} />
+      <Input label="Bio" handleOnBlur={updateBio} defaultValue={bio} />
 
-          <div className="field">
-            <label htmlFor="bio" className="label">
-              Bio
-            </label>
-            <p className="control">
-              <textarea
-                id="bio"
-                className="textarea"
-                placeholder="Tell us about yourself."
-                value={bio}
-                maxLength={240}
-                onChange={updateBio}
-              />
-            </p>
-            <p className="help">{`Characters remaining: ${charactersRemaining}`}</p>
-          </div>
-        </div>
-      </div>
-      <hr className="separator" />
-      <button
-        type="button"
-        className="button is-success"
-        disabled={!edited}
-        onClick={save}
-      >
+      <Button disabled={!edited} onClick={save}>
         Save
-      </button>
-    </Box>
+      </Button>
+    </StyledProfile>
   );
 }
+
+const StyledProfile = styled.div``;
+
+const ProfilePicture = styled.img`
+  width: 100%;
+`;
+
+export default GeneralProfile;
