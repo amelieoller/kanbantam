@@ -125,7 +125,7 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
 
           <Input
             label="Minutes"
-            handleOnBlur={(value) => updateTodo('minutes', value)}
+            handleOnBlur={(value) => updateTodo('minutes', value === '' ? 0 : value)}
             defaultValue={updatedTodo.minutes}
             type="number"
           />

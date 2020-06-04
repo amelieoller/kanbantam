@@ -2,7 +2,7 @@ import React from 'react';
 import ChangeUsername from '_organisms/ChangeUsername';
 import ChangePassword from '_organisms/ChangePassword';
 
-export default function Account() {
+function Account() {
   return (
     <div className="account-settings">
       <ChangeUsername />
@@ -10,3 +10,5 @@ export default function Account() {
     </div>
   );
 }
+
+export default Account;

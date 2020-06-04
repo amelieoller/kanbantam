@@ -91,7 +91,6 @@ const CategoryOptions = styled.div`
   border-radius: 4px;
   display: flex;
   right: 0;
-  z-index: 1;
 
   & > * {
     margin: 0px 6px 6px 0px;
@@ -111,7 +110,7 @@ const CategoryOption = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  border: 2px solid ${({ isEmpty, color }) => (isEmpty ? 'black' : color)};
+  border: 2px solid ${({ isEmpty }) => (isEmpty ? 'black' : 'white')};
   color: ${({ isEmpty }) => isEmpty && 'black'};
 `;
 

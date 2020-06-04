@@ -18,6 +18,8 @@ import Checkbox from '_atoms/Checkbox';
 import SlideOutMenu from '_organisms/SlideOutMenu';
 import Input from '_atoms/Input';
 import { attemptDeleteBoard, attemptUpdateBoard } from '_thunks/boards';
+import GeneralProfile from '_organisms/GeneralProfile';
+import Account from '../../templates/AccountSettings/AccountSettings';
 
 const StyledSettings = styled.div`
   background-color: ${(props) => props.theme.colors.surface};
@@ -63,7 +65,7 @@ const StyledSettings = styled.div`
   }
 `;
 
-const Settings = ({ board }) => {
+const Settings = ({ currentBoard }) => {
   const dispatch = useDispatch();
 
   const { categories } = useSelector(R.pick(['categories']));
@@ -78,11 +80,11 @@ const Settings = ({ board }) => {
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
 
   useEffect(() => {
-    setDefaultTime(board.defaultTime);
-    setDefaultCategory(board.defaultCategory);
-    setFocusMode(board.focusMode);
-    setDefaultFocusList(board.defaultFocusList);
-  }, [board]);
+    setDefaultTime(currentBoard.defaultTime);
+    setDefaultCategory(currentBoard.defaultCategory);
+    setFocusMode(currentBoard.focusMode);
+    setDefaultFocusList(currentBoard.defaultFocusList);
+  }, [currentBoard]);
 
   const handleUpdateBoard = () => {
     if (settingsPending) {
@@ -99,7 +101,7 @@ const Settings = ({ board }) => {
 
       dispatch(
         attemptUpdateBoard({
-          id: board.id,
+          id: currentBoard.id,
           defaultTime,
           defaultCategory,
           focusMode,
@@ -117,7 +119,7 @@ const Settings = ({ board }) => {
     setIsSettingsMenuOpen((prevState) => !prevState);
   };
 
-  const deleteBoard = () => dispatch(attemptDeleteBoard(board.id));
+  const deleteBoard = () => dispatch(attemptDeleteBoard(currentBoard.id));
 
   return (
     <>
@@ -182,7 +184,7 @@ const Settings = ({ board }) => {
             <List />
             Categories
           </h2>
-          <Categories boardId={board.id} />
+          <Categories boardId={currentBoard.id} />
 
           {/* Focus Mode */}
           <h2>
@@ -218,6 +220,12 @@ const Settings = ({ board }) => {
             checked={focusMode}
           />
 
+          {/* Account Settings */}
+          {/* <Account /> */}
+
+          {/* Profile */}
+          {/* <GeneralProfile /> */}
+
           {/* Delete Board */}
           <h2>
             <AlertCircle />
@@ -228,7 +236,7 @@ const Settings = ({ board }) => {
               onClick={() => {
                 if (
                   window.confirm(
-                    `Are you sure you want to delete the board "${board.title}"?`,
+                    `Are you sure you want to delete the board "${currentBoard.title}"?`,
                   )
                 )
                   deleteBoard();
@@ -264,7 +272,7 @@ const InputWrapper = styled.div`
 `;
 
 Settings.propTypes = {
-  board: PropTypes.shape({
+  currentBoard: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     defaultTime: PropTypes.number.isRequired,

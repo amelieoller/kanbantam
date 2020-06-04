@@ -9,7 +9,6 @@ const ModalStyles = styled.createGlobalStyle`
     bottom: 0;
     background: rgba(0, 0, 0, 0.6);
     opacity: 0;
-    z-index: 3;
   }
 
   .ReactModal__Overlay--after-open {

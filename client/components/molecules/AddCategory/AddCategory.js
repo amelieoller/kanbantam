@@ -15,9 +15,7 @@ function AddCategory({ boardId }) {
 
   const [newCategory, setNewCategory] = useState(initialCategory);
 
-  const handleAddCategory = (e) => {
-    e.preventDefault();
-
+  const handleAddCategory = () => {
     if (newCategory.title) {
       setNewCategory(initialCategory);
 
@@ -39,7 +37,7 @@ function AddCategory({ boardId }) {
   };
 
   return (
-    <Form onSubmit={handleAddCategory}>
+    <Wrapper>
       <NewCategoryWrapper>
         <Input
           label="New Category"
@@ -53,11 +51,11 @@ function AddCategory({ boardId }) {
       <Button onClick={handleAddCategory}>
         <span>Create Category</span>
       </Button>
-    </Form>
+    </Wrapper>
   );
 }
 
-const Form = styled.form`
+const Wrapper = styled.div`
   margin: ${({ theme }) => theme.sizes.spacingLarge} 0;
 `;
 

@@ -87,7 +87,7 @@ const ListHeader = styled.div`
   justify-content: space-between;
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius};
-  background-color: ${({ isDragging }) => (isDragging ? 'red' : 'gold')};
+  background-color: ${({ isDragging }) => (isDragging ? 'red' : '#d0d0d0')};
   transition: -color 0.2s ease;
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
 
@@ -115,7 +115,7 @@ const DeleteButton = styled.button`
   padding: 0;
 
   svg {
-    color: lightgoldenrodyellow;
+    color: white;
     width: 18px;
     height: 18px;
   }

@@ -24,7 +24,7 @@ const WelcomePageStyles = styled.div`
 `;
 
 const LoginArea = styled.div`
-  padding: 20vh 30px 50vh 30px;
+  padding: 20vh 30px 40vh 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -111,21 +111,12 @@ const WelcomePage = () => {
     <WelcomePageStyles>
       <LoginArea>
         <Header>Kanban 2.0</Header>
-        <Buttons>
-          {isLogin ? (
-            <Button onClick={() => setIsLogin(false)}>
-              <User />
-              Sign Up
-            </Button>
-          ) : (
-            <Button onClick={() => setIsLogin(true)}>
-              <Login />
-              Sign In
-            </Button>
-          )}
-        </Buttons>
 
-        {isLogin ? <LoginSection /> : <RegisterSection />}
+        {isLogin ? (
+          <LoginSection setIsLogin={setIsLogin} />
+        ) : (
+          <RegisterSection setIsLogin={setIsLogin} />
+        )}
       </LoginArea>
 
       <ImageArea>
