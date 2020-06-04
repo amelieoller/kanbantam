@@ -99,7 +99,12 @@ function Main({ location, theme: { colors } }) {
             <Navigation pathname={location.pathname} />
             <Switch>
               <Route exact path="/" component={BoardsPage} />
-              <Route path="/boards/:id" component={BoardPage} />
+              <Route
+                path="/boards/:id"
+                render={(routerProps) => {
+                  return <BoardPage boardId={routerProps.match.params.id} />;
+                }}
+              />
               <Route path="/settings" component={SettingsPage} />
               <Route path="*" component={LostPage} />
             </Switch>
@@ -114,6 +119,19 @@ Main.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
+  theme: PropTypes.shape({
+    colors: PropTypes.shape({
+      success: PropTypes.string,
+      onSuccess: PropTypes.string,
+      error: PropTypes.string,
+      onError: PropTypes.string,
+      warning: PropTypes.string,
+      onWarning: PropTypes.string,
+      info: PropTypes.string,
+      onInfo: PropTypes.string,
+      lighter: PropTypes.func,
+    }),
+  }),
 };
 
 export default withTheme(Main);
