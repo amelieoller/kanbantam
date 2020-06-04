@@ -17,39 +17,41 @@ import CategorySelect from '_molecules/CategorySelect';
 
 function Navigation({ pathname }) {
   const dispatch = useDispatch();
-  const [currentBoard, setCurrentBoard] = useState(null);
 
-  const { boards } = useSelector(R.pick(['boards']));
+  const [navBackground, setNavBackground] = useState('');
 
-  const boardId = pathname.split('/')[2];
+  const { currentBoard } = useSelector(R.pick(['currentBoard']));
+  const { categories } = useSelector(R.pick(['categories']));
 
-  useEffect(() => {
-    if (boards.length !== 0 && boardId) {
-      const board = boards.find((b) => b.id === boardId);
-
-      setCurrentBoard(board);
-    }
-  }, [boardId, boards]);
-
-  const logout = () => {
-    dispatch(attemptLogout()).catch(R.identity);
-  };
-
+  const logout = () => dispatch(attemptLogout()).catch(R.identity);
   const isHome = pathname === '/';
 
+  useEffect(() => {
+    const defaultCat = currentBoard.category;
+
+    if (!defaultCat) {
+      setNavBackground('');
+    } else if (categories.length !== 0) {
+      const category = categories.find((cat) => cat.id === defaultCat);
+      const color = category ? category.color : '';
+
+      setNavBackground(color);
+    }
+  }, [categories, currentBoard]);
+
   const handleUpdateBoard = (attribute) => {
-    dispatch(attemptUpdateBoard({ id: boardId, ...attribute }));
+    dispatch(attemptUpdateBoard({ id: currentBoard.id, ...attribute }));
   };
 
   return (
-    <StyledNavigation role="navigation" isHome={isHome}>
+    <StyledNavigation role="navigation" isHome={isHome} navBackground={navBackground}>
       <Left to="/">
         <Logo />
         Kanban 2.0
       </Left>
 
       <Right>
-        {currentBoard && !isHome && (
+        {currentBoard.id && !isHome && (
           <>
             <UpdateTextButton
               text={currentBoard.title}
@@ -61,7 +63,7 @@ function Navigation({ pathname }) {
               onChange={(newCategoryId) => handleUpdateBoard({ category: newCategoryId })}
             />
 
-            <Settings board={currentBoard} />
+            <Settings currentBoard={currentBoard} />
 
             {currentBoard.theme === 'light' ? (
               <Moon onClick={() => handleUpdateBoard({ theme: 'dark' })} />
@@ -78,12 +80,14 @@ function Navigation({ pathname }) {
 
 const StyledNavigation = styled.nav`
   height: ${({ theme }) => theme.sizes.navbarHeight};
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme, navBackground }) =>
+    navBackground ? navBackground : theme.colors.primary};
   color: ${({ theme }) => theme.colors.onPrimary};
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: ${({ theme }) => theme.sizes.spacing};
+  z-index: 1;
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   position: ${({ isHome }) => (isHome ? 'relative' : 'fixed')};
