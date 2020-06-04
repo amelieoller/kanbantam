@@ -1,44 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
 
-import { attemptUpdateTodo } from '_thunks/todos';
 import PlusCircle from '_assets/icons/plus-circle.svg';
+import MinusCircle from '_assets/icons/minus-circle.svg';
 
-const ProgressBar = ({ minutes, elapsedMinutes, todoId }) => {
+const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }) => {
   const [percentage, setPercentage] = useState(0);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    const calculatedPercentage = (elapsedMinutes / minutes) * 100;
+    const calculatedPercentage = (elapsed / total) * 100;
 
     setPercentage(calculatedPercentage > 100 ? 100 : calculatedPercentage);
-  }, [minutes, elapsedMinutes]);
+  }, [total, elapsed]);
 
-  const handleTimeUpdate = (amount) => {
-    let newMinutes = minutes + amount;
+  const handleTotalUpdate = (amount) => {
+    let newTotal = total + amount;
 
-    // If newMinutes are below 0, set to 0
-    if (newMinutes < 0) newMinutes = 0;
+    // If newTotal are below 0, set to 0
+    if (newTotal < 0) newTotal = 0;
 
-    // If newMinutes are the same as minutes return
-    if (newMinutes === minutes) return;
+    // If newTotal are the same as total return
+    if (newTotal === total) return;
 
-    dispatch(attemptUpdateTodo({ id: todoId, minutes: newMinutes }));
+    handleBarUpdate(newTotal);
   };
 
   return (
     <Wrapper>
       <ProgressBarWrapper>
+        {minus && (
+          <Button data-type="isClickable" onClick={() => handleTotalUpdate(-increment)}>
+            <MinusCircle data-type="isClickable" />
+          </Button>
+        )}
+
         <ProgressWrapper>
           <ProgressFiller className="filler" width={percentage}>
-            <TextLeft>{minutes - elapsedMinutes} minutes left</TextLeft>
+            <TextLeft>
+              {total - elapsed} {type} left
+            </TextLeft>
           </ProgressFiller>
         </ProgressWrapper>
 
-        <Button data-type="isClickable" onClick={() => handleTimeUpdate(10)}>
+        <Button data-type="isClickable" onClick={() => handleTotalUpdate(increment)}>
           <PlusCircle data-type="isClickable" />
         </Button>
       </ProgressBarWrapper>
@@ -56,14 +61,17 @@ const ProgressBarWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+
+  & > *:not(:last-child) {
+    margin-right: 3px;
+  }
 `;
 
 const Button = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
-  padding-left: 3px;
-  padding-right: 0;
+  padding: 0;
   align-items: center;
   display: flex;
 
@@ -106,13 +114,16 @@ const TextLeft = styled.span`
 `;
 
 ProgressBar.propTypes = {
-  minutes: PropTypes.number.isRequired,
-  elapsedMinutes: PropTypes.number,
-  todoId: PropTypes.string.isRequired,
+  total: PropTypes.number.isRequired,
+  elapsed: PropTypes.number,
+  type: PropTypes.string.isRequired,
+  handleBarUpdate: PropTypes.func.isRequired,
+  increment: PropTypes.number.isRequired,
+  minus: PropTypes.bool,
 };
 
 ProgressBar.defaultProps = {
-  elapsedMinutes: 0,
+  elapsed: 0,
 };
 
 export default ProgressBar;

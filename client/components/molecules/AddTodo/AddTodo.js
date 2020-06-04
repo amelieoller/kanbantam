@@ -28,7 +28,12 @@ function AddTodo({ board, listId, lastCardSortVal }) {
           list: listId,
           order: lastCardSortVal + 1,
           minutes: board.defaultTime || 0,
-          category: board.defaultCategory || '',
+          elapsedMinutes: 0,
+          category: board.category
+            ? board.category
+            : board.defaultCategory
+            ? board.defaultCategory
+            : '',
         }),
       );
       setText('');
@@ -93,6 +98,7 @@ AddTodo.propTypes = {
     id: PropTypes.string.isRequired,
     defaultTime: PropTypes.number,
     defaultCategory: PropTypes.string,
+    category: PropTypes.string,
   }),
   listId: PropTypes.string.isRequired,
   lastCardSortVal: PropTypes.number.isRequired,

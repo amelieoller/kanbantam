@@ -28,3 +28,11 @@ export const formatDaysToNow = (date) => {
 
   return formattedMessage;
 };
+
+export const formatTime = (timePassedMs, sessionLength) => {
+  const time = timePassedMs !== 0 ? timePassedMs : sessionLength * 60 * 1000;
+  const seconds = Math.floor((time / 1000) % 60);
+  const minutes = Math.floor((time / 1000 / 60) % 60);
+
+  return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+};

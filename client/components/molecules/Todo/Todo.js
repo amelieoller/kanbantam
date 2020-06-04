@@ -12,7 +12,7 @@ import CheckCircle from '_assets/icons/check-circle.svg';
 import TodoModal from '_organisms/TodoModal';
 import useCombinedRefs from '_hooks/useCombinedRefs';
 import ProgressBar from '_molecules/ProgressBar';
-import { attemptToggleCompleteTodo } from '_thunks/todos';
+import { attemptToggleCompleteTodo, attemptUpdateTodo } from '_thunks/todos';
 import { formatDaysToNow } from '_utils/dates.js';
 
 const fromNow = (date) => formatDaysToNow(parseISO(date));
@@ -51,6 +51,10 @@ const Todo = ({
     if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
 
     setIsOpen(true);
+  };
+
+  const handleBarUpdate = (newTotal) => {
+    dispatch(attemptUpdateTodo({ id: todo.id, minutes: newTotal }));
   };
 
   return (
@@ -103,9 +107,11 @@ const Todo = ({
             <FooterRight>
               {!!todo.minutes && (
                 <ProgressBar
-                  minutes={todo.minutes}
-                  elapsedMinutes={todo.elapsedMinutes}
-                  todoId={todo.id}
+                  total={todo.minutes}
+                  elapsed={todo.elapsedMinutes}
+                  type="minutes"
+                  handleBarUpdate={handleBarUpdate}
+                  increment={10}
                 />
               )}
             </FooterRight>
@@ -148,7 +154,6 @@ const TopBadge = styled.span`
   font-size: 0.8rem;
   color: white;
   margin-right: ${({ theme }) => theme.sizes.spacingSmall};
-  z-index: 2;
 
   &.pointer {
     cursor: pointer;
