@@ -23,15 +23,18 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength }) => {
 
   // -------------- MAIN TIMER FUNCTIONALITY --------------
   const elapseTime = () => {
-    // If a minute has passed, update todo
-    if (timePassedMs !== 0 && Math.floor((timePassedMs / 1000) % 60) === 0) {
+    const isWorkSession = sessionLength === workLength;
+    const isStartOfSession = timePassedMs === 0;
+    const minuteHasPassed = Math.floor((timePassedMs / 1000) % 60) === 0;
+    // If a minute has passed, update todo (make sure it is a workSession, not the beginning of a session, and the minute has passed)
+    if (isWorkSession && !isStartOfSession && minuteHasPassed) {
       updateTodo();
     }
 
     // If time is over switch sessions, otherwise, run the timer
-    if (timePassedMs !== 0 && timePassedMs < 1000) {
+    if (!isStartOfSession && timePassedMs < 1000) {
       // If a work session has elapsed, update board
-      if (sessionLength === workLength) {
+      if (isWorkSession) {
         updateBoard();
       }
 
