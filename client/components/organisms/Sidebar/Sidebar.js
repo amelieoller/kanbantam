@@ -21,12 +21,18 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
     if (currentBoard.defaultFocusList && todos.length !== 0) {
       // find default focus list, then the first todo in that list
       const focusListId = currentBoard.defaultFocusList;
-      const filteredTodos = todos.filter((t) => t.list === focusListId);
-      const sortedTodos = sortItemsByOrder(filteredTodos);
+      let filteredTodos = todos.filter((t) => t.list === focusListId);
 
+      if (currentBoard.category) {
+        // If cards are being filtered by category make sure the currentTodos array only contains those todos
+        filteredTodos = filteredTodos.filter((t) => t.category === currentBoard.category);
+      }
+
+      const sortedTodos = sortItemsByOrder(filteredTodos);
+      // also filter todos by if there is a category selected to view, use board category
       setCurrentTodos(sortedTodos);
     }
-  }, [currentBoard.defaultFocusList, todos]);
+  }, [currentBoard.defaultFocusList, currentBoard.category, todos]);
 
   const handleUpdateBoard = (attribute) => {
     dispatch(attemptUpdateBoard({ id: currentBoard.id, ...attribute }));
@@ -115,6 +121,7 @@ Sidebar.propTypes = {
   currentBoard: PropTypes.shape({
     id: PropTypes.string.isRequired,
     defaultFocusList: PropTypes.string.isRequired,
+    category: PropTypes.string,
   }),
 };
 
