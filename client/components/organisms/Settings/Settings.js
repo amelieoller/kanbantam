@@ -275,8 +275,8 @@ Settings.propTypes = {
   currentBoard: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    defaultTime: PropTypes.number.isRequired,
-    defaultCategory: PropTypes.string.isRequired,
+    defaultTime: PropTypes.number,
+    defaultCategory: PropTypes.string,
     focusMode: PropTypes.bool,
     defaultFocusList: PropTypes.string.isRequired,
   }).isRequired,
