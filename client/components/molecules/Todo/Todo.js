@@ -172,7 +172,7 @@ const TopBadge = styled.span`
 const Container = styled.div`
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
-  padding: ${({ theme }) => theme.sizes.spacingSmall};\
+  padding: ${({ theme }) => theme.sizes.spacingSmall};
   min-height: ${({ theme }) => theme.sizes.minCardHeight};
   margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};
   user-select: none;

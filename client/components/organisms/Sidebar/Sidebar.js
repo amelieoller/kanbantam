@@ -6,6 +6,7 @@ import * as R from 'ramda';
 
 import ChevronLeft from '_assets/icons/chevrons-left.svg';
 import ChevronRight from '_assets/icons/chevrons-right.svg';
+import Clock from '_assets/icons/clock.svg';
 import { attemptUpdateBoard } from '_thunks/boards';
 import Pomodoro from '_templates/Pomodoro';
 import { sortItemsByOrder } from '_utils/sorting';
@@ -51,18 +52,40 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
         {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
       </CollapseButton>
       <SidebarContent>
-        {currentTodos && (
+        <SectionWrapper>
+          <SectionHeader>
+            <Clock />
+            <h2>Pomodoro</h2>
+          </SectionHeader>
+
           <Pomodoro
             currentBoard={currentBoard}
-            firstTodo={currentTodos[0]}
+            firstTodo={currentTodos && currentTodos[0]}
             workLength={25}
             breakLength={5}
+            isSidebarOpen={isSidebarOpen}
           />
-        )}
+        </SectionWrapper>
       </SidebarContent>
     </SidebarWrapper>
   );
 }
+
+const SectionWrapper = styled.div``;
+
+const SectionHeader = styled.div`
+  display: grid;
+  grid-template-columns: 30px auto;
+
+  svg {
+    margin-right: 4px;
+    width: 30px;
+  }
+
+  h2 {
+    margin: 0;
+  }
+`;
 
 const SidebarWrapper = styled.div`
   background-color: #e0e0e0;
@@ -81,8 +104,8 @@ const SidebarWrapper = styled.div`
 
 const SidebarContent = styled.div`
   /* display: grid;
-  grid-auto-rows: max-content;
-  overflow: hidden; */
+  grid-auto-rows: max-content;*/
+  overflow: hidden;
 
   svg {
     color: ${({ theme }) => theme.colors.medium('onSecondary')};

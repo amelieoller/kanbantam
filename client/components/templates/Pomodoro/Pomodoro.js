@@ -12,7 +12,13 @@ import PlayCircle from '_assets/icons/play-circle.svg';
 import PauseCircle from '_assets/icons/pause-circle.svg';
 import Repeat from '_assets/icons/repeat.svg';
 
-const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength }) => {
+const Pomodoro = ({
+  firstTodo,
+  currentBoard,
+  workLength,
+  breakLength,
+  isSidebarOpen,
+}) => {
   const dispatch = useDispatch();
 
   const [sessionLength, setSessionLength] = useState(workLength); // If it's a work session (25 min) or a break (5 min)
@@ -111,32 +117,38 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength }) => {
   };
 
   return (
-    <StyledPomodoro>
+    <StyledPomodoro isSidebarOpen={isSidebarOpen}>
       <h1>{formatTime(timePassedMs, sessionLength)}</h1>
 
-      <Controls>
+      <Controls isSidebarOpen={isSidebarOpen}>
         {!isRunning ? (
           <PlayCircle onClick={playOrPauseTimer} />
         ) : (
           <PauseCircle onClick={playOrPauseTimer} />
         )}
-        <Repeat onClick={switchSessions} />
+        {isSidebarOpen && <Repeat onClick={switchSessions} />}
       </Controls>
 
-      <ProgressBar
-        total={currentBoard.totalPomodori}
-        elapsed={currentBoard.elapsedPomodori}
-        type="Pomodori"
-        handleBarUpdate={handleBarUpdate}
-        increment={1}
-        minus
-      />
+      {isSidebarOpen && (
+        <ProgressBar
+          total={currentBoard.totalPomodori}
+          elapsed={currentBoard.elapsedPomodori}
+          type="Pomodori"
+          handleBarUpdate={handleBarUpdate}
+          increment={1}
+          minus
+        />
+      )}
     </StyledPomodoro>
   );
 };
 
 const StyledPomodoro = styled.div`
   text-align: center;
+
+  h1 {
+    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '2rem' : '1rem')};
+  }
 `;
 
 const Controls = styled.div`
@@ -145,8 +157,8 @@ const Controls = styled.div`
 
   & > * {
     cursor: pointer;
-    margin: 8px auto;
-    height: 25px;
+    margin: ${({ isSidebarOpen }) => (isSidebarOpen ? '8px auto' : '0 5px')};
+    height: ${({ isSidebarOpen }) => (isSidebarOpen ? '25px' : '20px')};
   }
 `;
 
