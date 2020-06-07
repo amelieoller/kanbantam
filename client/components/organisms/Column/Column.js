@@ -9,7 +9,7 @@ import Trash from '_assets/icons/trash-2.svg';
 import { attemptDeleteList, attemptUpdateList } from '_thunks/lists';
 import AddTodo from '_molecules/AddTodo';
 
-const Column = ({ id, title, todos, index, listHeight, board }) => {
+const Column = ({ id, title, todos, index, listHeight, board, placeholderProps }) => {
   const dispatch = useDispatch();
 
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -59,6 +59,7 @@ const Column = ({ id, title, todos, index, listHeight, board }) => {
             todos={todos}
             boardId={board.id}
             listHeight={listHeight}
+            placeholderProps={placeholderProps}
           />
           <ListFooter>
             <AddTodo
@@ -87,9 +88,11 @@ const ListHeader = styled.div`
   justify-content: space-between;
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius};
-  background-color: ${({ isDragging }) => (isDragging ? 'red' : '#d0d0d0')};
+  background-color: ${({ isDragging }) => (isDragging ? 'red' : '#dfe4e7')};
   transition: -color 0.2s ease;
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
+  color: ${({ theme }) => theme.colors.medium('onSurface')};
+  font-weight: 500;
 
   &:hover {
     background: purple;
@@ -156,6 +159,12 @@ Column.propTypes = {
     id: PropTypes.string.isRequired,
   }),
   listHeight: PropTypes.number.isRequired,
+  placeholderProps: PropTypes.shape({
+    clientHeight: PropTypes.number,
+    clientWidth: PropTypes.number,
+    clientX: PropTypes.number,
+    clientY: PropTypes.number,
+  }),
 };
 
 export default Column;

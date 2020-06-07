@@ -58,74 +58,71 @@ const Todo = ({
   };
 
   return (
-    <>
-      <Container
-        isDragging={isDragging}
-        ref={combinedRef}
-        {...draggableProps}
-        {...dragHandleProps}
-        onClick={handleClick}
-        data-type="isCard"
-        categoryColor={todoCategory && todoCategory.color}
+    <Container
+      isDragging={isDragging}
+      ref={combinedRef}
+      {...draggableProps}
+      {...dragHandleProps}
+      onClick={handleClick}
+      data-type="isCard"
+      categoryColor={todoCategory && todoCategory.color}
+    >
+      <DoneButton
+        onClick={() => dispatch(attemptToggleCompleteTodo(todo.id))}
+        data-type="isClickable"
+        id="done-button"
       >
-        <DoneButton
-          onClick={() => dispatch(attemptToggleCompleteTodo(todo.id))}
-          data-type="isClickable"
-          id="done-button"
-        >
-          <CheckCircle data-type="isClickable" />
-        </DoneButton>
-        <Main>
-          <ReactMarkdown source={todo.text} linkTarget="_blank" />
-        </Main>
+        <CheckCircle data-type="isClickable" />
+      </DoneButton>
+      <Main>
+        <ReactMarkdown source={todo.text} linkTarget="_blank" />
+      </Main>
 
-        {!!(!!todo.priority || !!todo.dueDate | !!todo.minutes) && (
-          <Footer>
-            <FooterLeft>
-              {!!todo.priority && (
-                <TopBadge
-                  color={
-                    todo.priority === 1
-                      ? 'mediumturquoise'
-                      : todo.priority === 2
-                      ? 'orange'
-                      : 'coral'
-                  }
-                >
-                  <Flag />
-                </TopBadge>
-              )}
+      {!!(!!todo.priority || !!todo.dueDate | !!todo.minutes) && (
+        <Footer>
+          <FooterLeft>
+            {!!todo.priority && (
+              <TopBadge
+                color={
+                  todo.priority === 1
+                    ? 'mediumturquoise'
+                    : todo.priority === 2
+                    ? 'orange'
+                    : 'coral'
+                }
+              >
+                <Flag />
+              </TopBadge>
+            )}
 
-              {!!todo.dueDate && (
-                <TopBadge>
-                  <Calendar />
-                  <span>due {fromNow(todo.dueDate)}</span>
-                </TopBadge>
-              )}
-            </FooterLeft>
+            {!!todo.dueDate && (
+              <TopBadge>
+                <Calendar />
+                <span>due {fromNow(todo.dueDate)}</span>
+              </TopBadge>
+            )}
+          </FooterLeft>
 
-            <FooterRight>
-              {!!todo.minutes && (
-                <ProgressBar
-                  total={todo.minutes}
-                  elapsed={todo.elapsedMinutes}
-                  type="minutes"
-                  handleBarUpdate={handleBarUpdate}
-                  increment={10}
-                />
-              )}
-            </FooterRight>
-          </Footer>
-        )}
-      </Container>
-
+          <FooterRight>
+            {!!todo.minutes && (
+              <ProgressBar
+                total={todo.minutes}
+                elapsed={todo.elapsedMinutes}
+                type="minutes"
+                handleBarUpdate={handleBarUpdate}
+                increment={10}
+              />
+            )}
+          </FooterRight>
+        </Footer>
+      )}
       <TodoModal
         todo={todo}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         cardBounds={boundingRect}
       />
-    </>
+    </Container>
   );
 };
 
@@ -181,8 +178,9 @@ const Container = styled.div`
   flex-direction: column;
   box-shadow: ${({ theme }) => theme.shadows.one};
   position: relative;
-  border-left: 3px solid
+  border-left: ${({ theme }) => theme.sizes.cardBorder} solid
     ${({ categoryColor }) => (categoryColor ? categoryColor : 'transparent')};
+  color: ${({ theme }) => theme.colors.onSurface};
 
   & > *:not(:last-child) {
     margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};

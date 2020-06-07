@@ -25,6 +25,7 @@ function Board({ board, theme: { sizes } }) {
 
   const [listsWithTodos, setListsWithTodos] = useState({});
   const [orderedLists, setOrderedLists] = useState([]);
+  const [placeholderProps, setPlaceholderProps] = useState({});
 
   useEffect(() => {
     const filteredListsWithoutSpecial = lists.filter((l) => !l.special);
@@ -48,7 +49,99 @@ function Board({ board, theme: { sizes } }) {
     setListsWithTodos(todosByListId);
   }, [lists, todos, board.category]);
 
+  const calculateCardPlaceholderPosition = (arr, draggedDOM, sourceIndex, parentList) => {
+    const { offsetHeight, offsetWidth } = draggedDOM;
+    const cardsStart = calculateCardsStart();
+    const cardMargin = 5;
+
+    var clientY =
+      cardMargin +
+      cardsStart +
+      arr.slice(0, sourceIndex).reduce((total, curr) => {
+        const style = curr.currentStyle || window.getComputedStyle(curr);
+        const marginBottom = parseFloat(style.marginBottom);
+
+        return total + curr.clientHeight + marginBottom;
+      }, 0);
+
+    setPlaceholderProps({
+      clientHeight: offsetHeight,
+      clientWidth: offsetWidth,
+      clientY,
+      clientX: parentList
+        ? parentList.getBoundingClientRect().left
+        : draggedDOM.parentNode.getBoundingClientRect().left,
+    });
+  };
+
+  const getDraggedDomEl = (draggableId) =>
+    document.querySelector(`[data-rbd-drag-handle-draggable-id='${draggableId}']`);
+
+  const getDraggedDomParent = (parentId) =>
+    document.querySelector(`[data-rbd-droppable-id='${parentId}']`).firstElementChild
+      .firstElementChild;
+
+  const onDragStart = (result) => {
+    if (result.type === 'COLUMN') return;
+
+    const draggedDOM = getDraggedDomEl(result.draggableId);
+
+    if (!draggedDOM) return;
+
+    const sourceIndex = result.source.index;
+
+    calculateCardPlaceholderPosition(
+      [...draggedDOM.parentNode.children],
+      draggedDOM,
+      sourceIndex,
+    );
+  };
+
+  const onDragUpdate = (result) => {
+    if (!result.destination || result.type === 'COLUMN') return;
+    const destinationList = result.destination.droppableId;
+
+    const draggedDOM = getDraggedDomEl(result.draggableId);
+
+    if (!draggedDOM) return;
+
+    const parentList = getDraggedDomParent(destinationList);
+    const childrenArray = [...parentList.children];
+    const destinationIndex = result.destination.index;
+    const sourceIndex = result.source.index;
+
+    let updatedArray;
+
+    if (result.source.droppableId === result.destination.droppableId) {
+      // If moved in same list
+      const movedItem = childrenArray[sourceIndex];
+      childrenArray.splice(sourceIndex, 1);
+
+      updatedArray = [
+        ...childrenArray.slice(0, destinationIndex),
+        movedItem,
+        ...childrenArray.slice(destinationIndex + 1),
+      ];
+    } else {
+      // If moved to different list
+      updatedArray = [
+        ...childrenArray.slice(0, destinationIndex),
+        draggedDOM,
+        ...childrenArray.slice(destinationIndex),
+      ];
+    }
+
+    calculateCardPlaceholderPosition(
+      updatedArray,
+      draggedDOM,
+      destinationIndex,
+      parentList,
+    );
+  };
+
   const onDragEnd = (result) => {
+    setPlaceholderProps({});
+
     if (result.combine) {
       if (result.type === 'COLUMN') {
         const shallow = [...orderedLists];
@@ -111,15 +204,29 @@ function Board({ board, theme: { sizes } }) {
     setListsWithTodos(data.quoteMap);
   };
 
+  const calculateCardsStart = () => {
+    const navHeight = parseFloat(sizes.navbarHeight);
+    const listHeaderHeight = parseFloat(sizes.listHeaderHeight);
+    const padding = parseFloat(sizes.spacing);
+
+    return navHeight + listHeaderHeight + padding;
+  };
+
   const calculateListHeight = () => {
     const screenHeight = boundingRect.screenHeight;
-    const navHeight = sizes.navbarHeight.replace('px', '');
-    const listHeaderHeight = sizes.listHeaderHeight.replace('px', '');
-    const listFooterHeight = sizes.listFooterHeight.replace('px', '');
-    const doublePadding = sizes.spacing.replace('px', '') * 2;
+    const navHeight = parseFloat(sizes.navbarHeight);
+    const listHeaderHeight = parseFloat(sizes.listHeaderHeight);
+    const listFooterHeight = parseFloat(sizes.listFooterHeight);
+    const doublePadding = parseFloat(sizes.spacing) * 2;
+    const listBorder = 2;
 
     const listHeight =
-      screenHeight - navHeight - listHeaderHeight - listFooterHeight - doublePadding;
+      screenHeight -
+      navHeight -
+      listHeaderHeight -
+      listFooterHeight -
+      doublePadding -
+      listBorder;
 
     return listHeight;
   };
@@ -129,7 +236,11 @@ function Board({ board, theme: { sizes } }) {
       <Sidebar isSidebarOpen={board.sidebarOpen} currentBoard={board} />
 
       <div ref={boardRef}>
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext
+          onDragEnd={onDragEnd}
+          onDragStart={onDragStart}
+          onDragUpdate={onDragUpdate}
+        >
           <Droppable droppableId="board" type="COLUMN" direction="horizontal">
             {(provided) => (
               <ListsWrapper ref={provided.innerRef} {...provided.droppableProps}>
@@ -142,6 +253,7 @@ function Board({ board, theme: { sizes } }) {
                     todos={listsWithTodos[list.id]}
                     board={board}
                     listHeight={calculateListHeight()}
+                    placeholderProps={placeholderProps}
                   />
                 ))}
                 {provided.placeholder}
