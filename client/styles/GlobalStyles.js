@@ -1,7 +1,7 @@
-import * as styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
-const GlobalStyles = styled.createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
   /* CSS Reset */
   ${reset}
 
@@ -11,7 +11,7 @@ const GlobalStyles = styled.createGlobalStyle`
   }
 
   html {
-    background-color: #f5f5f5;
+    background-color: #eef2f5;
     font-size: 12px;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;

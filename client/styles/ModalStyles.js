@@ -1,6 +1,6 @@
-import * as styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
-const ModalStyles = styled.createGlobalStyle`
+const ModalStyles = createGlobalStyle`
   .modal-underlay {
     position: fixed;
     left: 0;
