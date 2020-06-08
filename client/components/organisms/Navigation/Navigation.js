@@ -88,6 +88,7 @@ const StyledNavigation = styled.nav`
   align-items: center;
   padding: ${({ theme }) => theme.sizes.spacing};
   z-index: 2;
+  box-shadow: 0px 3px 6px 0px rgba(155, 170, 178, 0.25);
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   position: ${({ isHome }) => (isHome ? 'relative' : 'fixed')};

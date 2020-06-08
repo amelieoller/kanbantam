@@ -10,8 +10,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   transition: background-color 0.2s ease, opacity 0.1s ease;
   user-select: none;
-  background-color: #f5f8fa;
-  border: 1px solid #dfe4e7;
+  background-color: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   padding-bottom: 0;
   border-bottom-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-bottom-left-radius: ${({ theme }) => theme.sizes.borderRadius};
@@ -83,16 +83,16 @@ const List = ({ listId, todos, listHeight, placeholderProps }) => (
 const Placeholder = styled.div`
   position: absolute;
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-  border: 1px solid #d5dce0;
+  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   background-image: linear-gradient(
     135deg,
-    #eef2f5 25%,
-    #f4f7f9 25%,
-    #f4f7f9 50%,
-    #eef2f5 50%,
-    #eef2f5 75%,
-    #f4f7f9 75%,
-    #f4f7f9 100%
+    ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 25%,
+    ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 25%,
+    ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 50%,
+    ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 50%,
+    ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 75%,
+    ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 75%,
+    ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 100%
   );
   background-size: 28.28px 28.28px;
 `;

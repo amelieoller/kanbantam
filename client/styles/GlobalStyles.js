@@ -11,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   html {
-    background-color: #eef2f5;
+    background-color: #f5f5f5;
     font-size: 12px;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;

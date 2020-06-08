@@ -60,6 +60,9 @@ const NewListInput = styled.input`
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
   padding: ${({ theme }) => theme.sizes.spacingInput};
   text-transform: uppercase;
+  height: ${({ theme }) => theme.sizes.listHeaderHeight};
+  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+  color: ${({ theme }) => theme.colors.onSurface};
 `;
 
 const Button = styled.button`
@@ -71,6 +74,9 @@ const Button = styled.button`
   text-align: left;
   font-size: 1.2rem;
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+  height: ${({ theme }) => theme.sizes.listHeaderHeight};
+  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+  color: ${({ theme }) => theme.colors.medium('onSurface')};
 `;
 
 export default AddList;

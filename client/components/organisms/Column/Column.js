@@ -88,14 +88,15 @@ const ListHeader = styled.div`
   justify-content: space-between;
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius};
-  background-color: ${({ isDragging }) => (isDragging ? 'red' : '#dfe4e7')};
-  transition: -color 0.2s ease;
+  background-color: ${({ isDragging, theme }) =>
+    isDragging ? theme.colors.darker(3, 'surfaceVariant') : theme.colors.surfaceVariant};
+  transition: color 0.2s ease;
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
-  color: ${({ theme }) => theme.colors.medium('onSurface')};
+  color: ${({ theme }) => theme.colors.onSurfaceVariant};
   font-weight: 500;
 
   &:hover {
-    background: purple;
+    background-color: ${({ theme }) => theme.colors.darker(3, 'surfaceVariant')};
   }
 
   &:focus {

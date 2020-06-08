@@ -57,7 +57,7 @@ const StyledLabel = styled.label`
 const StyledSelect = styled.select`
   width: 100%;
   padding: ${({ theme }) => theme.sizes.spacingInput};
-  border: 1px solid #dadada;
+  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   font-size: 1.3rem;
 
@@ -67,7 +67,11 @@ const StyledSelect = styled.select`
 
   background-image: linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%),
-    linear-gradient(to right, #ccc, #ccc);
+    linear-gradient(
+      to right,
+      ${({ theme }) => theme.colors.surfaceVariant},
+      ${({ theme }) => theme.colors.surfaceVariant}
+    );
   background-position: calc(100% - 15px) calc(0.7em + 2px),
     calc(100% - 10px) calc(0.7em + 2px), calc(100% - 2em) 0.2em;
   background-size: 5px 5px, 5px 5px, 1px 1.5em;

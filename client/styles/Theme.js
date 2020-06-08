@@ -1,4 +1,6 @@
-import { lighten, darken } from 'polished';
+import { lighten, darken, setLightness } from 'polished';
+
+const baseColor = '#202020';
 
 // ************* COLORS *************
 // Variants: e.g. in dark theme - if you want to show the opposite, dark on a light surface
@@ -24,10 +26,12 @@ const emphasisOpacity = {
 const darkColors = {
   // ------------ MAIN SURFACES (background, surfaces etc.) ------------
   // Background
-  background: '#121212',
+  background: setLightness(0.04, baseColor),
+  boardBackground: setLightness(0.01, baseColor),
 
   // Surface
-  surface: '#121212',
+  surface: setLightness(0.1, baseColor),
+  surfaceVariant: setLightness(0.25, baseColor),
 
   // Primary (primary - 200, variant - 700)
   primary: '#BB86FC',
@@ -48,7 +52,8 @@ const darkColors = {
   onBackground: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
 
   // On Surface
-  onSurface: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
+  onSurface: setLightness(0.9, baseColor),
+  onSurfaceVariant: setLightness(0.005, baseColor),
 
   // On Primary
   onPrimary: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
@@ -78,16 +83,13 @@ const darkColors = {
   darker: (amount, color) => {
     return darken(+`0.${amount}`, lightColors[color]);
   },
-
-  // ------------ EXTRAS ------------
-  borderColor: '#dadada',
 };
 
 const baseRgbLight = {
   black: [0, 0, 0],
   white: [255, 255, 255],
   onBackground: [0, 0, 0],
-  onSurface: [0, 0, 0],
+  onSurface: [6, 8, 9],
   onPrimary: [255, 255, 255],
   onSecondary: [0, 0, 0],
   onError: [255, 255, 255],
@@ -99,10 +101,12 @@ const baseRgbLight = {
 const lightColors = {
   // ------------ MAIN SURFACES (background, surfaces etc.) ------------
   // Background
-  background: '#FFFFFF',
+  background: setLightness(0.99, baseColor),
+  boardBackground: setLightness(0.96, baseColor),
 
   // Surface
-  surface: '#FFFFFF',
+  surface: setLightness(0.995, baseColor),
+  surfaceVariant: setLightness(0.8, baseColor),
 
   // Primary (primary - 500, variant - 700)
   primary: '#6200EE',
@@ -123,7 +127,8 @@ const lightColors = {
   onBackground: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
 
   // On Surface
-  onSurface: `rgba(${baseRgbLight.black}, ${emphasisOpacity.high})`,
+  onSurface: setLightness(0.1, baseColor),
+  onSurfaceVariant: setLightness(0.995, baseColor),
 
   // On Primary
   onPrimary: `rgba(${baseRgbLight.white}, ${emphasisOpacity.high})`,
@@ -153,9 +158,6 @@ const lightColors = {
   darker: (amount, color) => {
     return darken(+`0.${amount}`, lightColors[color]);
   },
-
-  // ------------ EXTRAS ------------
-  borderColor: '#dadada',
 };
 
 // ************* SHADOWS *************
@@ -187,6 +189,7 @@ const sizes = {
   listHeaderHeight: '30px',
   listFooterHeight: '40px',
   minCardHeight: '30px',
+  cardBorder: '3px',
 };
 
 const media = {

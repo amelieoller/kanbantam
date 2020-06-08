@@ -39,18 +39,18 @@ function AddBoardTile() {
 
 const AddBoardTileButton = styled.button`
   border: 0;
-  background: #e6e6e6;
+  background: ${({ theme }) => theme.colors.surface};
   cursor: pointer;
   transition: background 0.1s;
 
   &:hover,
   &:focus {
-    background: #ccc;
+    background: ${({ theme }) => theme.colors.surfaceVariant};
   }
 `;
 
 const NewBoardForm = styled.form`
-  background: #e6e6e6;
+  background: ${({ theme }) => theme.colors.surface};
 
   & > input {
     border-width: 0;

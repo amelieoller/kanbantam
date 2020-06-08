@@ -281,6 +281,8 @@ const StyledBoard = styled.div`
   display: grid;
   grid-auto-flow: column;
   height: calc(100vh - ${({ theme }) => theme.sizes.navbarHeight});
+  background: ${({ theme }) => theme.colors.boardBackground};
+  width: max-content;
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   margin-top: ${({ theme }) => theme.sizes.navbarHeight};

@@ -88,13 +88,15 @@ const SectionHeader = styled.div`
 `;
 
 const SidebarWrapper = styled.div`
-  background-color: #e0e0e0;
+  background: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme }) => theme.sizes.spacing};
   width: ${({ theme, isSidebarOpen }) =>
     isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
   position: relative;
   transition: 1s ease;
   height: 100%;
+  box-shadow: 3px 0px 8px 0px rgba(155, 170, 178, 0.1);
+  color: ${({ theme }) => theme.colors.onSurface};
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   position: fixed;
@@ -121,21 +123,22 @@ const CollapseButton = styled.button`
   height: 20px;
   width: 20px;
   padding: 0;
-  border: 1px solid ${({ theme }) => theme.colors.borderColor};
+  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   cursor: pointer;
   outline: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: ${({ theme }) => theme.shadows.one};
+  background: ${({ theme }) => theme.colors.surface};
 
   &:hover {
-    box-shadow: ${({ theme }) => theme.shadows.two};
+    background: ${({ theme }) => theme.colors.darker(1, 'surface')};
   }
 
   svg {
     width: 13px;
     height: 13px;
+    color: ${({ theme }) => theme.colors.onSurface};
   }
 `;
 

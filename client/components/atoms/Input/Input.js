@@ -84,7 +84,7 @@ const StyledLabel = styled.label`
 const StyledInput = styled.input`
   width: 100%;
   padding: ${({ theme }) => theme.sizes.spacingInput};
-  border: 1px solid #dadada;
+  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   font-size: 1.3rem;
 `;
