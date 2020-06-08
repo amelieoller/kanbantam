@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
-import BoardTile from '_molecules/BoardTile';
 import AddBoardTile from '_molecules/AddBoardTile';
+import BoardTile from '_molecules/BoardTile';
 
 const StyledBoardList = styled.div`
   display: grid;

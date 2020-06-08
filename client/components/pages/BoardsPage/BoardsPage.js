@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
 import * as R from 'ramda';
+import { push } from 'connected-react-router';
 
-import { attemptGetBoards } from '_thunks/boards';
 import BoardSection from '_templates/BoardSection';
+import { attemptGetBoards } from '_thunks/boards';
 
 function BoardsPage() {
   const dispatch = useDispatch();

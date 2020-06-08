@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const UpdateTextButton = ({ text, handleUpdate }) => {
@@ -43,5 +44,10 @@ const Input = styled.input`
   padding: inherit;
   outline: none;
 `;
+
+UpdateTextButton.propTypes = {
+  text: PropTypes.string.isRequired,
+  handleUpdate: PropTypes.func.isRequired,
+};
 
 export default UpdateTextButton;

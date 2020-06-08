@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import PlusCircle from '_assets/icons/plus-circle.svg';
 import MinusCircle from '_assets/icons/minus-circle.svg';
+import PlusCircle from '_assets/icons/plus-circle.svg';
 
 const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }) => {
   const [percentage, setPercentage] = useState(0);

@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
+import LoginSection from '_templates/LoginSection';
+import RegisterSection from '_templates/RegisterSection';
 import backgroundImageLarge from '_assets/images/background-image-large.jpg';
 import backgroundImageSmall from '_assets/images/background-image-small.jpg';
 import Github from '_assets/icons/github.svg';
-import Login from '_assets/icons/log-in.svg';
-import User from '_assets/icons/user.svg';
-import LoginSection from '_templates/LoginSection';
-import RegisterSection from '_templates/RegisterSection';
 
 const WelcomePageStyles = styled.div`
   height: 100vh;

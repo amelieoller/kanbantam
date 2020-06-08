@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Modal from 'react-modal';
+import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import Modal from 'react-modal';
 import { format } from 'date-fns';
 
+import Button from '_atoms/Button';
+import Input from '_atoms/Input';
+import TextArea from '_atoms/TextArea';
+import CategorySelect from '_molecules/CategorySelect';
 import {
   attemptUpdateTodo,
   attemptDeleteTodo,
   attemptToggleCompleteTodo,
 } from '_thunks/todos';
-import CategorySelect from '_molecules/CategorySelect';
-import Input from '_atoms/Input';
-import TextArea from '_atoms/TextArea';
-import Button from '_atoms/Button';
 
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#app');

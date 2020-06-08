@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import * as R from 'ramda';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import * as R from 'ramda';
+import { Link } from 'react-router-dom';
 
-import Logout from '_assets/icons/log-out.svg';
-import Logo from '_assets/icons/logo.svg';
-import Moon from '_assets/icons/Moon.svg';
-import Sun from '_assets/icons/Sun.svg';
-import { attemptLogout } from '_thunks/auth';
-import { attemptUpdateBoard } from '_thunks/boards';
+import CategorySelect from '_molecules/CategorySelect';
 import UpdateTextButton from '_molecules/UpdateTextButton';
 import Settings from '_organisms/Settings';
-import CategorySelect from '_molecules/CategorySelect';
+import { attemptLogout } from '_thunks/auth';
+import { attemptUpdateBoard } from '_thunks/boards';
+import Logo from '_assets/icons/logo.svg';
+import Logout from '_assets/icons/log-out.svg';
+import Moon from '_assets/icons/Moon.svg';
+import Sun from '_assets/icons/Sun.svg';
 
 function Navigation({ pathname }) {
   const dispatch = useDispatch();

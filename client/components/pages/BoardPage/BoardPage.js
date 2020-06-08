@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
-import * as R from 'ramda';
 import { ThemeProvider } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import * as R from 'ramda';
+import { push } from 'connected-react-router';
 
-import { light, dark } from '_styles/Theme';
-import { attemptGetBoards } from '_thunks/boards';
-import { setBoard } from '_actions/currentBoard';
 import Board from '_templates/Board';
+import { attemptGetBoards } from '_thunks/boards';
+import { attemptGetCategories } from '_thunks/categories';
 import { attemptGetLists } from '_thunks/lists';
 import { attemptGetTodos } from '_thunks/todos';
-import { attemptGetCategories } from '_thunks/categories';
+import { setBoard } from '_actions/currentBoard';
+import { light, dark } from '_styles/Theme';
 
 function BoardPage({ boardId }) {
   const dispatch = useDispatch();

@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
 import * as R from 'ramda';
+import { push } from 'connected-react-router';
+
 import LoginSection from '_templates/LoginSection';
 
-export default function LoginPage() {
+function LoginPage() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
 
@@ -20,3 +21,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default LoginPage;

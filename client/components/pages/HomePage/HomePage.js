@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
 import * as R from 'ramda';
+import { push } from 'connected-react-router';
 
-export default function HomePage() {
+function HomePage() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
 
@@ -23,3 +23,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+export default HomePage;

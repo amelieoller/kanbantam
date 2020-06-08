@@ -4,22 +4,21 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 const R = require('ramda');
 
-import SettingsIcon from '_assets/icons/settings.svg';
+import Checkbox from '_atoms/Checkbox';
+import Dropdown from '_atoms/Dropdown';
+import Input from '_atoms/Input';
+import Categories from '_organisms/Categories';
+import GeneralProfile from '_organisms/GeneralProfile';
+import SlideOutMenu from '_organisms/SlideOutMenu';
+import Account from '../../templates/AccountSettings/AccountSettings';
+import { attemptDeleteBoard, attemptUpdateBoard } from '_thunks/boards';
+import AlertCircle from '_assets/icons/alert-circle.svg';
+import Eye from '_assets/icons/eye.svg';
 import Heart from '_assets/icons/heart.svg';
 import List from '_assets/icons/list.svg';
-import X from '_assets/icons/x.svg';
-import Eye from '_assets/icons/eye.svg';
-import AlertCircle from '_assets/icons/alert-circle.svg';
+import SettingsIcon from '_assets/icons/settings.svg';
 import Trash from '_assets/icons/trash-2.svg';
-
-import Categories from '_organisms/Categories';
-import Dropdown from '_atoms/Dropdown';
-import Checkbox from '_atoms/Checkbox';
-import SlideOutMenu from '_organisms/SlideOutMenu';
-import Input from '_atoms/Input';
-import { attemptDeleteBoard, attemptUpdateBoard } from '_thunks/boards';
-import GeneralProfile from '_organisms/GeneralProfile';
-import Account from '../../templates/AccountSettings/AccountSettings';
+import X from '_assets/icons/x.svg';
 
 const StyledSettings = styled.div`
   background-color: ${(props) => props.theme.colors.surface};

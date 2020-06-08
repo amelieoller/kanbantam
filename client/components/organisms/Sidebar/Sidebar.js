@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 
+import Pomodoro from '_templates/Pomodoro';
+import { attemptUpdateBoard } from '_thunks/boards';
+import { sortItemsByOrder } from '_utils/sorting';
 import ChevronLeft from '_assets/icons/chevrons-left.svg';
 import ChevronRight from '_assets/icons/chevrons-right.svg';
 import Clock from '_assets/icons/clock.svg';
-import { attemptUpdateBoard } from '_thunks/boards';
-import Pomodoro from '_templates/Pomodoro';
-import { sortItemsByOrder } from '_utils/sorting';
 
 function Sidebar({ isSidebarOpen, currentBoard }) {
   const dispatch = useDispatch();

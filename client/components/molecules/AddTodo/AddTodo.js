@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import { attemptAddTodo } from '_thunks/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';

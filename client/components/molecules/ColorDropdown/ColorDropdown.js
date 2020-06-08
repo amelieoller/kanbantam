@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TwitterPicker } from 'react-color';
 
-import Droplet from '_assets/icons/droplet.svg';
 import useOnClickOutside from '_hooks/useOnClickOutside';
+import Droplet from '_assets/icons/droplet.svg';
 
 const ColorDropdown = ({ onChange, currentColor }) => {
   const colorRef = useRef();

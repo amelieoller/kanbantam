@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as R from 'ramda';
+import { Link } from 'react-router-dom';
 
-import useKeyPress from '_hooks/useKeyPress';
-import { attemptLogin } from '_thunks/auth';
-import Input from '_atoms/Input';
 import Button from '_atoms/Button';
+import Input from '_atoms/Input';
+import { attemptLogin } from '_thunks/auth';
+import useKeyPress from '_hooks/useKeyPress';
 
 function Login({ setIsLogin }) {
   const dispatch = useDispatch();
@@ -131,5 +132,9 @@ const NoAccountYet = styled.div`
     cursor: pointer;
   }
 `;
+
+Login.propTypes = {
+  setIsLogin: PropTypes.func,
+};
 
 export default Login;

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import { attemptAddCategory } from '_thunks/categories';
-import Input from '_atoms/Input';
 import Button from '_atoms/Button';
-import ColorDropdown from '../ColorDropdown';
+import Input from '_atoms/Input';
+import ColorDropdown from '_molecules/ColorDropdown';
+import { attemptAddCategory } from '_thunks/categories';
 
 function AddCategory({ boardId }) {
   const dispatch = useDispatch();

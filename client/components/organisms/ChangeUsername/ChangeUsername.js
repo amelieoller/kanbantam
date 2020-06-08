@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
+import classNames from 'classnames';
 
 import { attemptUpdateUser } from '_thunks/user';
 
@@ -20,8 +20,7 @@ export default function ChangeUsername() {
   const updateUsernameCase = (e) => setUsernameCase(e.target.value);
 
   const disabled =
-    user.usernameCase === usernameCase ||
-    usernameCase.toLowerCase() !== user.username;
+    user.usernameCase === usernameCase || usernameCase.toLowerCase() !== user.username;
 
   const saveUsernameCase = () => {
     if (usernameCase.toLowerCase() === user.username) {

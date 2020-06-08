@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import Trash from '_assets/icons/trash-2.svg';
 import Input from '_atoms/Input';
-import ColorDropdown from '../../molecules/ColorDropdown/ColorDropdown';
+import ColorDropdown from '_molecules/ColorDropdown/ColorDropdown';
 import { attemptDeleteCategory, attemptUpdateCategory } from '_thunks/categories';
 import Save from '_assets/icons/save.svg';
+import Trash from '_assets/icons/trash-2.svg';
 
 const Category = ({ category }) => {
   const dispatch = useDispatch();

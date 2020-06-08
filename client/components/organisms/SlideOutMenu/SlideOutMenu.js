@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Swipe from 'react-easy-swipe';
 import clsx from 'clsx';
-import styled from 'styled-components';
 
 const StyledCheeseburger = styled.div`
   visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};

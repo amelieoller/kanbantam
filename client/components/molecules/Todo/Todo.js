@@ -1,19 +1,19 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { parseISO } from 'date-fns';
 import styled from 'styled-components';
-import ReactMarkdown from 'react-markdown';
 import { useSelector, useDispatch } from 'react-redux';
 import * as R from 'ramda';
+import ReactMarkdown from 'react-markdown';
+import { parseISO } from 'date-fns';
 
-import Calendar from '_assets/icons/calendar.svg';
-import Flag from '_assets/icons/flag.svg';
-import CheckCircle from '_assets/icons/check-circle.svg';
-import TodoModal from '_organisms/TodoModal';
-import useCombinedRefs from '_hooks/useCombinedRefs';
 import ProgressBar from '_molecules/ProgressBar';
+import TodoModal from '_organisms/TodoModal';
 import { attemptToggleCompleteTodo, attemptUpdateTodo } from '_thunks/todos';
 import { formatDaysToNow } from '_utils/dates.js';
+import useCombinedRefs from '_hooks/useCombinedRefs';
+import Calendar from '_assets/icons/calendar.svg';
+import CheckCircle from '_assets/icons/check-circle.svg';
+import Flag from '_assets/icons/flag.svg';
 
 const fromNow = (date) => formatDaysToNow(parseISO(date));
 

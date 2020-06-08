@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 
-import { validateName } from '_utils/validation';
-import { attemptUpdateUser } from '_thunks/user';
 import Input from '_atoms/Input';
 import Button from '_atoms/Button';
+import { attemptUpdateUser } from '_thunks/user';
+import { validateName } from '_utils/validation';
 
 function GeneralProfile() {
   const dispatch = useDispatch();

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
-import { attemptUpdateTodo } from '_thunks/todos';
-import { attemptUpdateBoard } from '_thunks/boards';
-import { useInterval } from '_hooks/useInterval';
-import { formatTime } from '_utils/dates';
 import ProgressBar from '_molecules/ProgressBar';
-import PlayCircle from '_assets/icons/play-circle.svg';
+import { attemptUpdateBoard } from '_thunks/boards';
+import { attemptUpdateTodo } from '_thunks/todos';
+import { formatTime } from '_utils/dates';
+import { useInterval } from '_hooks/useInterval';
 import PauseCircle from '_assets/icons/pause-circle.svg';
+import PlayCircle from '_assets/icons/play-circle.svg';
 import Repeat from '_assets/icons/repeat.svg';
 
 const Pomodoro = ({
@@ -174,6 +174,7 @@ Pomodoro.propTypes = {
   }),
   workLength: PropTypes.number.isRequired,
   breakLength: PropTypes.number.isRequired,
+  isSidebarOpen: PropTypes.bool.isRequired,
 };
 
 export default Pomodoro;

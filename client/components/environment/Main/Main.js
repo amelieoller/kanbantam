@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route, Redirect } from 'react-router';
-import Notifications from 'react-notification-system-redux';
+import { withTheme } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
-import { withTheme } from 'styled-components';
+import { Switch, Route, Redirect } from 'react-router';
+import Notifications from 'react-notification-system-redux';
 
-import { attemptGetUser } from '_thunks/user';
-
-import LoginPage from '_pages/LoginPage';
-import RegisterPage from '_pages/RegisterPage';
+import Navigation from '_organisms/Navigation';
 import BoardPage from '_pages/BoardPage';
 import BoardsPage from '_pages/BoardsPage';
-import SettingsPage from '_pages/SettingsPage';
 import LostPage from '_pages/LostPage';
-import Navigation from '_organisms/Navigation';
+import SettingsPage from '_pages/SettingsPage';
 import WelcomePage from '_pages/WelcomePage/WelcomePage';
+import { attemptGetUser } from '_thunks/user';
 
 function Main({ location, theme: { colors } }) {
   const dispatch = useDispatch();

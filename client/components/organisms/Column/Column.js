@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Draggable } from 'react-beautiful-dnd';
 import { useDispatch } from 'react-redux';
+import { Draggable } from 'react-beautiful-dnd';
 
-import List from '_organisms/List';
-import Trash from '_assets/icons/trash-2.svg';
-import { attemptDeleteList, attemptUpdateList } from '_thunks/lists';
 import AddTodo from '_molecules/AddTodo';
+import List from '_organisms/List';
+import { attemptDeleteList, attemptUpdateList } from '_thunks/lists';
+import Trash from '_assets/icons/trash-2.svg';
 
 const Column = ({ id, title, todos, index, listHeight, board, placeholderProps }) => {
   const dispatch = useDispatch();

@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { attemptUpdateTodo } from '_thunks/todos';
+import AddList from '_molecules/AddList';
+import Column from '_organisms/Column';
+import Sidebar from '_organisms/Sidebar';
 import { attemptUpdateList } from '_thunks/lists';
-import reorder, { reorderQuoteMap } from '_utils/dragAndDrop';
+import { attemptUpdateTodo } from '_thunks/todos';
+import reorder, { reorderTodoList } from '_utils/dragAndDrop';
 import { calculateIndex, sortItemsByOrder } from '_utils/sorting';
 import useResize from '_hooks/useResize';
-import AddList from '_molecules/AddList';
-import Sidebar from '_organisms/Sidebar';
-import Column from '_organisms/Column';
 
 function Board({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
@@ -193,7 +193,7 @@ function Board({ board, theme: { sizes } }) {
       return;
     }
 
-    const data = reorderQuoteMap({
+    const data = reorderTodoList({
       quoteMap: listsWithTodos,
       source,
       destination,

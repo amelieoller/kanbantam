@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import { attemptAddBoard } from '_thunks/boards';
 import useOnClickOutside from '_hooks/useOnClickOutside';
