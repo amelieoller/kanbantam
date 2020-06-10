@@ -78,7 +78,7 @@ const Button = styled.button`
   svg {
     height: 13px;
     width: 13px;
-    color: ${({ theme }) => theme.colors.lighter(8, 'onSurface')};
+    color: ${({ theme }) => theme.colors.surfaceVariant};
   }
 
   &:hover svg {
@@ -90,23 +90,22 @@ const ProgressWrapper = styled.div`
   position: relative;
   height: 12px;
   border-radius: 10px;
-  background: ${({ theme }) => theme.colors.lighter(9, 'onSurface')};
+  background: ${({ theme }) => theme.colors.surfaceVariant};
   width: 100%;
 `;
 
 const ProgressFiller = styled.div`
-  background: ${({ theme }) => theme.colors.lighter(8, 'onSurface')};
+  background: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
   height: 100%;
   border-radius: inherit;
   transition: width 0.2s ease-in;
-  color: ${({ theme }) => theme.colors.onSecondary};
   display: flex;
   align-items: center;
   width: ${({ width }) => width}%;
 `;
 
 const TextLeft = styled.span`
-  color: ${({ theme }) => theme.colors.lighter(5, 'onSurface')};
+  color: ${({ theme }) => theme.colors.onSurfaceVariant};
   font-size: 0.75rem;
   font-style: italic;
   white-space: nowrap;

@@ -139,17 +139,16 @@ const DoneButton = styled.button`
   svg {
     width: 17px;
     height: 17px;
-    color: ${({ theme }) => theme.colors.lighter(8, 'onSurface')};
+    color: ${({ theme }) => theme.colors.onSurfaceVariant};
   }
 `;
 
 const TopBadge = styled.span`
-  background: ${({ color, theme }) =>
-    color ? color : theme.colors.lighter(8, 'onSurface')};
+  background: ${({ color, theme }) => (color ? color : theme.colors.surfaceVariant)};
   border-radius: 7px;
   padding: 2px 5px;
   font-size: 0.8rem;
-  color: white;
+  color: ${({ theme }) => theme.colors.onSurfaceVariant};
   margin-right: ${({ theme }) => theme.sizes.spacingSmall};
 
   &.pointer {
@@ -182,8 +181,27 @@ const Container = styled.div`
     ${({ categoryColor }) => (categoryColor ? categoryColor : 'transparent')};
   color: ${({ theme }) => theme.colors.onSurface};
 
-  & > *:not(:last-child) {
-    margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};
+  ol {
+    list-style: none;
+    counter-reset: li;
+
+    li {
+      counter-increment: li;
+
+      &::before {
+        content: counter(li);
+        color: ${({ theme }) => theme.colors.disabled('onSurface')};
+        display: inline-block;
+        width: 0.8em;
+      }
+    }
+  }
+
+  ul li::before {
+    content: '•';
+    color: ${({ theme }) => theme.colors.disabled('onSurface')};
+    display: inline-block;
+    width: 0.7em;
   }
 
   &:hover,
@@ -211,6 +229,7 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  margin-top: ${({ theme }) => theme.sizes.spacingSmall};
 
   & > *:not(:last-child) {
     margin-right: 10px;
