@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import { format } from 'date-fns';
 
 import Button from '_atoms/Button';
+import CodeMirrorArea from '_atoms/CodeMirrorArea';
 import Input from '_atoms/Input';
 import TextArea from '_atoms/TextArea';
 import CategorySelect from '_molecules/CategorySelect';
@@ -47,7 +48,8 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
     setUpdatedTodo((prevTodo) => ({ ...prevTodo, [name]: value }));
   };
 
-  const formatDate = (value) => new Date(value.replace(/-/g, '/').replace(/T.+/, ''));
+  const formatDate = (value) =>
+    new Date(value.replace(/-/g, '/').replace(/T.+/, ''));
 
   const toggleCompleted = () => {
     dispatch(attemptToggleCompleteTodo(updatedTodo.id));
@@ -79,7 +81,9 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
       top: isNearBottom
         ? 'auto'
         : Math.min(cardBounds.top, window.innerHeight - cardBounds.height - 18),
-      bottom: isNearBottom ? window.innerHeight - cardBounds.bottom - 18 : 'auto',
+      bottom: isNearBottom
+        ? window.innerHeight - cardBounds.bottom - 18
+        : 'auto',
       left: isNearRight ? null : cardBounds.left,
       right: isNearRight ? window.innerWidth - cardBounds.right : null,
       flexDirection: isNearRight ? 'row-reverse' : 'row',
@@ -94,6 +98,7 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
       top: 3,
       left: 3,
       right: 3,
+      background: 'blue',
     },
   };
 
@@ -106,9 +111,19 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
         overlayClassName="modal-underlay"
         className="modal"
       >
-        <TextArea
+        {/* <TextArea
           label="Text"
           handleOnBlur={(value) => updateTodo('text', value)}
+          defaultValue={updatedTodo.text}
+          style={{
+            minHeight: isThinDisplay ? 'none' : cardBounds.height,
+            width: isThinDisplay ? '100%' : cardBounds.width,
+          }}
+        /> */}
+
+        <CodeMirrorArea
+          label="Text"
+          handleOnChange={(value) => updateTodo('text', value)}
           defaultValue={updatedTodo.text}
           style={{
             minHeight: isThinDisplay ? 'none' : cardBounds.height,
@@ -125,7 +140,9 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
 
           <Input
             label="Minutes"
-            handleOnBlur={(value) => updateTodo('minutes', value === '' ? 0 : value)}
+            handleOnBlur={(value) =>
+              updateTodo('minutes', value === '' ? 0 : value)
+            }
             defaultValue={updatedTodo.minutes}
             type="number"
           />

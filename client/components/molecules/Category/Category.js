@@ -28,7 +28,7 @@ const Category = ({ category }) => {
   return (
     <StyledCategory key={category.id}>
       <Input
-        label="Edit Category"
+        label={`Edit ${title}`}
         handleOnBlur={(newTitle) => {
           setHasBeenModified(true);
           setTitle(newTitle);

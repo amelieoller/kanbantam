@@ -10,6 +10,16 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  .react-codemirror2.code-mirror > div {
+    width: 265px;
+    background: white;
+    padding: 5px;
+    border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+    border-radius: ${({ theme }) => theme.sizes.borderRadius};
+    font-size: 1.2rem;
+  }
+
+
   html {
     background-color: #f5f5f5;
     font-size: 12px;
