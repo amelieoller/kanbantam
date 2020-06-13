@@ -21,6 +21,7 @@ const Todo = ({
   todo,
   isDragging,
   provided: { innerRef, draggableProps, dragHandleProps },
+  isWithinPomodoro,
 }) => {
   const dispatch = useDispatch();
 
@@ -67,6 +68,7 @@ const Todo = ({
       onClick={handleClick}
       data-type="isCard"
       categoryColor={todoCategory && todoCategory.color}
+      inPomodori={isWithinPomodoro}
     >
       <DoneButton
         onClick={() => dispatch(attemptToggleCompleteTodo(todo.id))}
@@ -140,7 +142,7 @@ const DoneButton = styled.button`
   svg {
     width: 17px;
     height: 17px;
-    color: ${({ theme }) => theme.colors.onSurfaceVariant};
+    color: ${({ theme }) => theme.colors.lighter(7, 'onSurface')};
   }
 `;
 
@@ -180,8 +182,14 @@ const Container = styled.div`
   flex-direction: column;
   box-shadow: ${({ theme }) => theme.shadows.one};
   position: relative;
-  border-left: ${({ theme }) => theme.sizes.cardBorder} solid
-    ${({ categoryColor }) => (categoryColor ? categoryColor : 'transparent')};
+  border-right: ${({ theme, categoryColor }) =>
+    `${theme.sizes.cardBorder} solid ${
+      categoryColor ? categoryColor : 'transparent'
+    }`};
+  border-left: ${({ theme, inPomodori }) =>
+    `${theme.sizes.cardBorder} solid ${
+      inPomodori ? theme.colors.primary : 'transparent'
+    }`};
   color: ${({ theme }) => theme.colors.onSurface};
 
   ol {
@@ -270,6 +278,7 @@ Todo.propTypes = {
     draggableProps: PropTypes.shape({}),
     dragHandleProps: PropTypes.shape({}),
   }),
+  isWithinPomodoro: PropTypes.bool,
 };
 
 Todo.defaultProps = {

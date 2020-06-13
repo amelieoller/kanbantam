@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
@@ -30,55 +30,101 @@ const ScrollContainer = styled.div`
   max-height: ${({ listHeight }) => listHeight}px;
 `;
 
-const List = ({ listId, todos, listHeight, placeholderProps }) => (
-  <Droppable
-    droppableId={listId}
-    isCombineEnabled={false} // if set to true makes it possible to combine cards (it removes the item that was dragging)
-  >
-    {(dropProvided, dropSnapshot) => (
-      <Wrapper
-        isDraggingOver={dropSnapshot.isDraggingOver}
-        isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
-        {...dropProvided.droppableProps}
-      >
-        <ScrollContainer listHeight={listHeight}>
-          <>
-            <DropZone ref={dropProvided.innerRef}>
-              {todos.map((todo, index) => (
-                <Draggable
-                  key={todo.id}
-                  draggableId={todo.id}
-                  index={index}
-                  shouldRespectForceTouch={false}
-                >
-                  {(dragProvided, dragSnapshot) => (
-                    <Todo
-                      key={todo.id}
-                      todo={todo}
-                      isDragging={dragSnapshot.isDragging}
-                      provided={dragProvided}
-                    />
-                  )}
-                </Draggable>
-              ))}
-              {dropProvided.placeholder}
-              {!!placeholderProps.clientY && dropSnapshot.isDraggingOver && (
-                <Placeholder
-                  style={{
-                    top: placeholderProps.clientY,
-                    left: placeholderProps.clientX,
-                    height: placeholderProps.clientHeight,
-                    width: placeholderProps.clientWidth,
-                  }}
-                />
-              )}
-            </DropZone>
-          </>
-        </ScrollContainer>
-      </Wrapper>
-    )}
-  </Droppable>
-);
+const List = ({
+  listId,
+  todos,
+  listHeight,
+  placeholderProps,
+  totalPomodori,
+}) => {
+  const [withinPomodoroTodos, setWithinPomodoroTodos] = useState([]);
+
+  useEffect(() => {
+    if (todos.length === 0) return;
+
+    const withinPomodoroTime = () => {
+      // If there are no totalPomodori return
+      if (!totalPomodori) return;
+
+      let accumulatedMinutes = 0;
+      let minutesAvailable = 25 * totalPomodori;
+      const selectedTodos = [];
+
+      // For each todo iterate and figure out if it fits within our available minutes, if so, add to array, otherwise ignore
+      for (let i = 0; i < todos.length; i++) {
+        const todo = todos[i];
+        const todoMinutesLeft = todo.minutes - todo.elapsedMinutes;
+        const newAccMinutes = accumulatedMinutes + todoMinutesLeft;
+
+        // Otherwise, if todo has minutes AND todo fits into minutesAvailable, push id to selectedTodos and increment accumulatedMinutes
+        if (todoMinutesLeft && newAccMinutes <= minutesAvailable) {
+          accumulatedMinutes = newAccMinutes;
+          selectedTodos.push(todo.id);
+        }
+
+        // If there are no more minutes available to distribute break out of loop
+        if (newAccMinutes >= minutesAvailable) break;
+      }
+
+      return selectedTodos;
+    };
+
+    const withinPomodoro = withinPomodoroTime();
+
+    setWithinPomodoroTodos(withinPomodoro);
+  }, [todos, totalPomodori]);
+
+  return (
+    <Droppable
+      droppableId={listId}
+      isCombineEnabled={false} // if set to true makes it possible to combine cards (it removes the item that was dragging)
+    >
+      {(dropProvided, dropSnapshot) => (
+        <Wrapper
+          isDraggingOver={dropSnapshot.isDraggingOver}
+          isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
+          {...dropProvided.droppableProps}
+        >
+          <ScrollContainer listHeight={listHeight}>
+            <>
+              <DropZone ref={dropProvided.innerRef}>
+                {todos.map((todo, index) => (
+                  <Draggable
+                    key={todo.id}
+                    draggableId={todo.id}
+                    index={index}
+                    shouldRespectForceTouch={false}
+                  >
+                    {(dragProvided, dragSnapshot) => (
+                      <Todo
+                        key={todo.id}
+                        todo={todo}
+                        isDragging={dragSnapshot.isDragging}
+                        provided={dragProvided}
+                        isWithinPomodoro={withinPomodoroTodos.includes(todo.id)}
+                      />
+                    )}
+                  </Draggable>
+                ))}
+                {dropProvided.placeholder}
+                {!!placeholderProps.clientY && dropSnapshot.isDraggingOver && (
+                  <Placeholder
+                    style={{
+                      top: placeholderProps.clientY,
+                      left: placeholderProps.clientX,
+                      height: placeholderProps.clientHeight,
+                      width: placeholderProps.clientWidth,
+                    }}
+                  />
+                )}
+              </DropZone>
+            </>
+          </ScrollContainer>
+        </Wrapper>
+      )}
+    </Droppable>
+  );
+};
 
 const Placeholder = styled.div`
   position: absolute;
@@ -108,8 +154,11 @@ List.propTypes = {
       list: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
       order: PropTypes.number.isRequired,
+      minutes: PropTypes.number,
+      elapsedMinutes: PropTypes.number,
     }),
   ),
+  totalPomodori: PropTypes.number.isRequired,
   listHeight: PropTypes.number.isRequired,
   placeholderProps: PropTypes.shape({
     clientHeight: PropTypes.number,
