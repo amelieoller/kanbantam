@@ -48,7 +48,8 @@ const Todo = ({
   const handleClick = (e) => {
     const elAttribute = e.target.dataset.type;
     const elAttributeParent = e.target.parentElement.dataset.type;
-    if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
+    if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable')
+      return;
 
     setIsOpen(true);
   };
@@ -108,7 +109,7 @@ const Todo = ({
               <ProgressBar
                 total={todo.minutes}
                 elapsed={todo.elapsedMinutes}
-                type="minutes"
+                type="min"
                 handleBarUpdate={handleBarUpdate}
                 increment={10}
               />
@@ -144,7 +145,8 @@ const DoneButton = styled.button`
 `;
 
 const TopBadge = styled.span`
-  background: ${({ color, theme }) => (color ? color : theme.colors.surfaceVariant)};
+  background: ${({ color, theme }) =>
+    color ? color : theme.colors.surfaceVariant};
   border-radius: 7px;
   padding: 2px 5px;
   font-size: 0.8rem;
@@ -167,7 +169,8 @@ const TopBadge = styled.span`
 
 const Container = styled.div`
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-  box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
+  box-shadow: ${({ isDragging }) =>
+    isDragging ? `2px 2px 1px lightgreen` : 'none'};
   padding: ${({ theme }) => theme.sizes.spacingSmall};
   min-height: ${({ theme }) => theme.sizes.minCardHeight};
   margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};

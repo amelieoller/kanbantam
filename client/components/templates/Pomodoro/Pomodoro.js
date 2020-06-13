@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import ProgressBar from '_molecules/ProgressBar';
 import { attemptUpdateBoard } from '_thunks/boards';
 import { attemptUpdateTodo } from '_thunks/todos';
-import { formatTime } from '_utils/dates';
+import { formatTime, formatYearMonthDay } from '_utils/dates';
 import { useInterval } from '_hooks/useInterval';
 import PauseCircle from '_assets/icons/pause-circle.svg';
 import PlayCircle from '_assets/icons/play-circle.svg';
@@ -19,6 +19,9 @@ const Pomodoro = ({
   breakLength,
   isSidebarOpen,
 }) => {
+  const today = new Date();
+  const formattedDate = formatYearMonthDay(today);
+
   const dispatch = useDispatch();
 
   const [sessionLength, setSessionLength] = useState(workLength); // If it's a work session (25 min) or a break (5 min)
@@ -88,7 +91,8 @@ const Pomodoro = ({
     setIsRunning(false);
   };
 
-  const playOrPauseTimer = () => setIsRunning((prevIsRunning) => !prevIsRunning);
+  const playOrPauseTimer = () =>
+    setIsRunning((prevIsRunning) => !prevIsRunning);
 
   // -------------- DATABASE UPDATES --------------
   // Elapse one minute on the first todo in the default list
@@ -103,17 +107,28 @@ const Pomodoro = ({
 
   // Increase elapsedPomodori by 1 on the board
   const updateBoard = () => {
+    const currentElapsed = currentBoard.elapsedPomodori;
+
+    const newElapsed = {
+      ...currentElapsed,
+      [formattedDate]: currentElapsed[formattedDate]
+        ? currentElapsed[formattedDate] + 1
+        : 1,
+    };
+
     dispatch(
       attemptUpdateBoard({
         id: currentBoard.id,
-        elapsedPomodori: currentBoard.elapsedPomodori + 1,
+        elapsedPomodori: newElapsed,
       }),
     );
   };
 
   // Increase or decrease totalPomodori on the board
   const handleBarUpdate = (newTotal) => {
-    dispatch(attemptUpdateBoard({ id: currentBoard.id, totalPomodori: newTotal }));
+    dispatch(
+      attemptUpdateBoard({ id: currentBoard.id, totalPomodori: newTotal }),
+    );
   };
 
   return (
@@ -132,7 +147,7 @@ const Pomodoro = ({
       {isSidebarOpen && (
         <ProgressBar
           total={currentBoard.totalPomodori}
-          elapsed={currentBoard.elapsedPomodori}
+          elapsed={currentBoard.elapsedPomodori[formattedDate]}
           type="Pomodori"
           handleBarUpdate={handleBarUpdate}
           increment={1}
@@ -170,7 +185,7 @@ Pomodoro.propTypes = {
   currentBoard: PropTypes.shape({
     id: PropTypes.string.isRequired,
     totalPomodori: PropTypes.number,
-    elapsedPomodori: PropTypes.number,
+    elapsedPomodori: PropTypes.shape({}),
   }),
   workLength: PropTypes.number.isRequired,
   breakLength: PropTypes.number.isRequired,

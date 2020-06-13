@@ -5,7 +5,14 @@ import styled from 'styled-components';
 import MinusCircle from '_assets/icons/minus-circle.svg';
 import PlusCircle from '_assets/icons/plus-circle.svg';
 
-const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }) => {
+const ProgressBar = ({
+  total,
+  elapsed,
+  type,
+  handleBarUpdate,
+  increment,
+  minus,
+}) => {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
@@ -30,7 +37,10 @@ const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }
     <Wrapper>
       <ProgressBarWrapper>
         {minus && (
-          <Button data-type="isClickable" onClick={() => handleTotalUpdate(-increment)}>
+          <Button
+            data-type="isClickable"
+            onClick={() => handleTotalUpdate(-increment)}
+          >
             <MinusCircle data-type="isClickable" />
           </Button>
         )}
@@ -38,12 +48,15 @@ const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }
         <ProgressWrapper>
           <ProgressFiller className="filler" width={percentage}>
             <TextLeft>
-              {total - elapsed} {type} left
+              {total - elapsed} {type} left / {total}
             </TextLeft>
           </ProgressFiller>
         </ProgressWrapper>
 
-        <Button data-type="isClickable" onClick={() => handleTotalUpdate(increment)}>
+        <Button
+          data-type="isClickable"
+          onClick={() => handleTotalUpdate(increment)}
+        >
           <PlusCircle data-type="isClickable" />
         </Button>
       </ProgressBarWrapper>

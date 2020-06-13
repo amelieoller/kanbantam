@@ -17,7 +17,7 @@ const boardSchema = new Schema({
   focusMode: { type: Boolean },
   defaultFocusList: { type: String },
   totalPomodori: { type: Number, default: 0 },
-  elapsedPomodori: { type: Number, default: 0 },
+  elapsedPomodori: { type: Object },
 });
 
 boardSchema.plugin(immutablePlugin);
