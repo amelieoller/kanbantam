@@ -20,7 +20,7 @@ const MiniCssExtractPluginConfig = new MiniCssExtractPlugin({
 });
 
 const FaviconsWebpackPluginConfig = new FaviconsWebpackPlugin({
-  logo: resolve('client/assets/favicons/favicon.ico'),
+  logo: resolve('client/assets/favicons/favicon.png'),
   prefix: 'favicons/',
   emitStats: false,
   statsFilename: 'faviconstats.json',
