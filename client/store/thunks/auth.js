@@ -37,7 +37,7 @@ export const attemptRegister = (newUser) => (dispatch) =>
       );
       return dispatch(attemptLogin(newUser));
     })
-    .then(() => dispatch(push('/settings')))
+    .then(() => dispatch(push('/')))
     .catch(dispatchError(dispatch));
 
 export const attemptLogout = () => (dispatch) =>
