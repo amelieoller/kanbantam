@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 import { attemptAddBoard } from '_thunks/boards';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 
-function AddBoardTile() {
+function AddBoardTile({ lastBoardSortVal }) {
   const formRef = useRef();
 
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ function AddBoardTile() {
     e.preventDefault();
 
     if (title) {
-      dispatch(attemptAddBoard({ title }));
+      dispatch(attemptAddBoard({ title, order: lastBoardSortVal + 1 }));
       setTitle('');
     }
   };
@@ -39,9 +40,16 @@ function AddBoardTile() {
 
 const AddBoardTileButton = styled.button`
   border: 0;
-  background: ${({ theme }) => theme.colors.surface};
+  background: ${({ theme }) => theme.colors.darker(1, 'surface')};
   cursor: pointer;
   transition: background 0.1s;
+
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
+  box-shadow: ${({ theme }) => theme.shadows.one};
+  padding: ${({ theme }) => theme.sizes.spacing};
+  color: ${({ theme }) => theme.colors.onSurface};
 
   &:hover,
   &:focus {
@@ -51,6 +59,8 @@ const AddBoardTileButton = styled.button`
 
 const NewBoardForm = styled.form`
   background: ${({ theme }) => theme.colors.surface};
+  padding: ${({ theme }) => theme.sizes.spacing};
+  background: ${({ theme }) => theme.colors.darker(1, 'surface')};
 
   & > input {
     border-width: 0;
@@ -71,5 +81,9 @@ const NewBoardButton = styled.input`
   font-weight: inherit;
   color: white;
 `;
+
+AddBoardTile.propTypes = {
+  lastBoardSortVal: PropTypes.number.isRequired,
+};
 
 export default AddBoardTile;

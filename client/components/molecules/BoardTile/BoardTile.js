@@ -4,9 +4,19 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const StyledBoardTile = styled(Link)`
-  background: white;
-  width: 100%;
-  height: 100%;
+  background: ${({ theme }) => theme.colors.surface};
+  cursor: grab;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
+  box-shadow: ${({ theme }) => theme.shadows.one};
+  padding: ${({ theme }) => theme.sizes.spacing};
+  color: ${({ theme }) => theme.colors.onSurface};
+
+  &.dragging-helper-class {
+    background: ${({ theme }) => theme.colors.surfaceHover};
+    box-shadow: ${({ theme }) => theme.shadows.three};
+  }
 `;
 
 function BoardTile({ board }) {
