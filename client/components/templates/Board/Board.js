@@ -11,7 +11,7 @@ import Sidebar from '_organisms/Sidebar';
 import { attemptUpdateList } from '_thunks/lists';
 import { attemptUpdateTodo } from '_thunks/todos';
 import reorder, { reorderTodoList } from '_utils/dragAndDrop';
-import { calculateIndex, sortItemsByOrder } from '_utils/sorting';
+import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
 import useResize from '_hooks/useResize';
 
 function Board({ board, theme: { sizes } }) {
@@ -90,11 +90,7 @@ function Board({ board, theme: { sizes } }) {
 
     const sourceIndex = result.source.index;
 
-    calculateCardPlaceholderPosition(
-      [...draggedDOM.parentNode.children],
-      draggedDOM,
-      sourceIndex,
-    );
+    calculateCardPlaceholderPosition([...draggedDOM.parentNode.children], draggedDOM, sourceIndex);
   };
 
   const onDragUpdate = (result) => {
@@ -131,12 +127,7 @@ function Board({ board, theme: { sizes } }) {
       ];
     }
 
-    calculateCardPlaceholderPosition(
-      updatedArray,
-      draggedDOM,
-      destinationIndex,
-      parentList,
-    );
+    calculateCardPlaceholderPosition(updatedArray, draggedDOM, destinationIndex, parentList);
   };
 
   const onDragEnd = (result) => {
@@ -171,23 +162,18 @@ function Board({ board, theme: { sizes } }) {
     const destination = result.destination;
 
     // did not move anywhere - can bail early
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
+    if (source.droppableId === destination.droppableId && source.index === destination.index) {
       return;
     }
 
     // reordering column
     if (result.type === 'COLUMN') {
       const newOrderedLists = reorder(orderedLists, source.index, destination.index);
-
-      const prevList = newOrderedLists[destination.index - 1];
-      const nextList = newOrderedLists[destination.index + 1];
       const currentList = newOrderedLists[destination.index];
-      const newListSort = calculateIndex(prevList, nextList, newOrderedLists.length);
 
-      dispatch(attemptUpdateList({ ...currentList, order: newListSort.base }));
+      const newOrder = calculateNewOrder(newOrderedLists, destination.index);
+
+      dispatch(attemptUpdateList({ ...currentList, order: newOrder }));
       setOrderedLists(newOrderedLists);
 
       return;
@@ -221,14 +207,19 @@ function Board({ board, theme: { sizes } }) {
     const listBorder = 2;
 
     const listHeight =
-      screenHeight -
-      navHeight -
-      listHeaderHeight -
-      listFooterHeight -
-      doublePadding -
-      listBorder;
+      screenHeight - navHeight - listHeaderHeight - listFooterHeight - doublePadding - listBorder;
 
     return listHeight;
+  };
+
+  const isInFocusMode = board.focusMode && board.defaultFocusList && orderedLists.length !== 0;
+
+  const filterFocusList = () => {
+    if (isInFocusMode) {
+      return [orderedLists.find((list) => list.id === board.defaultFocusList)];
+    } else {
+      return orderedLists;
+    }
   };
 
   return (
@@ -244,7 +235,7 @@ function Board({ board, theme: { sizes } }) {
           <Droppable droppableId="board" type="COLUMN" direction="horizontal">
             {(provided) => (
               <ListsWrapper ref={provided.innerRef} {...provided.droppableProps}>
-                {orderedLists.map((list, index) => (
+                {filterFocusList().map((list, index) => (
                   <Column
                     key={list.id}
                     index={index}
@@ -258,16 +249,16 @@ function Board({ board, theme: { sizes } }) {
                 ))}
                 {provided.placeholder}
 
-                <div>
-                  <AddList
-                    boardId={board.id}
-                    lastListSortVal={
-                      orderedLists.length === 0
-                        ? 0
-                        : orderedLists[orderedLists.length - 1].order
-                    }
-                  />
-                </div>
+                {!isInFocusMode && (
+                  <div>
+                    <AddList
+                      boardId={board.id}
+                      lastListSortVal={
+                        orderedLists.length === 0 ? 0 : orderedLists[orderedLists.length - 1].order
+                      }
+                    />
+                  </div>
+                )}
               </ListsWrapper>
             )}
           </Droppable>
@@ -310,6 +301,8 @@ Board.propTypes = {
     id: PropTypes.string.isRequired,
     sidebarOpen: PropTypes.bool.isRequired,
     category: PropTypes.string,
+    focusMode: PropTypes.bool.isRequired,
+    defaultFocusList: PropTypes.string,
   }),
   theme: PropTypes.shape({
     sizes: PropTypes.object,

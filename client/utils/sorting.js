@@ -56,3 +56,11 @@ export const calculateIndex = (prevTodo, nextTodo, nCards = 1) => {
     increment,
   };
 };
+
+export const calculateNewOrder = (items, index) => {
+  const prevItem = items[index - 1];
+  const nextItem = items[index + 1];
+  const newItemSort = calculateIndex(prevItem, nextItem, items.length);
+
+  return newItemSort.base;
+};

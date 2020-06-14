@@ -10,10 +10,12 @@ import UpdateTextButton from '_molecules/UpdateTextButton';
 import Settings from '_organisms/Settings';
 import { attemptLogout } from '_thunks/auth';
 import { attemptUpdateBoard } from '_thunks/boards';
+import Eye from '_assets/icons/eye.svg';
+import EyeOff from '_assets/icons/eye-off.svg';
 import Logo from '_assets/icons/logo.svg';
 import Logout from '_assets/icons/log-out.svg';
-import Moon from '_assets/icons/Moon.svg';
-import Sun from '_assets/icons/Sun.svg';
+import Moon from '_assets/icons/moon.svg';
+import Sun from '_assets/icons/sun.svg';
 
 function Navigation({ pathname }) {
   const dispatch = useDispatch();
@@ -62,6 +64,15 @@ function Navigation({ pathname }) {
               currentCategoryId={currentBoard.category}
               onChange={(newCategoryId) => handleUpdateBoard({ category: newCategoryId })}
             />
+
+            {currentBoard.focusMode ? (
+              <Eye
+                onClick={() => handleUpdateBoard({ focusMode: false })}
+                style={{ color: 'tomato' }}
+              />
+            ) : (
+              <EyeOff onClick={() => handleUpdateBoard({ focusMode: true })} />
+            )}
 
             <Settings currentBoard={currentBoard} />
 
