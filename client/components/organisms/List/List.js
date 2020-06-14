@@ -30,13 +30,7 @@ const ScrollContainer = styled.div`
   max-height: ${({ listHeight }) => listHeight}px;
 `;
 
-const List = ({
-  listId,
-  todos,
-  listHeight,
-  placeholderProps,
-  totalPomodori,
-}) => {
+const List = ({ listId, todos, listHeight, placeholderProps, board }) => {
   const [withinPomodoroTodos, setWithinPomodoroTodos] = useState([]);
 
   useEffect(() => {
@@ -44,10 +38,10 @@ const List = ({
 
     const withinPomodoroTime = () => {
       // If there are no totalPomodori return
-      if (!totalPomodori) return;
+      if (!board.totalPomodori) return;
 
       let accumulatedMinutes = 0;
-      let minutesAvailable = 25 * totalPomodori;
+      let minutesAvailable = 25 * board.totalPomodori;
       const selectedTodos = [];
 
       // For each todo iterate and figure out if it fits within our available minutes, if so, add to array, otherwise ignore
@@ -61,9 +55,6 @@ const List = ({
           accumulatedMinutes = newAccMinutes;
           selectedTodos.push(todo.id);
         }
-
-        // If there are no more minutes available to distribute break out of loop
-        if (newAccMinutes >= minutesAvailable) break;
       }
 
       return selectedTodos;
@@ -72,7 +63,7 @@ const List = ({
     const withinPomodoro = withinPomodoroTime();
 
     setWithinPomodoroTodos(withinPomodoro);
-  }, [todos, totalPomodori]);
+  }, [todos, board.totalPomodori]);
 
   return (
     <Droppable
@@ -101,7 +92,10 @@ const List = ({
                         todo={todo}
                         isDragging={dragSnapshot.isDragging}
                         provided={dragProvided}
-                        isWithinPomodoro={withinPomodoroTodos.includes(todo.id)}
+                        isWithinPomodoro={
+                          withinPomodoroTodos && withinPomodoroTodos.includes(todo.id)
+                        }
+                        selectedCategory={board.category}
                       />
                     )}
                   </Draggable>
@@ -158,7 +152,10 @@ List.propTypes = {
       elapsedMinutes: PropTypes.number,
     }),
   ),
-  totalPomodori: PropTypes.number.isRequired,
+  board: PropTypes.shape({
+    totalPomodori: PropTypes.number.isRequired,
+    category: PropTypes.string.isRequired,
+  }),
   listHeight: PropTypes.number.isRequired,
   placeholderProps: PropTypes.shape({
     clientHeight: PropTypes.number,

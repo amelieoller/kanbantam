@@ -82,22 +82,11 @@ const Settings = ({ currentBoard }) => {
     setDefaultTime(currentBoard.defaultTime);
     setDefaultCategory(currentBoard.defaultCategory);
     setFocusMode(currentBoard.focusMode);
-    setDefaultFocusList(currentBoard.defaultFocusList);
+    setDefaultFocusList(currentBoard.defaultFocusList || '');
   }, [currentBoard]);
 
   const handleUpdateBoard = () => {
     if (settingsPending) {
-      console.log(
-        'defaultTime',
-        defaultTime,
-        'defaultCategory',
-        defaultCategory,
-        'focusMode',
-        focusMode,
-        'defaultFocusList',
-        defaultFocusList,
-      );
-
       dispatch(
         attemptUpdateBoard({
           id: currentBoard.id,
@@ -230,17 +219,15 @@ const Settings = ({ currentBoard }) => {
             <AlertCircle />
             Danger Zone
           </h2>
-          <DeleteSection>
-            <Trash
-              onClick={() => {
-                if (
-                  window.confirm(
-                    `Are you sure you want to delete the board "${currentBoard.title}"?`,
-                  )
-                )
-                  deleteBoard();
-              }}
-            />
+          <DeleteSection
+            onClick={() => {
+              if (
+                window.confirm(`Are you sure you want to delete the board "${currentBoard.title}"?`)
+              )
+                deleteBoard();
+            }}
+          >
+            <Trash />
             Delete this board
           </DeleteSection>
         </StyledSettings>
@@ -261,8 +248,12 @@ const DeleteSection = styled.div`
     margin-right: 6px;
   }
 
-  &:hover svg {
+  &:hover {
     color: ${(props) => props.theme.colors.error};
+
+    svg {
+      color: ${(props) => props.theme.colors.error};
+    }
   }
 `;
 
@@ -277,7 +268,7 @@ Settings.propTypes = {
     defaultTime: PropTypes.number,
     defaultCategory: PropTypes.string,
     focusMode: PropTypes.bool,
-    defaultFocusList: PropTypes.string.isRequired,
+    defaultFocusList: PropTypes.string,
   }).isRequired,
 };
 

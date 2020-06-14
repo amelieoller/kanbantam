@@ -9,15 +9,7 @@ import List from '_organisms/List';
 import { attemptDeleteList, attemptUpdateList } from '_thunks/lists';
 import Trash from '_assets/icons/trash-2.svg';
 
-const Column = ({
-  id,
-  title,
-  todos,
-  index,
-  listHeight,
-  board,
-  placeholderProps,
-}) => {
+const Column = ({ id, title, todos, index, listHeight, board, placeholderProps }) => {
   const dispatch = useDispatch();
 
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -29,9 +21,7 @@ const Column = ({
 
   const handleUpdateList = () => {
     if (currentTitle) {
-      dispatch(attemptUpdateList({ id, title: currentTitle })).then(() =>
-        setIsEditOpen(false),
-      );
+      dispatch(attemptUpdateList({ id, title: currentTitle })).then(() => setIsEditOpen(false));
     }
   };
 
@@ -47,11 +37,7 @@ const Column = ({
             onKeyDown={(e) => e.keyCode === 13 && handleUpdateList()}
           >
             {isEditOpen ? (
-              <EditListInput
-                type="text"
-                value={currentTitle}
-                onChange={updateTitle}
-              />
+              <EditListInput type="text" value={currentTitle} onChange={updateTitle} />
             ) : (
               <>
                 <HeaderText>{currentTitle}</HeaderText>
@@ -69,7 +55,7 @@ const Column = ({
               backgroundColor: snapshot.isDragging ? 'blue' : null,
             }}
             todos={todos}
-            totalPomodori={board.totalPomodori}
+            board={board}
             listHeight={listHeight}
             placeholderProps={placeholderProps}
           />
@@ -77,9 +63,7 @@ const Column = ({
             <AddTodo
               board={board}
               listId={id}
-              lastCardSortVal={
-                todos.length === 0 ? 0 : todos[todos.length - 1].order
-              }
+              lastCardSortVal={todos.length === 0 ? 0 : todos[todos.length - 1].order}
             />
           </ListFooter>
         </Container>
@@ -103,17 +87,14 @@ const ListHeader = styled.div`
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius};
   background-color: ${({ isDragging, theme }) =>
-    isDragging
-      ? theme.colors.darker(3, 'surfaceVariant')
-      : theme.colors.surfaceVariant};
+    isDragging ? theme.colors.darker(3, 'surfaceVariant') : theme.colors.surfaceVariant};
   transition: color 0.2s ease;
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
   color: ${({ theme }) => theme.colors.onSurfaceVariant};
   font-weight: 500;
 
   &:hover {
-    background-color: ${({ theme }) =>
-      theme.colors.darker(3, 'surfaceVariant')};
+    background-color: ${({ theme }) => theme.colors.darker(3, 'surfaceVariant')};
   }
 
   &:focus {
