@@ -22,6 +22,7 @@ const Todo = ({
   isDragging,
   provided: { innerRef, draggableProps, dragHandleProps },
   isWithinPomodoro,
+  selectedCategory,
 }) => {
   const dispatch = useDispatch();
 
@@ -49,8 +50,7 @@ const Todo = ({
   const handleClick = (e) => {
     const elAttribute = e.target.dataset.type;
     const elAttributeParent = e.target.parentElement.dataset.type;
-    if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable')
-      return;
+    if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
 
     setIsOpen(true);
   };
@@ -69,6 +69,7 @@ const Todo = ({
       data-type="isCard"
       categoryColor={todoCategory && todoCategory.color}
       inPomodori={isWithinPomodoro}
+      selectedCategory={selectedCategory}
     >
       <DoneButton
         onClick={() => dispatch(attemptToggleCompleteTodo(todo.id))}
@@ -87,11 +88,7 @@ const Todo = ({
             {!!todo.priority && (
               <TopBadge
                 color={
-                  todo.priority === 1
-                    ? 'mediumturquoise'
-                    : todo.priority === 2
-                    ? 'orange'
-                    : 'coral'
+                  todo.priority === 1 ? 'mediumturquoise' : todo.priority === 2 ? 'orange' : 'coral'
                 }
               >
                 <Flag />
@@ -119,12 +116,7 @@ const Todo = ({
           </FooterRight>
         </Footer>
       )}
-      <TodoModal
-        todo={todo}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        cardBounds={boundingRect}
-      />
+      <TodoModal todo={todo} isOpen={isOpen} setIsOpen={setIsOpen} cardBounds={boundingRect} />
     </Container>
   );
 };
@@ -147,8 +139,7 @@ const DoneButton = styled.button`
 `;
 
 const TopBadge = styled.span`
-  background: ${({ color, theme }) =>
-    color ? color : theme.colors.surfaceVariant};
+  background: ${({ color, theme }) => (color ? color : theme.colors.surfaceVariant)};
   border-radius: 7px;
   padding: 2px 5px;
   font-size: 0.8rem;
@@ -171,8 +162,7 @@ const TopBadge = styled.span`
 
 const Container = styled.div`
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-  box-shadow: ${({ isDragging }) =>
-    isDragging ? `2px 2px 1px lightgreen` : 'none'};
+  box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
   padding: ${({ theme }) => theme.sizes.spacingSmall};
   min-height: ${({ theme }) => theme.sizes.minCardHeight};
   margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};
@@ -182,13 +172,15 @@ const Container = styled.div`
   flex-direction: column;
   box-shadow: ${({ theme }) => theme.shadows.one};
   position: relative;
-  border-right: ${({ theme, categoryColor }) =>
+  border-right: ${({ theme, categoryColor, selectedCategory }) =>
+    `${theme.sizes.cardBorder} solid ${selectedCategory ? 'transparent' : categoryColor}`};
+  border-left: ${({ theme, inPomodori, selectedCategory, categoryColor }) =>
     `${theme.sizes.cardBorder} solid ${
-      categoryColor ? categoryColor : 'transparent'
-    }`};
-  border-left: ${({ theme, inPomodori }) =>
-    `${theme.sizes.cardBorder} solid ${
-      inPomodori ? theme.colors.primary : 'transparent'
+      selectedCategory && inPomodori
+        ? categoryColor
+        : inPomodori
+        ? theme.colors.primary
+        : 'transparent'
     }`};
   color: ${({ theme }) => theme.colors.onSurface};
 
@@ -279,6 +271,7 @@ Todo.propTypes = {
     dragHandleProps: PropTypes.shape({}),
   }),
   isWithinPomodoro: PropTypes.bool,
+  selectedCategory: PropTypes.string,
 };
 
 Todo.defaultProps = {
