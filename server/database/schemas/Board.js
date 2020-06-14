@@ -4,21 +4,25 @@ const immutablePlugin = require('mongoose-immutable');
 
 const { Schema } = mongoose;
 
-const boardSchema = new Schema({
-  user: { type: Schema.ObjectId, ref: 'User', required: true },
-  category: { type: String, default: '' },
-  title: { type: String },
-  created_at: { type: Date, default: Date.now, immutable: true },
-  updated_at: { type: Date },
-  theme: { type: String, default: 'light' },
-  sidebarOpen: { type: Boolean, default: true },
-  defaultTime: { type: Number },
-  defaultCategory: { type: String },
-  focusMode: { type: Boolean },
-  defaultFocusList: { type: String },
-  totalPomodori: { type: Number, default: 0 },
-  elapsedPomodori: { type: Object },
-});
+const boardSchema = new Schema(
+  {
+    user: { type: Schema.ObjectId, ref: 'User', required: true },
+    category: { type: String, default: '' },
+    title: { type: String },
+    created_at: { type: Date, default: Date.now, immutable: true },
+    updated_at: { type: Date },
+    theme: { type: String, default: 'light' },
+    sidebarOpen: { type: Boolean, default: true },
+    defaultTime: { type: Number },
+    defaultCategory: { type: String },
+    focusMode: { type: Boolean },
+    defaultFocusList: { type: String },
+    totalPomodori: { type: Number, default: 0 },
+    order: { type: Number, decimal: true, default: 0 },
+    elapsedPomodori: { type: Object, default: {} },
+  },
+  { minimize: false },
+);
 
 boardSchema.plugin(immutablePlugin);
 
