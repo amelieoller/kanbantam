@@ -12,13 +12,7 @@ import PauseCircle from '_assets/icons/pause-circle.svg';
 import PlayCircle from '_assets/icons/play-circle.svg';
 import Repeat from '_assets/icons/repeat.svg';
 
-const Pomodoro = ({
-  firstTodo,
-  currentBoard,
-  workLength,
-  breakLength,
-  isSidebarOpen,
-}) => {
+const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarOpen }) => {
   const today = new Date();
   const formattedDate = formatYearMonthDay(today);
 
@@ -36,7 +30,7 @@ const Pomodoro = ({
     const isStartOfSession = timePassedMs === 0;
     const minuteHasPassed = Math.floor((timePassedMs / 1000) % 60) === 0;
     // If a minute has passed, update todo (make sure it is a workSession, not the beginning of a session, and the minute has passed)
-    if (isWorkSession && !isStartOfSession && minuteHasPassed) {
+    if (isWorkSession && !isStartOfSession && minuteHasPassed && firstTodo) {
       updateTodo();
     }
 
@@ -91,8 +85,7 @@ const Pomodoro = ({
     setIsRunning(false);
   };
 
-  const playOrPauseTimer = () =>
-    setIsRunning((prevIsRunning) => !prevIsRunning);
+  const playOrPauseTimer = () => setIsRunning((prevIsRunning) => !prevIsRunning);
 
   // -------------- DATABASE UPDATES --------------
   // Elapse one minute on the first todo in the default list
@@ -111,9 +104,7 @@ const Pomodoro = ({
 
     const newElapsed = {
       ...currentElapsed,
-      [formattedDate]: currentElapsed[formattedDate]
-        ? currentElapsed[formattedDate] + 1
-        : 1,
+      [formattedDate]: currentElapsed[formattedDate] ? currentElapsed[formattedDate] + 1 : 1,
     };
 
     dispatch(
@@ -126,9 +117,7 @@ const Pomodoro = ({
 
   // Increase or decrease totalPomodori on the board
   const handleBarUpdate = (newTotal) => {
-    dispatch(
-      attemptUpdateBoard({ id: currentBoard.id, totalPomodori: newTotal }),
-    );
+    dispatch(attemptUpdateBoard({ id: currentBoard.id, totalPomodori: newTotal }));
   };
 
   return (
@@ -147,7 +136,7 @@ const Pomodoro = ({
       {isSidebarOpen && (
         <ProgressBar
           total={currentBoard.totalPomodori}
-          elapsed={currentBoard.elapsedPomodori[formattedDate]}
+          elapsed={currentBoard.elapsedPomodori && currentBoard.elapsedPomodori[formattedDate]}
           type="Pomodori"
           handleBarUpdate={handleBarUpdate}
           increment={1}
