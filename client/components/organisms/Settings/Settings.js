@@ -11,7 +11,7 @@ import Categories from '_organisms/Categories';
 import GeneralProfile from '_organisms/GeneralProfile';
 import SlideOutMenu from '_organisms/SlideOutMenu';
 import Account from '../../templates/AccountSettings/AccountSettings';
-import { attemptDeleteBoard, attemptUpdateBoard } from '_thunks/boards';
+import { attemptUpdateBoard, attemptDeleteBoard } from '_actions/boards';
 import AlertCircle from '_assets/icons/alert-circle.svg';
 import Eye from '_assets/icons/eye.svg';
 import Heart from '_assets/icons/heart.svg';

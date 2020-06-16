@@ -30,7 +30,7 @@ const ScrollContainer = styled.div`
   max-height: ${({ listHeight }) => listHeight}px;
 `;
 
-const List = ({ listId, todos, listHeight, placeholderProps, board }) => {
+const List = ({ listId, todos, listHeight, placeholderProps, board, completedListId }) => {
   const [withinPomodoroTodos, setWithinPomodoroTodos] = useState([]);
 
   useEffect(() => {
@@ -96,6 +96,7 @@ const List = ({ listId, todos, listHeight, placeholderProps, board }) => {
                           withinPomodoroTodos && withinPomodoroTodos.includes(todo.id)
                         }
                         selectedCategory={board.category}
+                        completedListId={completedListId}
                       />
                     )}
                   </Draggable>
@@ -143,7 +144,6 @@ List.propTypes = {
     PropTypes.shape({
       board: PropTypes.string.isRequired,
       completed: PropTypes.bool.isRequired,
-      createdAt: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
       list: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
@@ -163,6 +163,7 @@ List.propTypes = {
     clientX: PropTypes.number,
     clientY: PropTypes.number,
   }),
+  completedListId: PropTypes.string.isRequired,
 };
 
 export default List;

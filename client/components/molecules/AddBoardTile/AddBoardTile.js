@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import { attemptAddBoard } from '_thunks/boards';
+import { attemptAddBoard } from '_actions/boards';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 
 function AddBoardTile({ lastBoardSortVal }) {
@@ -19,7 +19,18 @@ function AddBoardTile({ lastBoardSortVal }) {
     e.preventDefault();
 
     if (title) {
-      dispatch(attemptAddBoard({ title, order: lastBoardSortVal + 1 }));
+      dispatch(
+        attemptAddBoard({
+          title,
+          order: lastBoardSortVal + 1,
+          sidebarOpen: true,
+          theme: 'light',
+          totalPomodori: 0,
+          default: '',
+          focusMode: false,
+          category: '',
+        }),
+      );
       setTitle('');
     }
   };

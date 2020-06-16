@@ -13,12 +13,12 @@ const GlobalStyles = createGlobalStyle`
   .react-codemirror2.code-mirror > div {
     width: 265px;
     background: white;
-    padding: 5px;
+    padding: 3px;
     border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
-    border-radius: ${({ theme }) => theme.sizes.borderRadius};
+    border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
     font-size: 1.2rem;
+    height: 100%;
   }
-
 
   html {
     background-color: #f5f5f5;

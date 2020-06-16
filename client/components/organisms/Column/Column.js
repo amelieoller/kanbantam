@@ -6,10 +6,19 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import AddTodo from '_molecules/AddTodo';
 import List from '_organisms/List';
-import { attemptDeleteList, attemptUpdateList } from '_thunks/lists';
+import { attemptDeleteList, attemptUpdateList } from '_actions/lists';
 import Trash from '_assets/icons/trash-2.svg';
 
-const Column = ({ id, title, todos, index, listHeight, board, placeholderProps }) => {
+const Column = ({
+  id,
+  title,
+  todos,
+  index,
+  listHeight,
+  board,
+  placeholderProps,
+  completedListId,
+}) => {
   const dispatch = useDispatch();
 
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -21,8 +30,10 @@ const Column = ({ id, title, todos, index, listHeight, board, placeholderProps }
 
   const handleUpdateList = () => {
     if (currentTitle) {
-      dispatch(attemptUpdateList({ id, title: currentTitle })).then(() => setIsEditOpen(false));
+      dispatch(attemptUpdateList({ id, title: currentTitle }));
     }
+
+    setIsEditOpen(false);
   };
 
   return (
@@ -58,6 +69,7 @@ const Column = ({ id, title, todos, index, listHeight, board, placeholderProps }
             board={board}
             listHeight={listHeight}
             placeholderProps={placeholderProps}
+            completedListId={completedListId}
           />
           <ListFooter>
             <AddTodo
@@ -146,7 +158,6 @@ Column.propTypes = {
     PropTypes.shape({
       board: PropTypes.string.isRequired,
       completed: PropTypes.bool.isRequired,
-      createdAt: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
       list: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
@@ -164,6 +175,7 @@ Column.propTypes = {
     clientX: PropTypes.number,
     clientY: PropTypes.number,
   }),
+  completedListId: PropTypes.string.isRequired,
 };
 
 export default Column;

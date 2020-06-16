@@ -1,34 +1,75 @@
+import { snakeToCamelCase } from 'json-style-converter/es5';
+import * as R from 'ramda';
+import uniqid from 'uniqid';
+
+import { getTodos, postTodo, putTodo, deleteTodo } from '_api/todos';
+import { dispatchError } from '_utils/api';
+
 export const SET_TODOS = 'SET_TODOS';
 export const ADD_TODO = 'ADD_TODO';
-export const TOGGLE_COMPLETE_TODO = 'TOGGLE_COMPLETE_TODO';
 export const UPDATE_TODO = 'UPDATE_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
-export const INCREMENT_TODO_ID = 'INCREMENT_TODO_ID';
+export const UPDATE_TODO_ID = 'UPDATE_TODO_ID';
 
-export const setTodos = (todos) => ({
+export const setTodos = (payload) => ({
   type: SET_TODOS,
-  todos,
+  payload,
 });
 
-export const addTodo = (todo) => ({
-  type: ADD_TODO,
-  id: todo.id,
-  todo,
+export const updateTodoId = (oldId, newId) => ({
+  type: UPDATE_TODO_ID,
+  payload: { id: oldId },
+  newId: newId,
 });
 
-export const toggleCompleteTodo = (todo) => ({
-  type: TOGGLE_COMPLETE_TODO,
-  id: todo.id,
-  todo,
-});
+export const attemptGetTodos = (boardId) => (dispatch) =>
+  getTodos(boardId)
+    .then(({ data }) => {
+      const todos = R.map(
+        (todo) => R.omit(['Id', '_v'], R.assoc('id', todo._id, snakeToCamelCase(todo))),
+        data,
+      );
 
-export const updateTodo = (todo) => ({
-  type: UPDATE_TODO,
-  id: todo.id,
-  todo,
-});
+      dispatch(setTodos(todos));
+      return data;
+    })
+    .catch(dispatchError(dispatch));
 
-export const removeTodo = (id) => ({
-  type: REMOVE_TODO,
-  id,
-});
+export const attemptAddTodo = (newTodo) => (dispatch) => {
+  const tempId = uniqid();
+  const payload = {
+    ...newTodo,
+    id: tempId,
+  };
+
+  dispatch({
+    type: ADD_TODO,
+    payload,
+    meta: {
+      promise: postTodo(dispatch)(payload),
+      optimist: true,
+    },
+  });
+};
+
+export const attemptUpdateTodo = (payload) => (dispatch) => {
+  dispatch({
+    type: UPDATE_TODO,
+    payload,
+    meta: {
+      promise: putTodo(dispatch)(payload),
+      optimist: true,
+    },
+  });
+};
+
+export const attemptDeleteTodo = (id) => (dispatch) => {
+  dispatch({
+    type: REMOVE_TODO,
+    payload: { id },
+    meta: {
+      promise: deleteTodo(dispatch)(id),
+      optimist: true,
+    },
+  });
+};

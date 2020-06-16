@@ -1,75 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as R from 'ramda';
 import Modal from 'react-modal';
 import { format } from 'date-fns';
 
 import Button from '_atoms/Button';
 import CodeMirrorArea from '_atoms/CodeMirrorArea';
 import Input from '_atoms/Input';
-import TextArea from '_atoms/TextArea';
+// import TextArea from '_atoms/TextArea';
 import CategorySelect from '_molecules/CategorySelect';
-import {
-  attemptUpdateTodo,
-  attemptDeleteTodo,
-  attemptToggleCompleteTodo,
-} from '_thunks/todos';
+import { attemptUpdateTodo, attemptDeleteTodo } from '_actions/todos';
+import { clearCurrentTodo } from '_actions/currentTodo';
 
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#app');
 
-function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
+function TodoModal({ completedListId }) {
   const dispatch = useDispatch();
+  const { currentTodo } = useSelector(R.pick(['currentTodo']));
+  const isOpen = !!currentTodo.id;
 
-  const initialState = {
-    text: '',
-    minutes: 0,
-    category: '',
-    dueDate: '',
-    priority: 0,
-    completed: false,
-  };
-
-  const [updatedTodo, setUpdatedTodo] = useState(initialState);
+  const [updatedTodo, setUpdatedTodo] = useState({});
+  const [boundingRect, setBoundingRect] = useState({});
+  const [todoHasChanged, setTodoHasChanged] = useState(false);
 
   useEffect(() => {
-    setUpdatedTodo({
-      ...initialState,
-      ...todo,
-    });
-  }, [todo]);
+    const { boundingRect, ...todo } = currentTodo;
 
-  if (!cardBounds) return null;
+    setBoundingRect(boundingRect);
+    setUpdatedTodo(todo);
+  }, [currentTodo]);
 
-  const closeModal = () => setIsOpen(false);
+  if (!boundingRect) return null;
+
+  const clearTodo = () => dispatch(clearCurrentTodo());
 
   const updateTodo = (name, value) => {
+    if (!todoHasChanged) setTodoHasChanged(true);
+
     setUpdatedTodo((prevTodo) => ({ ...prevTodo, [name]: value }));
   };
 
-  const formatDate = (value) =>
-    new Date(value.replace(/-/g, '/').replace(/T.+/, ''));
+  const formatDate = (value) => new Date(value.replace(/-/g, '/').replace(/T.+/, ''));
 
-  const toggleCompleted = () => {
-    dispatch(attemptToggleCompleteTodo(updatedTodo.id));
-    // setUpdatedTodo((prevTodo) => ({ ...prevTodo, completed: !prevTodo.completed }));
+  const completeTodo = () => {
+    dispatch(attemptUpdateTodo({ id: updatedTodo.id, list: completedListId, completed: true }));
+    dispatch(clearCurrentTodo());
   };
 
   const handleUpdateTodo = () => {
-    if (updatedTodo.text) {
-      dispatch(attemptUpdateTodo(updatedTodo)).then(closeModal);
+    if (updatedTodo.text && todoHasChanged) {
+      dispatch(attemptUpdateTodo(updatedTodo));
     }
+
+    clearTodo();
   };
 
-  const deleteTodo = () => dispatch(attemptDeleteTodo(todo.id));
+  const deleteTodo = () => {
+    dispatch(attemptDeleteTodo(updatedTodo.id));
+    clearTodo();
+  };
 
   // MODAL STYLES
   // Returns true if card is closer to right border than to the left
-  const isNearRight = window.innerWidth - cardBounds.right < cardBounds.left;
+  const isNearRight = window.innerWidth - boundingRect.right < boundingRect.left;
 
   // Returns true if card is closer to the bottom than the top
-  const isNearBottom = window.innerHeight - cardBounds.top < cardBounds.bottom;
+  const isNearBottom = window.innerHeight - boundingRect.top < boundingRect.bottom;
 
   // Check if the display is so thin that we need to trigger a centered, vertical layout
   // DO NOT CHANGE the number 550 without also changing related media-query in CardOptions.scss
@@ -80,12 +79,10 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
     content: {
       top: isNearBottom
         ? 'auto'
-        : Math.min(cardBounds.top, window.innerHeight - cardBounds.height - 18),
-      bottom: isNearBottom
-        ? window.innerHeight - cardBounds.bottom - 18
-        : 'auto',
-      left: isNearRight ? null : cardBounds.left,
-      right: isNearRight ? window.innerWidth - cardBounds.right : null,
+        : Math.min(boundingRect.top, window.innerHeight - boundingRect.height - 18),
+      bottom: isNearBottom ? window.innerHeight - boundingRect.bottom - 18 : 'auto',
+      left: isNearRight ? null : boundingRect.left,
+      right: isNearRight ? window.innerWidth - boundingRect.right : null,
       flexDirection: isNearRight ? 'row-reverse' : 'row',
       alignItems: isNearBottom ? 'flex-end' : 'flex-start',
     },
@@ -111,51 +108,31 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
         overlayClassName="modal-underlay"
         className="modal"
       >
-        {/* <TextArea
-          label="Text"
-          handleOnBlur={(value) => updateTodo('text', value)}
-          defaultValue={updatedTodo.text}
-          style={{
-            minHeight: isThinDisplay ? 'none' : cardBounds.height,
-            width: isThinDisplay ? '100%' : cardBounds.width,
-          }}
-        /> */}
-
         <CodeMirrorArea
           label="Text"
           handleOnChange={(value) => updateTodo('text', value)}
           defaultValue={updatedTodo.text}
           style={{
-            minHeight: isThinDisplay ? 'none' : cardBounds.height,
-            width: isThinDisplay ? '100%' : cardBounds.width,
+            minHeight: isThinDisplay ? 'none' : boundingRect.height,
+            width: isThinDisplay ? '100%' : boundingRect.width,
           }}
         />
 
         <OptionsWrapper>
-          {updatedTodo.completed ? (
-            <Button onClick={toggleCompleted}>Undo Done</Button>
-          ) : (
-            <Button onClick={toggleCompleted}>Done</Button>
-          )}
+          <Button onClick={completeTodo}>Done</Button>
 
           <Input
             label="Minutes"
-            handleOnBlur={(value) =>
-              updateTodo('minutes', value === '' ? 0 : value)
-            }
+            handleOnBlur={(value) => updateTodo('minutes', value === '' ? 0 : +value)}
             defaultValue={updatedTodo.minutes}
             type="number"
           />
 
           <Input
             label="Due Date"
-            handleOnBlur={(value) =>
-              updateTodo('dueDate', value ? formatDate(value) : '')
-            }
+            handleOnBlur={(value) => updateTodo('dueDate', value ? formatDate(value) : '')}
             defaultValue={
-              updatedTodo.dueDate
-                ? format(new Date(updatedTodo.dueDate), 'yyyy-MM-dd')
-                : ''
+              updatedTodo.dueDate ? format(new Date(updatedTodo.dueDate), 'yyyy-MM-dd') : ''
             }
             type="date"
           />
@@ -170,14 +147,13 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
           <CategorySelect
             onChange={(newCategoryId) => updateTodo('category', newCategoryId)}
             currentCategoryId={updatedTodo.category}
+            noToggle
           />
 
           <Button
             onClick={() => {
               if (
-                window.confirm(
-                  `Are you sure you want to delete the board "${updatedTodo.text}"?`,
-                )
+                window.confirm(`Are you sure you want to delete the board "${updatedTodo.text}"?`)
               )
                 deleteTodo();
             }}
@@ -196,33 +172,19 @@ function TodoModal({ todo, isOpen, setIsOpen, cardBounds }) {
 }
 
 const OptionsWrapper = styled.div`
-  margin: 0 ${({ theme }) => theme.sizes.spacing};
+  display: grid;
+  grid-gap: ${({ theme }) => theme.sizes.spacing};
+  padding: 0 ${({ theme }) => theme.sizes.spacing};
 
   button {
     width: 100%;
-  }
-
-  & > * {
-    margin-bottom: ${({ theme }) => theme.sizes.spacing};
   }
 `;
 
 const ModalWrapper = styled.div``;
 
 TodoModal.propTypes = {
-  todo: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }),
-  isOpen: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
-  cardBounds: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    top: PropTypes.number.isRequired,
-    bottom: PropTypes.number.isRequired,
-    right: PropTypes.number.isRequired,
-    left: PropTypes.number.isRequired,
-  }),
+  completedListId: PropTypes.string.isRequired,
 };
 
 export default TodoModal;

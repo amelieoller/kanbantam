@@ -25,6 +25,7 @@ const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }
 
     handleBarUpdate(newTotal);
   };
+  console.log('percentage', percentage);
 
   return (
     <Wrapper>
@@ -36,8 +37,8 @@ const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }
         )}
 
         <ProgressWrapper>
-          <ProgressFiller className="filler" width={percentage || 0}>
-            <TextLeft>
+          <ProgressFiller className="filler" percentage={percentage}>
+            <TextLeft percentage={percentage}>
               {total - elapsed} {type} left / {total}
             </TextLeft>
           </ProgressFiller>
@@ -90,22 +91,27 @@ const ProgressWrapper = styled.div`
   position: relative;
   height: 12px;
   border-radius: 10px;
-  background: ${({ theme }) => theme.colors.surfaceVariant};
+  background: ${({ theme }) => theme.colors.lighter(1, 'surfaceVariant')};
   width: 100%;
 `;
 
 const ProgressFiller = styled.div`
-  background: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
+  background: ${({ theme, percentage }) =>
+    percentage < 40
+      ? theme.colors.lighter(75, 'onSurface')
+      : theme.colors.lighter(parseInt(1000 / percentage), 'success')};
   height: 100%;
   border-radius: inherit;
   transition: width 0.2s ease-in;
   display: flex;
   align-items: center;
-  width: ${({ width }) => width}%;
+  width: ${({ percentage }) => percentage}%;
 `;
 
 const TextLeft = styled.span`
-  color: ${({ theme }) => theme.colors.onSurfaceVariant};
+  /* color: ${({ theme }) => theme.colors.lighter(4, 'onSurface')}; */
+  color: ${({ theme, percentage }) =>
+    percentage < 40 ? theme.colors.lighter(4, 'onSurface') : theme.colors.onSurfaceVariant};
   font-size: 0.75rem;
   font-style: italic;
   white-space: nowrap;

@@ -17,14 +17,14 @@ const overlayStyle = () => ({
   zIndex: 1001,
   background: 'rgba(0, 0, 0, 0.3)',
   opacity: 0,
-  transition: `opacity 0.3s, transform 0s 0.3s`,
+  transition: `opacity 0.4s, transform 0s 0.4s`,
   transform: `translate3d(-100%, 0px, 0px)`,
 });
 
 const overlayActiveStyle = (options) => ({
   ...overlayStyle(options),
   opacity: 1,
-  transition: `opacity 0.3s`,
+  transition: `opacity 0.4s`,
   transform: 'none',
 });
 
@@ -37,7 +37,7 @@ const menuOuterStyle = (options) => ({
   zIndex: 1002,
   width: options.width,
   maxWidth: '80%',
-  transition: `transform 0.3s`,
+  transition: `transform 0.4s`,
   transform: `translate3d(100%, 0px, 0px)`,
   transformOrigin: 'left',
   backgroundColor: 'white',
@@ -53,7 +53,7 @@ const menuShadowStyle = () => ({
   zIndex: -1,
   width: '100%',
   height: '100%',
-  transition: `opacity 0.3s`,
+  transition: `opacity 0.4s`,
   boxShadow: '0 0 15px 0 rgba(0, 0, 0, .2)',
   opacity: 0,
   top: 0,
@@ -177,9 +177,7 @@ const SlideOutMenu = ({
 
   const options = getOptions();
 
-  const baseMenuOuterStyle = isOpen
-    ? menuOuterActiveStyle(options)
-    : menuOuterStyle(options);
+  const baseMenuOuterStyle = isOpen ? menuOuterActiveStyle(options) : menuOuterStyle(options);
   const currentMenuOuterStyle = {
     ...baseMenuOuterStyle,
     ...state.menuExtraStyle,
@@ -198,11 +196,7 @@ const SlideOutMenu = ({
         role="button"
         tabIndex={0}
       />
-      <Swipe
-        onSwipeStart={onSwipeStart}
-        onSwipeMove={onSwipeMove}
-        onSwipeEnd={onSwipeEnd}
-      >
+      <Swipe onSwipeStart={onSwipeStart} onSwipeMove={onSwipeMove} onSwipeEnd={onSwipeEnd}>
         <div
           className={clsx('cheeseburger-menu-outer', outerClassName)}
           style={currentMenuOuterStyle}

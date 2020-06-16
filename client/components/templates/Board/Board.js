@@ -8,8 +8,9 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import AddList from '_molecules/AddList';
 import Column from '_organisms/Column';
 import Sidebar from '_organisms/Sidebar';
-import { attemptUpdateList } from '_thunks/lists';
-import { attemptUpdateTodo } from '_thunks/todos';
+import TodoModal from '_organisms/TodoModal';
+import { attemptUpdateList } from '_actions/lists';
+import { attemptUpdateTodo } from '_actions/todos';
 import reorder, { reorderTodoList } from '_utils/dragAndDrop';
 import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
 import useResize from '_hooks/useResize';
@@ -26,9 +27,11 @@ function Board({ board, theme: { sizes } }) {
   const [listsWithTodos, setListsWithTodos] = useState({});
   const [orderedLists, setOrderedLists] = useState([]);
   const [placeholderProps, setPlaceholderProps] = useState({});
+  const [completedListId, setCompletedListId] = useState('');
 
   useEffect(() => {
     const filteredListsWithoutSpecial = lists.filter((l) => !l.special);
+    const completedList = lists.find((l) => l.special && l.title === 'complete');
     const sortedLists = sortItemsByOrder(filteredListsWithoutSpecial);
 
     // Category filter
@@ -45,6 +48,7 @@ function Board({ board, theme: { sizes } }) {
       };
     }, {});
 
+    setCompletedListId(completedList.id);
     setOrderedLists(sortedLists);
     setListsWithTodos(todosByListId);
   }, [lists, todos, board.category]);
@@ -234,7 +238,11 @@ function Board({ board, theme: { sizes } }) {
         >
           <Droppable droppableId="board" type="COLUMN" direction="horizontal">
             {(provided) => (
-              <ListsWrapper ref={provided.innerRef} {...provided.droppableProps}>
+              <ListsWrapper
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                isSidebarOpen={board.sidebarOpen}
+              >
                 {filterFocusList().map((list, index) => (
                   <Column
                     key={list.id}
@@ -245,6 +253,7 @@ function Board({ board, theme: { sizes } }) {
                     board={board}
                     listHeight={calculateListHeight()}
                     placeholderProps={placeholderProps}
+                    completedListId={completedListId}
                   />
                 ))}
                 {provided.placeholder}
@@ -264,6 +273,8 @@ function Board({ board, theme: { sizes } }) {
           </Droppable>
         </DragDropContext>
       </div>
+
+      <TodoModal completedListId={completedListId} />
     </StyledBoard>
   );
 }
@@ -274,12 +285,11 @@ const StyledBoard = styled.div`
   height: calc(100vh - ${({ theme }) => theme.sizes.navbarHeight});
   background: ${({ theme }) => theme.colors.boardBackground};
   width: max-content;
+  position: relative;
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   margin-top: ${({ theme }) => theme.sizes.navbarHeight};
-  margin-left: ${({ theme, isSidebarOpen }) =>
-    isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
-  transition: 1s ease;
+  transition: 0.4s ease;
 `;
 
 const ListsWrapper = styled.div`
@@ -287,6 +297,14 @@ const ListsWrapper = styled.div`
   grid-auto-columns: ${({ theme }) => theme.sizes.listWidth};
   grid-auto-flow: column;
   padding: ${({ theme }) => `${theme.sizes.spacing} ${theme.sizes.spacingLarge}`};
+  transform: translate3d(
+    ${({ theme, isSidebarOpen }) =>
+      isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall},
+    0px,
+    0px
+  );
+  transition: 0.4s ease;
+  transform-origin: right center;
 
   & > *:not(:last-child) {
     margin-right: 8px;

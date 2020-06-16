@@ -5,12 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 import { push } from 'connected-react-router';
 
+import Spinner from '_atoms/Spinner';
 import Board from '_templates/Board';
-import { attemptGetBoards } from '_thunks/boards';
-import { attemptGetCategories } from '_thunks/categories';
-import { attemptGetLists } from '_thunks/lists';
-import { attemptGetTodos } from '_thunks/todos';
-import { setBoard } from '_actions/currentBoard';
+import { attemptGetCategories } from '_actions/categories';
+import { attemptGetLists } from '_actions/lists';
+import { attemptGetBoards } from '_actions/boards';
+import { attemptGetTodos } from '_actions/todos';
+import { setCurrentBoard } from '_actions/currentBoard';
 import { light, dark } from '_styles/Theme';
 
 function BoardPage({ boardId }) {
@@ -43,7 +44,7 @@ function BoardPage({ boardId }) {
 
       if (board) {
         // If board is found, set currentBoard in redux
-        dispatch(setBoard(board));
+        dispatch(setCurrentBoard(board));
       } else {
         // If board cannot be found, send user back to boards overview
         dispatch(push('/'));
@@ -53,7 +54,7 @@ function BoardPage({ boardId }) {
 
   // Get lists and todos and set loading to false effect
   useEffect(() => {
-    if (currentBoard.id) {
+    if (currentBoard.id && currentBoard.id === boardId) {
       // If there is a currentBoard, get lists and todos for that board
       Promise.all([
         dispatch(attemptGetLists(currentBoard.id)),
@@ -61,14 +62,14 @@ function BoardPage({ boardId }) {
         dispatch(attemptGetCategories(currentBoard.id)),
       ]).then(() => setLoading(false));
     }
-  }, [currentBoard.id, dispatch]);
+  }, [currentBoard.id, dispatch, boardId]);
 
-  return (
-    !loading && (
-      <ThemeProvider theme={currentBoard.theme === 'light' ? light : dark}>
-        <Board key={currentBoard.id} board={currentBoard} />
-      </ThemeProvider>
-    )
+  return !loading ? (
+    <ThemeProvider theme={currentBoard.theme === 'light' ? light : dark}>
+      <Board key={currentBoard.id} board={currentBoard} />
+    </ThemeProvider>
+  ) : (
+    <Spinner />
   );
 }
 

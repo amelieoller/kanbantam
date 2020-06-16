@@ -1,32 +1,21 @@
 import update from 'immutability-helper';
-import * as R from 'ramda';
 
-import { SET_LISTS, ADD_LIST, UPDATE_LIST, REMOVE_LIST } from '_actions/lists';
-
+import { SET_LISTS, ADD_LIST, UPDATE_LIST, REMOVE_LIST, UPDATE_LIST_ID } from '_actions/lists';
 import { LOGOUT_USER } from '_actions/user';
-
-export function list(state = {}, action) {
-  switch (action.type) {
-    case UPDATE_LIST:
-      return { ...state, ...action.list };
-    default:
-      return state;
-  }
-}
+import { byIdReplaceAtIndex } from '_utils/filtering';
 
 export default function lists(state = [], action) {
-  const index = R.findIndex(R.propEq('id', action.id), state);
-  const updatedAtIndex = { $splice: [[index, 1, list(state[index], action)]] };
-
   switch (action.type) {
     case SET_LISTS:
-      return update(state, { $set: action.lists });
+      return update(state, { $set: action.payload });
     case ADD_LIST:
-      return [...state, action.list];
+      return [...state, action.payload];
     case UPDATE_LIST:
-      return update(state, updatedAtIndex);
+      return byIdReplaceAtIndex(state, action.payload.id, action.payload);
+    case UPDATE_LIST_ID:
+      return byIdReplaceAtIndex(state, action.payload.id, { id: action.newId });
     case REMOVE_LIST:
-      return update(state, { $splice: [[index, 1]] });
+      return state.filter((todo) => todo.id !== action.payload.id);
     case LOGOUT_USER:
       return [];
     default:

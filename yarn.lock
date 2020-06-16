@@ -5410,6 +5410,13 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
+flux-standard-action@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/flux-standard-action/-/flux-standard-action-1.2.0.tgz#d2d41612dde4cebddd11a76cfead8e84fc69ebdc"
+  integrity sha1-0tQWEt3kzr3dEads/q2OhPxp69w=
+  dependencies:
+    lodash "^4.0.0"
+
 for-in@^0.1.3:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-0.1.8.tgz#d8773908e31256109952b1fdb9b3fa867d2775e1"
@@ -10181,6 +10188,18 @@ redux-logger@^3.0.6:
   integrity sha1-91VZZvMJjzyIYExEnPC69XeCdL8=
   dependencies:
     deep-diff "^0.3.5"
+
+redux-optimist-promise@^0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/redux-optimist-promise/-/redux-optimist-promise-0.8.3.tgz#17d928a7fce6b436e6a0d78aea50fc1a5b7c9591"
+  integrity sha512-VgAOo/StsndY2tzlBfMHto66Rwv2KCA6z1KNHKdEhUHu5fPcP1C/7yKm7UPaERFHR8qsmKocdUfrWwx0UL4zEQ==
+  dependencies:
+    flux-standard-action "^1.0.0"
+
+redux-optimist@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/redux-optimist/-/redux-optimist-1.0.0.tgz#1f3d4ffbcd11573159bb90e96c68e35e3b875818"
+  integrity sha512-AG1v8o6UZcGXTEH2jVcWG6KD+gEix+Cj9JXAAzln9MPkauSVd98H7N7EOOyT/v4c9N1mJB4sm1zfspGlLDkUEw==
 
 redux-thunk@^2.3.0:
   version "2.3.0"

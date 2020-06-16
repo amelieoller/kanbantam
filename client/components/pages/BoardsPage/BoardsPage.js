@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 import { push } from 'connected-react-router';
 
+import Spinner from '_atoms/Spinner';
 import BoardSection from '_templates/BoardSection';
-import { attemptGetBoards } from '_thunks/boards';
+import { attemptGetBoards } from '_actions/boards';
 
 function BoardsPage() {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ function BoardsPage() {
     }
   }, [dispatch, user]);
 
-  return !loading && <BoardSection />;
+  return !loading ? <BoardSection /> : <Spinner />;
 }
 
 export default BoardsPage;

@@ -23,8 +23,7 @@ export const dispatchError = (dispatch) => (res) => {
     dispatch(push('/'));
   }
 
-  const message =
-    res.body && res.body.message ? res.body.message : 'An error has ocurred';
+  const message = res.body && res.body.message ? res.body.message : 'An error has ocurred';
   const status = res.status ? res.status : 'Status unknown';
 
   dispatch(

@@ -6,6 +6,7 @@ import * as R from 'ramda';
 import { Switch, Route, Redirect } from 'react-router';
 import Notifications from 'react-notification-system-redux';
 
+import Spinner from '_atoms/Spinner';
 import Navigation from '_organisms/Navigation';
 import BoardPage from '_pages/BoardPage';
 import BoardsPage from '_pages/BoardsPage';
@@ -80,36 +81,36 @@ function Main({ location, theme: { colors } }) {
     },
   };
 
-  return (
-    !loading && (
-      <>
-        <Notifications notifications={alerts} style={style} />
+  return !loading ? (
+    <>
+      <Notifications notifications={alerts} style={style} />
 
-        {!auth ? (
-          <>
-            <Switch>
-              <Route path="/" component={WelcomePage} />
-              <Redirect to="/" />
-            </Switch>
-          </>
-        ) : (
-          <>
-            <Navigation pathname={location.pathname} />
-            <Switch>
-              <Route exact path="/" component={BoardsPage} />
-              <Route
-                path="/boards/:id"
-                render={(routerProps) => {
-                  return <BoardPage boardId={routerProps.match.params.id} />;
-                }}
-              />
-              <Route path="/settings" component={SettingsPage} />
-              <Route path="*" component={LostPage} />
-            </Switch>
-          </>
-        )}
-      </>
-    )
+      {!auth ? (
+        <>
+          <Switch>
+            <Route path="/" component={WelcomePage} />
+            <Redirect to="/" />
+          </Switch>
+        </>
+      ) : (
+        <>
+          <Navigation pathname={location.pathname} />
+          <Switch>
+            <Route exact path="/" component={BoardsPage} />
+            <Route
+              path="/boards/:id"
+              render={(routerProps) => {
+                return <BoardPage boardId={routerProps.match.params.id} />;
+              }}
+            />
+            <Route path="/settings" component={SettingsPage} />
+            <Route path="*" component={LostPage} />
+          </Switch>
+        </>
+      )}
+    </>
+  ) : (
+    <Spinner />
   );
 }
 

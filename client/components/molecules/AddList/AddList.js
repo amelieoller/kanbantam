@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import { attemptAddList } from '_thunks/lists';
+import { attemptAddList } from '_actions/lists';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 
 function AddList({ boardId, lastListSortVal }) {

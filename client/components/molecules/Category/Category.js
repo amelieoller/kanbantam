@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import Input from '_atoms/Input';
 import ColorDropdown from '_molecules/ColorDropdown/ColorDropdown';
-import { attemptDeleteCategory, attemptUpdateCategory } from '_thunks/categories';
+import { attemptDeleteCategory, attemptUpdateCategory } from '_actions/categories';
 import Save from '_assets/icons/save.svg';
 import Trash from '_assets/icons/trash-2.svg';
 
@@ -52,10 +52,7 @@ const Category = ({ category }) => {
         <Trash />
       </IconWrapper>
 
-      <IconWrapper
-        onClick={handleUpdateCategory}
-        color={hasBeenModified ? 'green' : 'grey'}
-      >
+      <IconWrapper onClick={handleUpdateCategory} color={hasBeenModified ? 'green' : 'grey'}>
         <Save />
       </IconWrapper>
     </StyledCategory>

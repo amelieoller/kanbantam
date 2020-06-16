@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import { attemptAddTodo } from '_thunks/todos';
+import { attemptAddTodo } from '_actions/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 import Plus from '_assets/icons/plus.svg';
 
@@ -34,6 +34,7 @@ function AddTodo({ board, listId, lastCardSortVal }) {
             : board.defaultCategory
             ? board.defaultCategory
             : '',
+          completed: false,
         }),
       );
       setText('');

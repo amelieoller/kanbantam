@@ -6,7 +6,7 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 import AddBoardTile from '_molecules/AddBoardTile';
 import BoardTile from '_molecules/BoardTile';
-import { attemptUpdateBoard } from '_thunks/boards';
+import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
 import reorder from '_utils/dragAndDrop';
 

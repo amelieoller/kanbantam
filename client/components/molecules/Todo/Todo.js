@@ -7,13 +7,13 @@ import ReactMarkdown from 'react-markdown';
 import { parseISO } from 'date-fns';
 
 import ProgressBar from '_molecules/ProgressBar';
-import TodoModal from '_organisms/TodoModal';
-import { attemptToggleCompleteTodo, attemptUpdateTodo } from '_thunks/todos';
+import { attemptUpdateTodo } from '_actions/todos';
 import { formatDaysToNow } from '_utils/dates.js';
 import useCombinedRefs from '_hooks/useCombinedRefs';
 import Calendar from '_assets/icons/calendar.svg';
 import CheckCircle from '_assets/icons/check-circle.svg';
 import Flag from '_assets/icons/flag.svg';
+import { setCurrentTodo } from '_actions/currentTodo';
 
 const fromNow = (date) => formatDaysToNow(parseISO(date));
 
@@ -23,6 +23,7 @@ const Todo = ({
   provided: { innerRef, draggableProps, dragHandleProps },
   isWithinPomodoro,
   selectedCategory,
+  completedListId,
 }) => {
   const dispatch = useDispatch();
 
@@ -31,7 +32,6 @@ const Todo = ({
 
   const { categories } = useSelector(R.pick(['categories']));
 
-  const [isOpen, setIsOpen] = useState(false);
   const [boundingRect, setBoundingRect] = useState();
   const [todoCategory, setTodoCategory] = useState();
 
@@ -45,18 +45,22 @@ const Todo = ({
 
   useLayoutEffect(() => {
     setBoundingRect(combinedRef.current.getBoundingClientRect());
-  }, [combinedRef, isOpen]);
+  }, [combinedRef]);
 
   const handleClick = (e) => {
     const elAttribute = e.target.dataset.type;
     const elAttributeParent = e.target.parentElement.dataset.type;
     if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
 
-    setIsOpen(true);
+    dispatch(setCurrentTodo({ ...todo, boundingRect }));
   };
 
   const handleBarUpdate = (newTotal) => {
     dispatch(attemptUpdateTodo({ id: todo.id, minutes: newTotal }));
+  };
+
+  const completeTodo = () => {
+    dispatch(attemptUpdateTodo({ id: todo.id, list: completedListId, completed: true }));
   };
 
   return (
@@ -71,11 +75,7 @@ const Todo = ({
       inPomodori={isWithinPomodoro}
       selectedCategory={selectedCategory}
     >
-      <DoneButton
-        onClick={() => dispatch(attemptToggleCompleteTodo(todo.id))}
-        data-type="isClickable"
-        id="done-button"
-      >
+      <DoneButton onClick={completeTodo} data-type="isClickable" id="done-button">
         <CheckCircle data-type="isClickable" />
       </DoneButton>
       <Main>
@@ -116,7 +116,7 @@ const Todo = ({
           </FooterRight>
         </Footer>
       )}
-      <TodoModal todo={todo} isOpen={isOpen} setIsOpen={setIsOpen} cardBounds={boundingRect} />
+      {/* <TodoModal todo={todo} isOpen={isOpen} setIsOpen={setIsOpen} cardBounds={boundingRect} /> */}
     </Container>
   );
 };
@@ -256,7 +256,6 @@ Todo.propTypes = {
     id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
-    createdAt: PropTypes.string.isRequired,
     updatedAt: PropTypes.string,
     dueDate: PropTypes.string,
     priority: PropTypes.number,
@@ -272,6 +271,7 @@ Todo.propTypes = {
   }),
   isWithinPomodoro: PropTypes.bool,
   selectedCategory: PropTypes.string,
+  completedListId: PropTypes.string.isRequired,
 };
 
 Todo.defaultProps = {

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 import ProgressBar from '_molecules/ProgressBar';
-import { attemptUpdateBoard } from '_thunks/boards';
-import { attemptUpdateTodo } from '_thunks/todos';
+import { attemptUpdateBoard } from '_actions/boards';
+import { attemptUpdateTodo } from '_actions/todos';
 import { formatTime, formatYearMonthDay } from '_utils/dates';
 import { useInterval } from '_hooks/useInterval';
 import PauseCircle from '_assets/icons/pause-circle.svg';
@@ -29,6 +29,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     const isWorkSession = sessionLength === workLength;
     const isStartOfSession = timePassedMs === 0;
     const minuteHasPassed = Math.floor((timePassedMs / 1000) % 60) === 0;
+
     // If a minute has passed, update todo (make sure it is a workSession, not the beginning of a session, and the minute has passed)
     if (isWorkSession && !isStartOfSession && minuteHasPassed && firstTodo) {
       updateTodo();
@@ -45,6 +46,10 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     } else {
       // Start the timer by setting setTimePassedMs to endTime minus now
       setTimePassedMs(endTime - new Date().getTime());
+
+      // Update title
+      const [minutes, seconds] = formatTime(timePassedMs, sessionLength);
+      document.title = `${minutes}:${seconds}`;
     }
   };
 
@@ -120,38 +125,75 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     dispatch(attemptUpdateBoard({ id: currentBoard.id, totalPomodori: newTotal }));
   };
 
-  return (
-    <StyledPomodoro isSidebarOpen={isSidebarOpen}>
-      <h1>{formatTime(timePassedMs, sessionLength)}</h1>
+  const [minutes, seconds] = formatTime(timePassedMs, sessionLength);
 
-      <Controls isSidebarOpen={isSidebarOpen}>
+  return isSidebarOpen ? (
+    <StyledPomodoro>
+      <h1>
+        {minutes}:{seconds}
+      </h1>
+
+      <Controls>
         {!isRunning ? (
           <PlayCircle onClick={playOrPauseTimer} />
         ) : (
           <PauseCircle onClick={playOrPauseTimer} />
         )}
-        {isSidebarOpen && <Repeat onClick={switchSessions} />}
+        <Repeat onClick={switchSessions} />
       </Controls>
 
-      {isSidebarOpen && (
-        <ProgressBar
-          total={currentBoard.totalPomodori}
-          elapsed={currentBoard.elapsedPomodori && currentBoard.elapsedPomodori[formattedDate]}
-          type="Pomodori"
-          handleBarUpdate={handleBarUpdate}
-          increment={1}
-          minus
-        />
-      )}
+      <ProgressBar
+        total={currentBoard.totalPomodori}
+        elapsed={currentBoard.elapsedPomodori && currentBoard.elapsedPomodori[formattedDate]}
+        type="Pomodori"
+        handleBarUpdate={handleBarUpdate}
+        increment={1}
+        minus
+      />
     </StyledPomodoro>
+  ) : (
+    <MinimalPomodoroWrapper>
+      <MinimalClock>
+        <span>{minutes}</span>
+        <span>{seconds}</span>
+      </MinimalClock>
+
+      <Controls>
+        {!isRunning ? (
+          <PlayCircle onClick={playOrPauseTimer} />
+        ) : (
+          <PauseCircle onClick={playOrPauseTimer} />
+        )}
+      </Controls>
+    </MinimalPomodoroWrapper>
   );
 };
+
+const MinimalPomodoroWrapper = styled.div`
+  margin-top: 1rem;
+`;
+
+const MinimalClock = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > *:first-child {
+    font-size: 2.4rem;
+    color: ${({ theme }) => theme.colors.darker(5, 'surfaceVariant')};
+  }
+
+  & > *:last-child {
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.colors.surfaceVariant};
+  }
+`;
 
 const StyledPomodoro = styled.div`
   text-align: center;
 
   h1 {
-    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '2rem' : '1rem')};
+    font-size: 2rem;
   }
 `;
 
@@ -159,10 +201,14 @@ const Controls = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minMax(40px, 1fr));
 
+  svg {
+    color: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
+  }
+
   & > * {
     cursor: pointer;
-    margin: ${({ isSidebarOpen }) => (isSidebarOpen ? '8px auto' : '0 5px')};
-    height: ${({ isSidebarOpen }) => (isSidebarOpen ? '25px' : '20px')};
+    margin: 8px auto;
+    height: 25px;
   }
 `;
 

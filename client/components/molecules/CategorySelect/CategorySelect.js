@@ -7,7 +7,7 @@ import * as R from 'ramda';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 import List from '_assets/icons/list.svg';
 
-const CategorySelect = ({ onChange, currentCategoryId }) => {
+const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
   const colorRef = useRef();
 
   const [isCategoryPickerOpen, setIsCategoryPickerOpen] = useState(false);
@@ -35,23 +35,26 @@ const CategorySelect = ({ onChange, currentCategoryId }) => {
 
   return (
     <CategorySelectWrapper>
-      <CategoryOption
-        color={currentCategory && currentCategory.color}
-        onClick={() => setIsCategoryPickerOpen((prevState) => !prevState)}
-        isEmpty={!currentCategory}
-        isInPicker={false}
-      >
-        {currentCategory ? currentCategory.title[0] : <List />}
-      </CategoryOption>
+      {!noToggle && (
+        <CategoryOption
+          color={currentCategory && currentCategory.color}
+          onClick={() => setIsCategoryPickerOpen((prevState) => !prevState)}
+          isEmpty={!currentCategory}
+          isInPicker={false}
+        >
+          {currentCategory ? currentCategory.title[0] : <List />}
+        </CategoryOption>
+      )}
 
-      {isCategoryPickerOpen && (
-        <CategoryOptions ref={colorRef}>
+      {(noToggle || isCategoryPickerOpen) && (
+        <CategoryOptions ref={colorRef} noToggle={noToggle}>
           <>
             <CategoryOption
               value=""
               onClick={() => handleChangeComplete('')}
               isEmpty={true}
               isInPicker
+              isSelected={!currentCategory}
             >
               <List />
             </CategoryOption>
@@ -63,7 +66,7 @@ const CategorySelect = ({ onChange, currentCategoryId }) => {
                 value={c.id}
                 onClick={() => handleChangeComplete(c.id)}
                 isEmpty={false}
-                isInPicker
+                isSelected={currentCategory ? c.id === currentCategory.id : false}
               >
                 {c.title[0]}
               </CategoryOption>
@@ -81,27 +84,25 @@ const CategorySelectWrapper = styled.div`
 `;
 
 const CategoryOptions = styled.div`
-  position: absolute;
+  position: ${({ noToggle }) => (noToggle ? 'initial' : 'absolute')};
   top: 45px;
-  padding: 15px 9px 9px 15px;
-  width: auto;
+  right: 0;
   background: rgb(255, 255, 255);
   border: 0px solid rgba(0, 0, 0, 0.25);
   box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
   border-radius: 4px;
-  display: flex;
-  right: 0;
-
-  & > * {
-    margin: 0px 6px 6px 0px;
-  }
+  padding: ${({ theme }) => theme.sizes.spacingSmall};
+  display: grid;
+  grid-gap: ${({ theme }) => theme.sizes.spacingSmall};
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  min-width: 100px;
 `;
 
 const CategoryOption = styled.div`
   cursor: pointer;
   background: ${({ color }) => (color ? color : 'white')};
-  height: ${({ isInPicker }) => (isInPicker ? '30px' : '28px')};
-  width: ${({ isInPicker }) => (isInPicker ? '30px' : '28px')};
+  height: 30px;
+  width: 30px;
   position: relative;
   outline: none;
   float: left;
@@ -110,13 +111,15 @@ const CategoryOption = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  border: 2px solid ${({ isEmpty }) => (isEmpty ? 'black' : 'white')};
   color: ${({ isEmpty }) => isEmpty && 'black'};
+  border: 2px solid
+    ${({ isSelected, theme }) => (isSelected ? theme.colors.primary : theme.colors.surfaceVariant)};
 `;
 
 CategorySelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   currentCategoryId: PropTypes.string,
+  noToggle: PropTypes.bool,
 };
 
 CategorySelect.defaultProps = {

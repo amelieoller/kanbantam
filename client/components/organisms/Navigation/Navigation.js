@@ -9,7 +9,7 @@ import CategorySelect from '_molecules/CategorySelect';
 import UpdateTextButton from '_molecules/UpdateTextButton';
 import Settings from '_organisms/Settings';
 import { attemptLogout } from '_thunks/auth';
-import { attemptUpdateBoard } from '_thunks/boards';
+import { attemptUpdateBoard } from '_actions/boards';
 import Eye from '_assets/icons/eye.svg';
 import EyeOff from '_assets/icons/eye-off.svg';
 import Logo from '_assets/icons/logo.svg';
@@ -91,8 +91,9 @@ function Navigation({ pathname }) {
 
 const StyledNavigation = styled.nav`
   height: ${({ theme }) => theme.sizes.navbarHeight};
-  background: ${({ theme, navBackground }) =>
-    navBackground ? navBackground : theme.colors.primary};
+  background: ${({ theme, navBackground, isHome }) =>
+    navBackground && !isHome ? navBackground : theme.colors.primary};
+  transition: background 1.2s ease;
   color: ${({ theme }) => theme.colors.onPrimary};
   display: flex;
   justify-content: space-between;

@@ -43,7 +43,7 @@ const darkColors = {
 
   // Notification Colors
   error: '#f44336',
-  success: '#4caf50',
+  success: '#4ec492',
   warning: '#ff9800',
   info: '#2196f3',
 
@@ -118,7 +118,7 @@ const lightColors = {
 
   // Notification Colors
   error: '#f44336',
-  success: '#4caf50',
+  success: '#4ec492',
   warning: '#ff9800',
   info: '#2196f3',
 

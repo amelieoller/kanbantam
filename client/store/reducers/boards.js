@@ -1,34 +1,28 @@
 import update from 'immutability-helper';
-import * as R from 'ramda';
 
-import { SET_BOARDS, ADD_BOARD, UPDATE_BOARD, REMOVE_BOARD } from '_actions/boards';
+import {
+  SET_BOARDS,
+  ADD_BOARD,
+  UPDATE_BOARD,
+  REMOVE_BOARD,
+  UPDATE_BOARD_ID,
+} from '_actions/boards';
 
 import { LOGOUT_USER } from '_actions/user';
-
-export function board(state = {}, action) {
-  switch (action.type) {
-    case ADD_BOARD:
-      return action.board;
-    case UPDATE_BOARD:
-      return { ...state, ...action.board };
-    default:
-      return state;
-  }
-}
+import { byIdReplaceAtIndex } from '_utils/filtering';
 
 export default function boards(state = [], action) {
-  const index = R.findIndex(R.propEq('id', action.id), state);
-  const updatedAtIndex = { $splice: [[index, 1, board(state[index], action)]] };
-
   switch (action.type) {
     case SET_BOARDS:
-      return update(state, { $set: action.boards });
+      return update(state, { $set: action.payload });
     case ADD_BOARD:
-      return update(state, { $push: [board(undefined, action)] });
+      return [...state, action.payload];
     case UPDATE_BOARD:
-      return update(state, updatedAtIndex);
+      return byIdReplaceAtIndex(state, action.payload.id, action.payload);
+    case UPDATE_BOARD_ID:
+      return byIdReplaceAtIndex(state, action.payload.id, { id: action.newId });
     case REMOVE_BOARD:
-      return update(state, { $splice: [[index, 1]] });
+      return state.filter((todo) => todo.id !== action.payload.id);
     case LOGOUT_USER:
       return [];
     default:

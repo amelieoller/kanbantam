@@ -1,49 +1,21 @@
 import update from 'immutability-helper';
-import * as R from 'ramda';
 
-import {
-  SET_TODOS,
-  ADD_TODO,
-  TOGGLE_COMPLETE_TODO,
-  UPDATE_TODO,
-  REMOVE_TODO,
-} from '_actions/todos';
-
+import { SET_TODOS, ADD_TODO, UPDATE_TODO, REMOVE_TODO, UPDATE_TODO_ID } from '_actions/todos';
 import { LOGOUT_USER } from '_actions/user';
-
-export function todo(
-  state = {
-    completed: false,
-  },
-  action,
-) {
-  switch (action.type) {
-    case ADD_TODO:
-      return action.todo;
-    case TOGGLE_COMPLETE_TODO:
-      return { ...state, ...action.todo };
-    case UPDATE_TODO:
-      return { ...state, ...action.todo };
-    default:
-      return state;
-  }
-}
+import { byIdReplaceAtIndex } from '_utils/filtering';
 
 export default function todos(state = [], action) {
-  const index = R.findIndex(R.propEq('id', action.id), state);
-  const updatedAtIndex = { $splice: [[index, 1, todo(state[index], action)]] };
-
   switch (action.type) {
     case SET_TODOS:
-      return update(state, { $set: action.todos });
+      return update(state, { $set: action.payload });
     case ADD_TODO:
-      return update(state, { $push: [todo(undefined, action)] });
-    case TOGGLE_COMPLETE_TODO:
-      return update(state, updatedAtIndex);
+      return [...state, action.payload];
     case UPDATE_TODO:
-      return update(state, updatedAtIndex);
+      return byIdReplaceAtIndex(state, action.payload.id, action.payload);
+    case UPDATE_TODO_ID:
+      return byIdReplaceAtIndex(state, action.payload.id, { id: action.newId });
     case REMOVE_TODO:
-      return update(state, { $splice: [[index, 1]] });
+      return state.filter((todo) => todo.id !== action.payload.id);
     case LOGOUT_USER:
       return [];
     default:
