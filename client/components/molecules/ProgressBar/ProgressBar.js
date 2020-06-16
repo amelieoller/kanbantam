@@ -25,7 +25,6 @@ const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }
 
     handleBarUpdate(newTotal);
   };
-  console.log('percentage', percentage);
 
   return (
     <Wrapper>

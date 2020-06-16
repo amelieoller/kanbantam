@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Todo from '_molecules/Todo';
+import { formatYearMonthDay } from '_utils/dates';
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,12 +37,19 @@ const List = ({ listId, todos, listHeight, placeholderProps, board, completedLis
   useEffect(() => {
     if (todos.length === 0) return;
 
+    const today = new Date();
+    const formattedDate = formatYearMonthDay(today);
+
     const withinPomodoroTime = () => {
       // If there are no totalPomodori return
-      if (!board.totalPomodori) return;
+      if (!board.totalPomodori || !board.elapsedPomodori[formattedDate]) return;
+      const elapsedPomodoriToday = board.elapsedPomodori[formattedDate];
+      const pomodoriLeft = board.totalPomodori - elapsedPomodoriToday;
+
+      if (!pomodoriLeft) return;
 
       let accumulatedMinutes = 0;
-      let minutesAvailable = 25 * board.totalPomodori;
+      let minutesAvailable = 25 * pomodoriLeft;
       const selectedTodos = [];
 
       // For each todo iterate and figure out if it fits within our available minutes, if so, add to array, otherwise ignore
@@ -63,7 +71,7 @@ const List = ({ listId, todos, listHeight, placeholderProps, board, completedLis
     const withinPomodoro = withinPomodoroTime();
 
     setWithinPomodoroTodos(withinPomodoro);
-  }, [todos, board.totalPomodori]);
+  }, [todos, board.totalPomodori, board.elapsedPomodori]);
 
   return (
     <Droppable
@@ -155,6 +163,7 @@ List.propTypes = {
   board: PropTypes.shape({
     totalPomodori: PropTypes.number.isRequired,
     category: PropTypes.string.isRequired,
+    elapsedPomodori: PropTypes.objectOf(PropTypes.number),
   }),
   listHeight: PropTypes.number.isRequired,
   placeholderProps: PropTypes.shape({
