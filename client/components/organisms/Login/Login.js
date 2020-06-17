@@ -35,7 +35,7 @@ function Login({ setIsLogin }) {
     dispatch(attemptLogin(userCredentials)).catch(R.identity);
   };
 
-  // useKeyPress('Enter', login);
+  useKeyPress('Enter', login);
 
   const rememberMe = () => {
     localStorage.removeItem('username');
@@ -60,12 +60,7 @@ function Login({ setIsLogin }) {
         <Button onClick={login}>Log In</Button>
         <RememberMe>
           <label>
-            <input
-              name="rememberMe"
-              type="checkbox"
-              checked={remember}
-              onChange={rememberMe}
-            />
+            <input name="rememberMe" type="checkbox" checked={remember} onChange={rememberMe} />
             Remember me
           </label>
         </RememberMe>

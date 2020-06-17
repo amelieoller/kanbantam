@@ -10,6 +10,10 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  *:focus {
+    outline-color: ${({ theme }) => theme.colors.primary};
+  }
+
   .react-codemirror2.code-mirror > div {
     width: 265px;
     background: white;
@@ -177,7 +181,7 @@ const GlobalStyles = createGlobalStyle`
   [type='submit']:-moz-focusring {
     outline: 1px dotted ButtonText;
   }
-
+  
   fieldset {
     padding: 0.35em 0.75em 0.625em;
   }

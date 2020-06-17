@@ -73,6 +73,11 @@ const StyledBoardList = styled.div`
     height: 140px;
     margin: 0 15px 15px 0;
 
+    &:focus {
+      outline: none;
+      border: 2px solid ${({ theme }) => theme.colors.primary};
+    }
+
     &:hover {
       background: ${({ theme }) => theme.colors.surfaceHover};
       box-shadow: ${({ theme }) => theme.shadows.two};
