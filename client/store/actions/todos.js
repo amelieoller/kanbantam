@@ -52,7 +52,10 @@ export const attemptAddTodo = (newTodo) => (dispatch) => {
   });
 };
 
-export const attemptUpdateTodo = (payload) => (dispatch) => {
+export const attemptUpdateTodo = (todo) => (dispatch) => {
+  const updatedAt = new Date();
+  const payload = { ...todo, updatedAt };
+
   dispatch({
     type: UPDATE_TODO,
     payload,
