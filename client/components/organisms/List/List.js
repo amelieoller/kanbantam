@@ -42,8 +42,8 @@ const List = ({ listId, todos, listHeight, placeholderProps, board, completedLis
 
     const withinPomodoroTime = () => {
       // If there are no totalPomodori return
-      if (!board.totalPomodori || !board.elapsedPomodori[formattedDate]) return;
-      const elapsedPomodoriToday = board.elapsedPomodori[formattedDate];
+      if (!board.totalPomodori) return;
+      const elapsedPomodoriToday = board.elapsedPomodori[formattedDate] || 0;
       const pomodoriLeft = board.totalPomodori - elapsedPomodoriToday;
 
       if (!pomodoriLeft) return;

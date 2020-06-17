@@ -42,14 +42,17 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
         updateBoard();
       }
 
+      // Timer finished running, switch sessions
       switchSessions();
     } else {
-      // Start the timer by setting setTimePassedMs to endTime minus now
-      setTimePassedMs(endTime - new Date().getTime());
+      const newMsPassed = endTime - new Date().getTime();
 
       // Update title
-      const [minutes, seconds] = formatTime(timePassedMs, sessionLength);
+      const [minutes, seconds] = formatTime(newMsPassed, sessionLength);
       document.title = `${minutes}:${seconds}`;
+
+      // Run the timer updating time passed
+      setTimePassedMs(newMsPassed);
     }
   };
 
@@ -88,6 +91,8 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     setTimePassedMs(0);
     setEndTime(0);
     setIsRunning(false);
+
+    document.title = 'Kanban';
   };
 
   const playOrPauseTimer = () => setIsRunning((prevIsRunning) => !prevIsRunning);
