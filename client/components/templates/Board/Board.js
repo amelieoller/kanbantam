@@ -13,6 +13,7 @@ import { attemptUpdateList } from '_actions/lists';
 import { attemptUpdateTodo } from '_actions/todos';
 import reorder, { reorderTodoList } from '_utils/dragAndDrop';
 import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
+import { formatYearMonthDay } from '_utils/dates';
 import useResize from '_hooks/useResize';
 
 function Board({ board, theme: { sizes } }) {
@@ -28,6 +29,7 @@ function Board({ board, theme: { sizes } }) {
   const [orderedLists, setOrderedLists] = useState([]);
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [completedListId, setCompletedListId] = useState('');
+  const [todayCompletedTodos, setTodayCompletedTodos] = useState([]);
 
   useEffect(() => {
     const filteredListsWithoutSpecial = lists.filter((l) => !l.special);
@@ -48,6 +50,13 @@ function Board({ board, theme: { sizes } }) {
       };
     }, {});
 
+    // Find completed todos today
+    const today = formatYearMonthDay(new Date());
+    const completedTodos = todos
+      .filter((t) => t.completed && formatYearMonthDay(new Date(t.updatedAt)) === today)
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+    setTodayCompletedTodos(completedTodos);
     setCompletedListId(completedList.id);
     setOrderedLists(sortedLists);
     setListsWithTodos(todosByListId);
@@ -228,7 +237,11 @@ function Board({ board, theme: { sizes } }) {
 
   return (
     <StyledBoard isSidebarOpen={board.sidebarOpen}>
-      <Sidebar isSidebarOpen={board.sidebarOpen} currentBoard={board} />
+      <Sidebar
+        isSidebarOpen={board.sidebarOpen}
+        currentBoard={board}
+        todayCompletedTodos={todayCompletedTodos}
+      />
 
       <div ref={boardRef}>
         <DragDropContext
@@ -297,14 +310,9 @@ const ListsWrapper = styled.div`
   grid-auto-columns: ${({ theme }) => theme.sizes.listWidth};
   grid-auto-flow: column;
   padding: ${({ theme }) => `${theme.sizes.spacing} ${theme.sizes.spacingLarge}`};
-  transform: translate3d(
-    ${({ theme, isSidebarOpen }) =>
-      isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall},
-    0px,
-    0px
-  );
+  margin-left: ${({ theme, isSidebarOpen }) =>
+    isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
   transition: 0.4s ease;
-  transform-origin: right center;
 
   & > *:not(:last-child) {
     margin-right: 8px;

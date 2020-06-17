@@ -4,14 +4,16 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 
+import CompletedTodos from '_organisms/CompletedTodos';
 import Pomodoro from '_templates/Pomodoro';
 import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder } from '_utils/sorting';
 import ChevronLeft from '_assets/icons/chevrons-left.svg';
 import ChevronRight from '_assets/icons/chevrons-right.svg';
+import Award from '_assets/icons/Award.svg';
 import Clock from '_assets/icons/clock.svg';
 
-function Sidebar({ isSidebarOpen, currentBoard }) {
+function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
   const dispatch = useDispatch();
 
   const [currentTodos, setCurrentTodos] = useState(null);
@@ -65,12 +67,23 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
             isSidebarOpen={isSidebarOpen}
           />
         </SectionWrapper>
+
+        <SectionWrapper>
+          <SectionHeader>
+            <Award />
+            <h2>Completed Todos</h2>
+          </SectionHeader>
+
+          <CompletedTodos todayCompletedTodos={todayCompletedTodos} />
+        </SectionWrapper>
       </SidebarContent>
     </SidebarWrapper>
   );
 }
 
-const SectionWrapper = styled.div``;
+const SectionWrapper = styled.div`
+  padding-bottom: 3rem;
+`;
 
 const SectionHeader = styled.div`
   display: grid;
@@ -90,32 +103,16 @@ const SidebarWrapper = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme, isSidebarOpen }) =>
     !isSidebarOpen ? theme.sizes.spacingSmall : theme.sizes.spacing};
-  padding-left: ${({ isSidebarOpen, theme }) =>
-    !isSidebarOpen &&
-    `${
-      parseInt(theme.sizes.sidebarWidthLarge) -
-      parseInt(theme.sizes.sidebarWidthSmall) +
-      parseInt(theme.sizes.spacingSmall)
-    }px`};
-  width: ${({ theme }) => theme.sizes.sidebarWidthLarge};
   height: calc(100vh - ${({ theme }) => theme.sizes.navbarHeight});
   box-shadow: 3px 0px 8px 0px rgba(155, 170, 178, 0.1);
   color: ${({ theme }) => theme.colors.onSurface};
-  transform: translate3d(
-    ${({ isSidebarOpen, theme }) =>
-      isSidebarOpen
-        ? '0px'
-        : `-${
-            parseInt(theme.sizes.sidebarWidthLarge) - parseInt(theme.sizes.sidebarWidthSmall)
-          }px`},
-    0px,
-    0px
-  );
+  width: ${({ theme, isSidebarOpen }) =>
+    isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
   transition: 0.4s ease;
-  transform-origin: right center;
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   position: fixed;
+  left: 0;
   z-index: 1;
 `;
 
@@ -126,7 +123,7 @@ const SidebarContent = styled.div`
 const CollapseButton = styled.button`
   position: absolute;
   left: 100%;
-  top: 20%;
+  top: 50%;
   transform: translateX(-50%);
   border-radius: 50%;
   height: 20px;
