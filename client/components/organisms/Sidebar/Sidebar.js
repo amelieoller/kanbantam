@@ -10,7 +10,7 @@ import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder } from '_utils/sorting';
 import ChevronLeft from '_assets/icons/chevrons-left.svg';
 import ChevronRight from '_assets/icons/chevrons-right.svg';
-import Award from '_assets/icons/Award.svg';
+import Award from '_assets/icons/award.svg';
 import Clock from '_assets/icons/clock.svg';
 
 function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
