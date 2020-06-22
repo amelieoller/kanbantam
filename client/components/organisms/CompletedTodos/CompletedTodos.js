@@ -18,16 +18,17 @@ const CompletedTodos = ({ todayCompletedTodos }) => {
 
   return (
     <StyledList>
-      {todayCompletedTodos.map((t) => (
-        <ListItem key={t.id}>
-          <TodoText categoryColor={categories.find((c) => c.id === t.category).color}>
-            {t.text}
-          </TodoText>
-          <Right>
-            <X onClick={() => deleteTodo(t.id)} />
-          </Right>
-        </ListItem>
-      ))}
+      {todayCompletedTodos.map((t) => {
+        const category = categories.find((c) => c.id === t.category);
+        return (
+          <ListItem key={t.id}>
+            <TodoText categoryColor={category && category.color}>{t.text}</TodoText>
+            <Right>
+              <X onClick={() => deleteTodo(t.id)} />
+            </Right>
+          </ListItem>
+        );
+      })}
     </StyledList>
   );
 };
@@ -56,7 +57,7 @@ const Right = styled.span`
   }
 `;
 
-const ListItem = styled.ul`
+const ListItem = styled.li`
   display: flex;
   align-items: start;
   justify-content: space-between;
