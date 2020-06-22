@@ -10,6 +10,7 @@ import { attemptGetBoards } from '_actions/boards';
 function BoardsPage() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
+  const { boards } = useSelector(R.pick(['boards']));
 
   const [loading, setLoading] = useState(true);
 
@@ -17,9 +18,13 @@ function BoardsPage() {
     if (R.isEmpty(user)) {
       dispatch(push('/login'));
     } else {
-      dispatch(attemptGetBoards()).then(() => setLoading(false));
+      if (boards.length === 0) {
+        dispatch(attemptGetBoards()).then(() => setLoading(false));
+      } else {
+        setLoading(false);
+      }
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, boards]);
 
   return !loading ? <BoardSection /> : <Spinner />;
 }
