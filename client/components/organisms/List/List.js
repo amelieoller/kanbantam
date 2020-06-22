@@ -110,7 +110,7 @@ const List = ({ listId, todos, listHeight, placeholderProps, board, completedLis
                   </Draggable>
                 ))}
                 {dropProvided.placeholder}
-                {!!placeholderProps.clientY && dropSnapshot.isDraggingOver && (
+                {/* {!!placeholderProps.clientY && dropSnapshot.isDraggingOver && (
                   <Placeholder
                     style={{
                       top: placeholderProps.clientY,
@@ -119,7 +119,7 @@ const List = ({ listId, todos, listHeight, placeholderProps, board, completedLis
                       width: placeholderProps.clientWidth,
                     }}
                   />
-                )}
+                )} */}
               </DropZone>
             </>
           </ScrollContainer>
