@@ -116,7 +116,6 @@ const Todo = ({
           </FooterRight>
         </Footer>
       )}
-      {/* <TodoModal todo={todo} isOpen={isOpen} setIsOpen={setIsOpen} cardBounds={boundingRect} /> */}
     </Container>
   );
 };
