@@ -87,6 +87,7 @@ const StyledInput = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   font-size: 1.3rem;
+  -webkit-appearance: none;
 `;
 
 const HelpText = styled.div`
@@ -101,16 +102,7 @@ Input.propTypes = {
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
-  type: PropTypes.oneOf([
-    'email',
-    'money',
-    'number',
-    'password',
-    'phone',
-    'text',
-    'zip',
-    'date',
-  ]),
+  type: PropTypes.oneOf(['email', 'money', 'number', 'password', 'phone', 'text', 'zip', 'date']),
   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   helpText: PropTypes.string,
 };

@@ -24,7 +24,7 @@ export default function configureStore(history, initialState = {}) {
     initialState,
     compose(
       applyMiddleware(...middlewares),
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+      // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), // comment out devtools, otherwise app does not work in any browser without the extension installed
     ),
   );
 }
