@@ -24,7 +24,7 @@ function BoardsPage() {
         setLoading(false);
       }
     }
-  }, [dispatch, user, boards]);
+  }, [dispatch, user]);
 
   return !loading ? <BoardSection /> : <Spinner />;
 }

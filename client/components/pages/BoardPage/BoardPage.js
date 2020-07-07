@@ -22,6 +22,7 @@ function BoardPage({ boardId }) {
   const { currentBoard } = useSelector(R.pick(['currentBoard']));
 
   const [loading, setLoading] = useState(true);
+  const [fetchBoardsCompleted, setFetchBoardsCompleted] = useState(false);
 
   // Get boards effect
   useEffect(() => {
@@ -31,14 +32,16 @@ function BoardPage({ boardId }) {
     } else {
       if (boards.length === 0) {
         // If there are no boards yet, get boards
-        dispatch(attemptGetBoards());
+        dispatch(attemptGetBoards()).then(() => setFetchBoardsCompleted(true));
+      } else {
+        setFetchBoardsCompleted(true);
       }
     }
-  }, [dispatch, user, boards]);
+  }, [dispatch, user]);
 
   // Get current board effect
   useEffect(() => {
-    if (boards.length !== 0) {
+    if (fetchBoardsCompleted) {
       // When boards come in, find currentBoard
       const board = boards.find((b) => b.id === boardId);
 
@@ -50,7 +53,7 @@ function BoardPage({ boardId }) {
         dispatch(push('/'));
       }
     }
-  }, [boards, dispatch, boardId]);
+  }, [fetchBoardsCompleted, boards]);
 
   // Get lists and todos and set loading to false effect
   useEffect(() => {
