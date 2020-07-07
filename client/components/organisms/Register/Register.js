@@ -121,7 +121,7 @@ export default function Register() {
       <hr className="separator" />
       <p className="has-space-below">
         Already a member?&nbsp;
-        <Link to="/login">Login</Link>
+        <Link to="/">Login</Link>
       </p>
 
       <div className="field">

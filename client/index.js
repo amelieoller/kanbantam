@@ -9,7 +9,4 @@ import store from '_client/store';
 
 import Root from '_environment/Root';
 
-render(
-  <Root history={history} store={store} />,
-  document.getElementById('app'),
-);
+render(<Root history={history} store={store} />, document.getElementById('app'));

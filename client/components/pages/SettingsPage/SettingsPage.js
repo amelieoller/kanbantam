@@ -15,7 +15,7 @@ export default function SettingsPage({ location }) {
 
   useEffect(() => {
     if (R.isEmpty(user)) {
-      dispatch(push('/login'));
+      dispatch(push('/'));
     }
   }, []);
 

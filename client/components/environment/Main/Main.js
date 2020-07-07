@@ -88,7 +88,7 @@ function Main({ location, theme: { colors } }) {
       {!auth ? (
         <>
           <Switch>
-            <Route path="/" component={WelcomePage} />
+            <Route exact path="/" component={WelcomePage} />
             <Redirect to="/" />
           </Switch>
         </>

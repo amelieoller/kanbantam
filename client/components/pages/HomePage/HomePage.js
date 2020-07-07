@@ -9,7 +9,7 @@ function HomePage() {
 
   useEffect(() => {
     if (R.isEmpty(user)) {
-      dispatch(push('/login'));
+      dispatch(push('/'));
     }
   }, []);
 

@@ -52,7 +52,7 @@ export const attemptLogout = () => (dispatch) =>
           autoDismiss: 3,
         }),
       );
-      dispatch(push('/login'));
+      dispatch(push('/'));
       return data;
     })
     .catch(dispatchError(dispatch));
