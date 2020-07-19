@@ -299,6 +299,9 @@ const StyledBoard = styled.div`
   background: ${({ theme }) => theme.colors.boardBackground};
   width: max-content;
   position: relative;
+  overflow: scroll;
+  max-width: 100vw;
+  max-height: 100vh;
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   margin-top: ${({ theme }) => theme.sizes.navbarHeight};
