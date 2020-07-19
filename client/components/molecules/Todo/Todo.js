@@ -42,11 +42,48 @@ const Todo = ({
     }
   }, [categories, todo]);
 
+  const toggleCheckbox = (checked, i) => {
+    let j = 0;
+
+    const newText = todo.text.replace(/\[(\s|x)\]/g, (match) => {
+      let newString;
+      if (i === j) {
+        newString = checked ? '[x]' : '[ ]';
+      } else {
+        newString = match;
+      }
+      j += 1;
+      return newString;
+    });
+
+    dispatch(attemptUpdateTodo({ id: todo.id, text: newText }));
+  };
+
   const handleClick = (e) => {
-    const elAttribute = e.target.dataset.type;
-    const elAttributeParent = e.target.parentElement.dataset.type;
+    const { tagName, checked, id, type, dataset, parentElement } = e.target;
+
+    const elAttribute = dataset.type;
+    const elAttributeParent = parentElement.dataset.type;
+
+    var aElements = e.target.parentNode.parentNode.children;
+    var aElementsLength = aElements.length;
+
+    var index;
+
+    for (var i = 0; i < aElementsLength; i++) {
+      if (aElements[i] == parentElement) {
+        //this condition is never true
+        index = i;
+      }
+    }
+
+    if (tagName.toLowerCase() === 'input' && type.toLowerCase() === 'checkbox') {
+      // The id is a string that describes which number in the order of checkboxes this particular checkbox has
+      toggleCheckbox(checked, parseInt(index, 10));
+    }
+
     if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
-    if (e.target.tagName === 'A') return;
+    if (tagName === 'A' || tagName === 'INPUT') return;
 
     const boundingRect = combinedRef.current.getBoundingClientRect();
 
@@ -61,6 +98,38 @@ const Todo = ({
     dispatch(attemptUpdateTodo({ id: todo.id, list: completedListId, completed: true }));
   };
 
+  const formatMarkdown = (markdown) => {
+    let i = 0;
+    return marked(markdown, { sanitize: true, gfm: true, breaks: true })
+      .replace(/<a/g, '<a target="_blank"')
+      .replace(/\[(\s|x)\]/g, (match) => {
+        let newString;
+        if (match === '[ ]') {
+          newString = `<input id=${i} onclick="return false" type="checkbox">`;
+        } else {
+          newString = `<input id=${i} checked onclick="return false" type="checkbox">`;
+        }
+        i += 1;
+        return newString;
+      });
+  };
+
+  const MyImage = (props) => {
+    debugger;
+    return (
+      <img
+        className={fullSize ? 'large' : 'small'}
+        alt={props.alt}
+        src={props.src}
+        onClick={handleClick}
+      />
+    );
+  };
+
+  const renderers = {
+    // input: 'x',
+  };
+
   return (
     <Container
       isDragging={isDragging}
@@ -69,6 +138,7 @@ const Todo = ({
       {...dragHandleProps}
       onClick={handleClick}
       data-type="isCard"
+      id={todo.id}
       categoryColor={todoCategory && todoCategory.color}
       inPomodori={isWithinPomodoro}
       selectedCategory={selectedCategory}
@@ -77,7 +147,7 @@ const Todo = ({
         <CheckCircle data-type="isClickable" />
       </DoneButton>
       <Main>
-        <ReactMarkdown source={todo.text} linkTarget="_blank" />
+        <ReactMarkdown source={todo.text} linkTarget="_blank" renderers={renderers} />
       </Main>
 
       {!!(!!todo.priority || !!todo.dueDate | !!todo.minutes) && (
