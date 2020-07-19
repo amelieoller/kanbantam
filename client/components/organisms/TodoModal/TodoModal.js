@@ -80,7 +80,7 @@ function TodoModal({ completedListId }) {
       top: isNearBottom
         ? 'auto'
         : Math.min(boundingRect.top, window.innerHeight - boundingRect.height - 18),
-      bottom: isNearBottom ? window.innerHeight - boundingRect.bottom - 18 : 'auto',
+      bottom: isNearBottom ? window.innerHeight - boundingRect.bottom : 'auto',
       left: isNearRight ? null : boundingRect.left,
       right: isNearRight ? window.innerWidth - boundingRect.right : null,
       flexDirection: isNearRight ? 'row-reverse' : 'row',
