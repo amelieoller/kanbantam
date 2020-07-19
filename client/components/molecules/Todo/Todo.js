@@ -46,6 +46,8 @@ const Todo = ({
     const elAttribute = e.target.dataset.type;
     const elAttributeParent = e.target.parentElement.dataset.type;
     if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
+    if (e.target.tagName === 'A') return;
+
     const boundingRect = combinedRef.current.getBoundingClientRect();
 
     dispatch(setCurrentTodo({ ...todo, boundingRect }));
