@@ -11,6 +11,7 @@ import { useInterval } from '_hooks/useInterval';
 import PauseCircle from '_assets/icons/pause-circle.svg';
 import PlayCircle from '_assets/icons/play-circle.svg';
 import Repeat from '_assets/icons/repeat.svg';
+import notification from '_assets/sounds/notification.mp3';
 
 const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarOpen }) => {
   const today = new Date();
@@ -23,6 +24,8 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
   const [timePassedMs, setTimePassedMs] = useState(0); // The ms of time that have passed
   const [endTime, setEndTime] = useState(0); // Ms to when the time is run out (time now + length of the session in min * 60000)
   const [isRunning, setIsRunning] = useState(false); // Is the timer running or not
+
+  const audio = new Audio(notification);
 
   // -------------- MAIN TIMER FUNCTIONALITY --------------
   const elapseTime = () => {
@@ -41,6 +44,8 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
       if (isWorkSession) {
         updateBoard();
       }
+
+      audio.play();
 
       // Timer finished running, switch sessions
       switchSessions();
