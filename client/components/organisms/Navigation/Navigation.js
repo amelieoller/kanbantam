@@ -45,11 +45,13 @@ function Navigation({ pathname }) {
     dispatch(attemptUpdateBoard({ id: currentBoard.id, ...attribute }));
   };
 
+  const isThinDisplay = window.innerWidth < 550;
+
   return (
     <StyledNavigation role="navigation" isHome={isHome} navBackground={navBackground}>
       <Left to="/">
         <Logo />
-        Kanban 2.0
+        {!isThinDisplay && 'Kanban 2.0'}
       </Left>
 
       <Right>
