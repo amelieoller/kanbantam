@@ -32,7 +32,6 @@ const Todo = ({
 
   const { categories } = useSelector(R.pick(['categories']));
 
-  const [boundingRect, setBoundingRect] = useState();
   const [todoCategory, setTodoCategory] = useState();
 
   useEffect(() => {
@@ -43,14 +42,11 @@ const Todo = ({
     }
   }, [categories, todo]);
 
-  useLayoutEffect(() => {
-    setBoundingRect(combinedRef.current.getBoundingClientRect());
-  }, [combinedRef]);
-
   const handleClick = (e) => {
     const elAttribute = e.target.dataset.type;
     const elAttributeParent = e.target.parentElement.dataset.type;
     if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
+    const boundingRect = combinedRef.current.getBoundingClientRect();
 
     dispatch(setCurrentTodo({ ...todo, boundingRect }));
   };
@@ -255,7 +251,6 @@ Todo.propTypes = {
     id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
-    updatedAt: PropTypes.string,
     dueDate: PropTypes.string,
     priority: PropTypes.number,
     minutes: PropTypes.number,
@@ -273,8 +268,6 @@ Todo.propTypes = {
   completedListId: PropTypes.string.isRequired,
 };
 
-Todo.defaultProps = {
-  updatedAt: null,
-};
+Todo.defaultProps = {};
 
 export default Todo;
