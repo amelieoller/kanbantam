@@ -22,6 +22,10 @@ const GlobalStyles = createGlobalStyle`
     border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
     font-size: 1.2rem;
     height: 100%;
+
+    @media ${(props) => props.theme.media.tabletSmall} {
+      width: calc(100vw - 90px);
+    }
   }
 
   html {

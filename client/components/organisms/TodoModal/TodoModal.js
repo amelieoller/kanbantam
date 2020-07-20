@@ -92,10 +92,8 @@ function TodoModal({ completedListId }) {
   const mobileStyle = {
     content: {
       flexDirection: 'column',
-      top: 3,
-      left: 3,
-      right: 3,
-      background: 'blue',
+      top: '60px',
+      left: isNearRight ? null : boundingRect.left,
     },
   };
 
@@ -175,6 +173,11 @@ const OptionsWrapper = styled.div`
   display: grid;
   grid-gap: ${({ theme }) => theme.sizes.spacing};
   padding: 0 ${({ theme }) => theme.sizes.spacing};
+  width: 100%;
+  margin-top: 9px;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
 
   button {
     width: 100%;

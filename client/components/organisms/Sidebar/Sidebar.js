@@ -126,8 +126,8 @@ const CollapseButton = styled.button`
   top: 50%;
   transform: translateX(-50%);
   border-radius: 50%;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   padding: 0;
   border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   cursor: pointer;
@@ -142,8 +142,8 @@ const CollapseButton = styled.button`
   }
 
   svg {
-    width: 13px;
-    height: 13px;
+    width: 16px;
+    height: 16px;
   }
 `;
 
