@@ -114,22 +114,6 @@ const Todo = ({
       });
   };
 
-  const MyImage = (props) => {
-    debugger;
-    return (
-      <img
-        className={fullSize ? 'large' : 'small'}
-        alt={props.alt}
-        src={props.src}
-        onClick={handleClick}
-      />
-    );
-  };
-
-  const renderers = {
-    // input: 'x',
-  };
-
   return (
     <Container
       isDragging={isDragging}
@@ -147,7 +131,7 @@ const Todo = ({
         <CheckCircle data-type="isClickable" />
       </DoneButton>
       <Main>
-        <ReactMarkdown source={todo.text} linkTarget="_blank" renderers={renderers} />
+        <ReactMarkdown source={todo.text} linkTarget="_blank" />
       </Main>
 
       {!!(!!todo.priority || !!todo.dueDate | !!todo.minutes) && (

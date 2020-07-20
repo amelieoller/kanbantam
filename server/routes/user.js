@@ -2,15 +2,33 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { requireAuth } = require('./middleware');
 const { User } = require('../database/schemas');
+const controllers = require('../controllers/users');
 
 const router = express.Router();
 
 module.exports = router;
 
+router.delete('/', requireAuth, async (req, res) => {
+  try {
+    const removed = await User.findOneAndRemove({
+      _id: req.user._id,
+    });
+
+    if (!removed) {
+      return res.status(400).send({ message: 'Removing of doc failed' });
+    }
+
+    return res.status(200).send({ message: 'Doc removed successfully', data: removed });
+  } catch (e) {
+    console.log('ERROR', e);
+    res.status(400).send({ message: 'Removing of doc failed', e });
+  }
+});
+
 router.get('/', (req, res) => {
   const user = (req.user && req.user.hidePassword()) || {};
 
-  res.send({ message: 'User info successfully retreived', user });
+  res.send({ message: 'User info successfully retrieved', user });
 });
 
 router.put('/password', requireAuth, (req, res) => {

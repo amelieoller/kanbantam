@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const R = require('ramda');
 
 import Checkbox from '_atoms/Checkbox';
+import Button from '_atoms/Button';
 import Dropdown from '_atoms/Dropdown';
 import Input from '_atoms/Input';
 import Categories from '_organisms/Categories';
@@ -19,6 +20,7 @@ import List from '_assets/icons/list.svg';
 import SettingsIcon from '_assets/icons/settings.svg';
 import Trash from '_assets/icons/trash-2.svg';
 import X from '_assets/icons/x.svg';
+import { attemptDeleteUser } from '../../../store/actions/user';
 
 const StyledSettings = styled.div`
   background-color: ${(props) => props.theme.colors.surface};
@@ -69,6 +71,7 @@ const Settings = ({ currentBoard }) => {
 
   const { categories } = useSelector(R.pick(['categories']));
   const { lists } = useSelector(R.pick(['lists']));
+  const { user } = useSelector(R.pick(['user']));
 
   const [defaultTime, setDefaultTime] = useState(0);
   const [defaultCategory, setDefaultCategory] = useState('');
@@ -108,6 +111,10 @@ const Settings = ({ currentBoard }) => {
   };
 
   const deleteBoard = () => dispatch(attemptDeleteBoard(currentBoard.id));
+
+  const deleteAccount = () => {
+    dispatch(attemptDeleteUser(user.id));
+  };
 
   return (
     <>
@@ -230,6 +237,12 @@ const Settings = ({ currentBoard }) => {
             <Trash />
             Delete this board
           </DeleteSection>
+
+          {/* Delete Account */}
+          <Button onClick={deleteAccount} buttonType="error">
+            <Trash />
+            Delete Your Account
+          </Button>
         </StyledSettings>
       </SlideOutMenu>
 
@@ -243,6 +256,7 @@ const DeleteSection = styled.div`
   align-items: center;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.medium('onSurface')};
+  margin-bottom: ${({ theme }) => theme.sizes.spacingLarge};
 
   svg {
     margin-right: 6px;
