@@ -93,7 +93,7 @@ function TodoModal({ completedListId }) {
     content: {
       flexDirection: 'column',
       top: '60px',
-      left: isNearRight ? null : boundingRect.left,
+      left: boundingRect.left,
     },
   };
 
@@ -117,7 +117,9 @@ function TodoModal({ completedListId }) {
         />
 
         <OptionsWrapper>
-          <Button onClick={completeTodo}>Done</Button>
+          <Button onClick={completeTodo} label="Done">
+            Done
+          </Button>
 
           <Input
             label="Minutes"
@@ -156,11 +158,12 @@ function TodoModal({ completedListId }) {
                 deleteTodo();
             }}
             buttonType="error"
+            label="Delete todo"
           >
             Delete
           </Button>
 
-          <Button onClick={handleUpdateTodo} buttonType="success">
+          <Button onClick={handleUpdateTodo} buttonType="success" label="Save todo">
             Save
           </Button>
         </OptionsWrapper>
@@ -174,13 +177,17 @@ const OptionsWrapper = styled.div`
   grid-gap: ${({ theme }) => theme.sizes.spacing};
   padding: 0 ${({ theme }) => theme.sizes.spacing};
   width: 100%;
-  margin-top: 9px;
   background: white;
   padding: 10px;
   border-radius: 5px;
+  margin: 0 8px;
 
   button {
     width: 100%;
+  }
+
+  @media ${(props) => props.theme.media.tabletSmall} {
+    margin: 0;
   }
 `;
 
