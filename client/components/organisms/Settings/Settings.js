@@ -239,7 +239,7 @@ const Settings = ({ currentBoard }) => {
           </DeleteSection>
 
           {/* Delete Account */}
-          <Button onClick={deleteAccount} buttonType="error">
+          <Button onClick={deleteAccount} buttonType="error" label="Delete your acccount">
             <Trash />
             Delete Your Account
           </Button>

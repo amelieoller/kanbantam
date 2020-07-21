@@ -57,7 +57,9 @@ function Login({ setIsLogin }) {
         <Link to="/recovery">Forgot your password?</Link>
       </ForgotPassword>
       <ButtonWrapper>
-        <Button onClick={login}>Log In</Button>
+        <Button onClick={login} label="Log in">
+          Log In
+        </Button>
         <RememberMe>
           <label>
             <input name="rememberMe" type="checkbox" checked={remember} onChange={rememberMe} />

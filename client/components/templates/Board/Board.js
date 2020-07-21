@@ -243,7 +243,7 @@ function Board({ board, theme: { sizes } }) {
         todayCompletedTodos={todayCompletedTodos}
       />
 
-      <div ref={boardRef}>
+      <main id="main" ref={boardRef}>
         <DragDropContext
           onDragEnd={onDragEnd}
           onDragStart={onDragStart}
@@ -285,7 +285,7 @@ function Board({ board, theme: { sizes } }) {
             )}
           </Droppable>
         </DragDropContext>
-      </div>
+      </main>
 
       <TodoModal completedListId={completedListId} />
     </StyledBoard>

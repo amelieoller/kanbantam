@@ -41,7 +41,9 @@ function AddList({ boardId, lastListSortVal }) {
       />
     </NewListForm>
   ) : (
-    <Button onClick={toggleIsOpen}>Add a new list...</Button>
+    <Button onClick={toggleIsOpen} label="Add new list">
+      Add a new list...
+    </Button>
   );
 }
 

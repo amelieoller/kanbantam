@@ -163,6 +163,7 @@ const Todo = ({
                 type="min"
                 handleBarUpdate={handleBarUpdate}
                 increment={10}
+                incrementLabel={`Add 10 minutes to ${todo.text.substring(0, 20)}`}
               />
             )}
           </FooterRight>

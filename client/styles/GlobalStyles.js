@@ -14,26 +14,6 @@ const GlobalStyles = createGlobalStyle`
     outline-color: ${({ theme }) => theme.colors.primary};
   }
 
-  .react-codemirror2.code-mirror {
-    @media ${(props) => props.theme.media.tabletSmall} {
-      margin-bottom: 8px;
-    }
-  }
-
-  .react-codemirror2.code-mirror > div {
-    width: 265px;
-    background: white;
-    padding: 3px;
-    border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
-    border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-    font-size: 1.2rem;
-    height: 100%;
-
-    @media ${(props) => props.theme.media.tabletSmall} {
-      width: calc(100vw - 90px);
-    }
-  }
-
   html {
     background-color: #f5f5f5;
     font-size: 12px;
@@ -255,6 +235,48 @@ const GlobalStyles = createGlobalStyle`
 
   [hidden] {
     display: none;
+  }
+
+  /* Skip to content link */
+  .skip-to-content-link {
+    background: ${({ theme }) => theme.colors.primary};
+    height: 25px;
+    left: 5px;
+    padding: 0 8px;
+    position: absolute;
+    transform: translateY(-260%);
+    transition: transform 0.3s;
+    z-index: 3;
+    color: ${({ theme }) => theme.colors.onPrimary};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .skip-to-content-link:focus {
+    transform: translateY(-130%);
+  }
+
+  /* Codemirror */
+  .react-codemirror2.code-mirror {
+    @media ${(props) => props.theme.media.tabletSmall} {
+      margin-bottom: 8px;
+    }
+  }
+
+  .react-codemirror2.code-mirror > div {
+    width: 265px;
+    background: white;
+    padding: 3px;
+    border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+    border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+    font-size: 1.2rem;
+    height: 100%;
+
+    @media ${(props) => props.theme.media.tabletSmall} {
+      width: calc(100vw - 90px);
+    }
   }
 `;
 

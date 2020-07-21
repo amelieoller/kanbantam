@@ -83,6 +83,10 @@ function Main({ location, theme: { colors } }) {
 
   return !loading ? (
     <>
+      <a className="skip-to-content-link" href="#main">
+        Skip to Content
+      </a>
+
       <Notifications notifications={alerts} style={style} />
 
       {!auth ? (

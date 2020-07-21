@@ -2,6 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
+const Button = ({ children, label, ...buttonProps }) => {
+  return (
+    <StyledButton type="button" aria-label={label} label={label} {...buttonProps} role="button">
+      {children}
+    </StyledButton>
+  );
+};
+
 const withOnText = (string) => `on${string.charAt(0).toUpperCase() + string.slice(1)}`;
 
 const propsCSS = {
@@ -45,6 +53,22 @@ const propsCSS = {
       background: ${({ theme, buttonType }) => theme.colors.darker(1, buttonType)};
     }
   `,
+
+  noBackground: css`
+    background: transparent;
+    border: transparent;
+    padding: 0;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.secondary};
+      background: transparent;
+      border: transparent;
+    }
+  `,
+
+  textColor: css`
+    color: ${({ theme, textColor }) => theme.colors[textColor]};
+  `,
 };
 
 const StyledButton = styled.button`
@@ -79,13 +103,9 @@ const StyledButton = styled.button`
   ${(props) => props.size === 'small' && propsCSS.small};
   ${(props) => props.size === 'large' && propsCSS.large};
   ${(props) => props.outline && propsCSS.outline};
+  ${(props) => props.noBackground && propsCSS.noBackground};
+  ${(props) => props.textColor && propsCSS.textColor};
 `;
-
-const Button = ({ children, ...buttonProps }) => (
-  <StyledButton type="button" {...buttonProps}>
-    {children}
-  </StyledButton>
-);
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
@@ -93,12 +113,17 @@ Button.propTypes = {
   buttonType: PropTypes.oneOf(['error', 'success', 'warning', 'info']),
   size: PropTypes.oneOf(['small', 'normal', 'large']),
   outline: PropTypes.bool,
+  label: PropTypes.string.isRequired,
+  noBackground: PropTypes.bool,
+  textColor: PropTypes.string,
 };
 
 Button.defaultProps = {
   type: 'info',
   size: 'normal',
   outline: false,
+  noBackground: false,
+  textColor: '',
 };
 
 export default Button;

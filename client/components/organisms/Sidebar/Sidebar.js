@@ -47,7 +47,7 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
 
   return (
     <SidebarWrapper isSidebarOpen={isSidebarOpen}>
-      <CollapseButton onClick={() => handleToggleClick()}>
+      <CollapseButton onClick={() => handleToggleClick()} aria-label="Expand sidebar">
         {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
       </CollapseButton>
       <SidebarContent>
@@ -99,7 +99,7 @@ const SectionHeader = styled.div`
   }
 `;
 
-const SidebarWrapper = styled.div`
+const SidebarWrapper = styled.aside`
   background: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme, isSidebarOpen }) =>
     !isSidebarOpen ? theme.sizes.spacingSmall : theme.sizes.spacing};

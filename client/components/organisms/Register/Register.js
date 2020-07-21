@@ -167,7 +167,12 @@ export default function Register() {
       <hr className="separator" />
 
       <div className="has-text-right">
-        <Button type="success" disabled={!passwordValid || !usernameAvailable} onClick={register}>
+        <Button
+          type="success"
+          disabled={!passwordValid || !usernameAvailable}
+          onClick={register}
+          label="Create Account"
+        >
           Create Account
         </Button>
       </div>

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import Button from '_atoms/Button';
+
 const UpdateTextButton = ({ text, handleUpdate }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [newText, setNewText] = useState('');
@@ -30,11 +32,11 @@ const UpdateTextButton = ({ text, handleUpdate }) => {
       onKeyDown={(e) => e.keyCode === 13 && handleSubmit()}
     />
   ) : (
-    <Button onClick={() => setIsEditOpen(true)}>{newText}</Button>
+    <Button onClick={() => setIsEditOpen(true)} label="Open update text input" noBackground>
+      {newText}
+    </Button>
   );
 };
-
-const Button = styled.div``;
 
 const Input = styled.input`
   background: no-repeat;

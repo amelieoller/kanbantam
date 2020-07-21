@@ -4,8 +4,17 @@ import styled from 'styled-components';
 
 import MinusCircle from '_assets/icons/minus-circle.svg';
 import PlusCircle from '_assets/icons/plus-circle.svg';
+import Button from '_atoms/Button';
 
-const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }) => {
+const ProgressBar = ({
+  total,
+  elapsed,
+  type,
+  handleBarUpdate,
+  increment,
+  minus,
+  incrementLabel,
+}) => {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
@@ -30,7 +39,14 @@ const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }
     <Wrapper>
       <ProgressBarWrapper>
         {minus && (
-          <Button data-type="isClickable" onClick={() => handleTotalUpdate(-increment)}>
+          <Button
+            data-type="isClickable"
+            onClick={() => handleTotalUpdate(-increment)}
+            label="Subtract 10 minutes"
+            textColor="surfaceVariant"
+            size="small"
+            noBackground
+          >
             <MinusCircle data-type="isClickable" />
           </Button>
         )}
@@ -43,7 +59,14 @@ const ProgressBar = ({ total, elapsed, type, handleBarUpdate, increment, minus }
           </ProgressFiller>
         </ProgressWrapper>
 
-        <Button data-type="isClickable" onClick={() => handleTotalUpdate(increment)}>
+        <Button
+          data-type="isClickable"
+          onClick={() => handleTotalUpdate(increment)}
+          label={incrementLabel}
+          textColor="surfaceVariant"
+          size="small"
+          noBackground
+        >
           <PlusCircle data-type="isClickable" />
         </Button>
       </ProgressBarWrapper>
@@ -64,25 +87,6 @@ const ProgressBarWrapper = styled.div`
 
   & > *:not(:last-child) {
     margin-right: 3px;
-  }
-`;
-
-const Button = styled.button`
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  align-items: center;
-  display: flex;
-
-  svg {
-    height: 13px;
-    width: 13px;
-    color: ${({ theme }) => theme.colors.surfaceVariant};
-  }
-
-  &:hover svg {
-    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 

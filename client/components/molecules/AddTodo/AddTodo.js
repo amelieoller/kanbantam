@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { attemptAddTodo } from '_actions/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 import Plus from '_assets/icons/plus.svg';
+import Button from '_atoms/Button';
 
 function AddTodo({ board, listId, lastCardSortVal }) {
   const formRef = useRef();
@@ -56,9 +57,17 @@ function AddTodo({ board, listId, lastCardSortVal }) {
       />
     </NewTodoForm>
   ) : (
-    <Button onClick={toggleIsOpen}>
-      <Plus />
-    </Button>
+    <ButtonWrapper>
+      <Button
+        onClick={toggleIsOpen}
+        label="Add todo to list"
+        textColor="onSurface"
+        size="large"
+        noBackground
+      >
+        <Plus />
+      </Button>
+    </ButtonWrapper>
   );
 }
 
@@ -76,21 +85,11 @@ const NewTodoInput = styled.input`
   padding: ${({ theme }) => theme.sizes.spacingInput};
 `;
 
-const Button = styled.button`
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  width: 100%;
-  padding: ${({ theme }) => theme.sizes.spacingSmall};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-
-  :hover {
-    svg {
-      color: coral;
-    }
+const ButtonWrapper = styled.div`
+  button {
+    width: 100%;
+    padding: ${({ theme }) => theme.sizes.spacingSmall};
+    justify-content: center;
   }
 `;
 

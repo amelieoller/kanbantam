@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
 
+import Button from '_atoms/Button';
 import AddTodo from '_molecules/AddTodo';
 import List from '_organisms/List';
 import { attemptDeleteList, attemptUpdateList } from '_actions/lists';
@@ -53,9 +54,14 @@ const Column = ({
               <>
                 <HeaderText>{currentTitle}</HeaderText>
 
-                <DeleteButton onClick={deleteList}>
+                <Button
+                  onClick={deleteList}
+                  label={`Delete list ${currentTitle}`}
+                  size="small"
+                  noBackground
+                >
                   <Trash />
-                </DeleteButton>
+                </Button>
               </>
             )}
           </ListHeader>
@@ -120,19 +126,6 @@ const HeaderText = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-`;
-
-const DeleteButton = styled.button`
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  padding: 0;
-
-  svg {
-    color: white;
-    width: 18px;
-    height: 18px;
-  }
 `;
 
 const EditListInput = styled.input`

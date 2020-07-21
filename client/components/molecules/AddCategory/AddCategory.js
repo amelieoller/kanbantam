@@ -48,7 +48,7 @@ function AddCategory({ boardId }) {
         <ColorDropdown onChange={updateColor} currentColor={newCategory.color} />
       </NewCategoryWrapper>
 
-      <Button onClick={handleAddCategory}>
+      <Button onClick={handleAddCategory} label="Create category">
         <span>Create Category</span>
       </Button>
     </Wrapper>
