@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import CategorySelect from '_molecules/CategorySelect';
 import UpdateTextButton from '_molecules/UpdateTextButton';
 import Settings from '_organisms/Settings';
+import AccountSettings from '_organisms/AccountSettings';
 import { attemptLogout } from '_thunks/auth';
 import { attemptUpdateBoard } from '_actions/boards';
 import Eye from '_assets/icons/eye.svg';
@@ -85,6 +86,8 @@ function Navigation({ pathname }) {
             )}
           </>
         )}
+
+        {isHome && <AccountSettings />}
         <Logout onClick={logout} />
       </Right>
     </StyledNavigation>

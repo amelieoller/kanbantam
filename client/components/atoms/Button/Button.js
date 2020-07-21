@@ -69,6 +69,17 @@ const propsCSS = {
   textColor: css`
     color: ${({ theme, textColor }) => theme.colors[textColor]};
   `,
+
+  disabled: css`
+    background: ${({ theme }) => theme.colors.medium('onSurface')};
+    border: ${({ theme }) => theme.colors.medium('onSurface')};
+    cursor: auto;
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.medium('onSurface')};
+      border: ${({ theme }) => theme.colors.medium('onSurface')};
+    }
+  `,
 };
 
 const StyledButton = styled.button`
@@ -105,6 +116,7 @@ const StyledButton = styled.button`
   ${(props) => props.outline && propsCSS.outline};
   ${(props) => props.noBackground && propsCSS.noBackground};
   ${(props) => props.textColor && propsCSS.textColor};
+  ${(props) => props.disabled && propsCSS.disabled};
 `;
 
 Button.propTypes = {
@@ -116,6 +128,7 @@ Button.propTypes = {
   label: PropTypes.string.isRequired,
   noBackground: PropTypes.bool,
   textColor: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -124,6 +137,7 @@ Button.defaultProps = {
   outline: false,
   noBackground: false,
   textColor: '',
+  disabled: false,
 };
 
 export default Button;

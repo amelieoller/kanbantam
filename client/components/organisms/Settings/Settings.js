@@ -5,13 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 const R = require('ramda');
 
 import Checkbox from '_atoms/Checkbox';
-import Button from '_atoms/Button';
 import Dropdown from '_atoms/Dropdown';
 import Input from '_atoms/Input';
 import Categories from '_organisms/Categories';
-import GeneralProfile from '_organisms/GeneralProfile';
 import SlideOutMenu from '_organisms/SlideOutMenu';
-import Account from '../../templates/AccountSettings/AccountSettings';
 import { attemptUpdateBoard, attemptDeleteBoard } from '_actions/boards';
 import AlertCircle from '_assets/icons/alert-circle.svg';
 import Eye from '_assets/icons/eye.svg';
@@ -20,7 +17,6 @@ import List from '_assets/icons/list.svg';
 import SettingsIcon from '_assets/icons/settings.svg';
 import Trash from '_assets/icons/trash-2.svg';
 import X from '_assets/icons/x.svg';
-import { attemptDeleteUser } from '../../../store/actions/user';
 
 const StyledSettings = styled.div`
   background-color: ${(props) => props.theme.colors.surface};
@@ -71,7 +67,6 @@ const Settings = ({ currentBoard }) => {
 
   const { categories } = useSelector(R.pick(['categories']));
   const { lists } = useSelector(R.pick(['lists']));
-  const { user } = useSelector(R.pick(['user']));
 
   const [defaultTime, setDefaultTime] = useState(0);
   const [defaultCategory, setDefaultCategory] = useState('');
@@ -111,10 +106,6 @@ const Settings = ({ currentBoard }) => {
   };
 
   const deleteBoard = () => dispatch(attemptDeleteBoard(currentBoard.id));
-
-  const deleteAccount = () => {
-    dispatch(attemptDeleteUser(user.id));
-  };
 
   return (
     <>
@@ -215,12 +206,6 @@ const Settings = ({ currentBoard }) => {
             checked={focusMode}
           />
 
-          {/* Account Settings */}
-          {/* <Account /> */}
-
-          {/* Profile */}
-          {/* <GeneralProfile /> */}
-
           {/* Delete Board */}
           <h2>
             <AlertCircle />
@@ -237,12 +222,6 @@ const Settings = ({ currentBoard }) => {
             <Trash />
             Delete this board
           </DeleteSection>
-
-          {/* Delete Account */}
-          <Button onClick={deleteAccount} buttonType="error" label="Delete your acccount">
-            <Trash />
-            Delete Your Account
-          </Button>
         </StyledSettings>
       </SlideOutMenu>
 

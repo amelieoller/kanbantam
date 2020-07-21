@@ -6,8 +6,9 @@ import classNames from 'classnames';
 
 import { attemptUpdatePassword } from '_thunks/user';
 import { validatePassword } from '_utils/validation';
+import Button from '_atoms/Button';
 
-export default function ChangePassword() {
+const ChangePassword = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
 
@@ -88,10 +89,7 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="change-password box">
-      <h3 className="title is-3">Change Password</h3>
-      <hr className="separator" />
-
+    <div>
       <div className="field">
         <label htmlFor="old-password" className="label">
           Old Password
@@ -156,15 +154,11 @@ export default function ChangePassword() {
         )}
       </div>
 
-      <hr className="separator" />
-      <button
-        type="button"
-        className="button is-success"
-        onClick={save}
-        disabled={!match || !valid || !oldPassword}
-      >
+      <Button onClick={save} disabled={!match || !valid || !oldPassword} label="Update Password">
         Update Password
-      </button>
+      </Button>
     </div>
   );
-}
+};
+
+export default ChangePassword;
