@@ -22,6 +22,7 @@ const GlobalStyles = createGlobalStyle`
 
   .react-codemirror2.code-mirror > div {
     width: 265px;
+    background: white;
     padding: 3px;
     border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
     border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
@@ -29,7 +30,6 @@ const GlobalStyles = createGlobalStyle`
     height: 100%;
 
     @media ${(props) => props.theme.media.tabletSmall} {
-      background: white;
       width: calc(100vw - 90px);
     }
   }

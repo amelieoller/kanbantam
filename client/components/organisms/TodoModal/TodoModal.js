@@ -93,7 +93,7 @@ function TodoModal({ completedListId }) {
     content: {
       flexDirection: 'column',
       top: '60px',
-      left: boundingRect.left,
+      left: '70px',
     },
   };
 
@@ -177,10 +177,7 @@ const OptionsWrapper = styled.div`
   grid-gap: ${({ theme }) => theme.sizes.spacing};
   padding: 0 ${({ theme }) => theme.sizes.spacing};
   width: 100%;
-  background: white;
-  padding: 10px;
   border-radius: 5px;
-  margin: 0 8px;
 
   button {
     width: 100%;
@@ -188,6 +185,8 @@ const OptionsWrapper = styled.div`
 
   @media ${(props) => props.theme.media.tabletSmall} {
     margin: 0;
+    background: white;
+    padding: 10px;
   }
 `;
 
