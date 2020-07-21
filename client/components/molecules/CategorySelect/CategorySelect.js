@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
 import useOnClickOutside from '_hooks/useOnClickOutside';
-import List from '_assets/icons/list.svg';
+import ListIcon from '_assets/icons/list.svg';
 
 const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
   const colorRef = useRef();
@@ -42,7 +42,7 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
           isEmpty={!currentCategory}
           isInPicker={false}
         >
-          {currentCategory ? currentCategory.title[0] : <List />}
+          {currentCategory ? currentCategory.title[0] : <ListIcon />}
         </CategoryOption>
       )}
 
@@ -56,7 +56,7 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
               isInPicker
               isSelected={!currentCategory}
             >
-              <List />
+              <ListIcon />
             </CategoryOption>
 
             {categories.map((c) => (

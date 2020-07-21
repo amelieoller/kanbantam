@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import CheckSquare from '_assets/icons/check-square.svg';
-import Square from '_assets/icons/square.svg';
+import CheckSquareIcon from '_assets/icons/check-square.svg';
+import SquareIcon from '_assets/icons/square.svg';
 
 const StyledCheckbox = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ const Checkbox = ({ label, onChange, checked }) => {
       tabIndex={0}
       isChecked={isChecked}
     >
-      {isChecked ? <CheckSquare /> : <Square />}
+      {isChecked ? <CheckSquareIcon /> : <SquareIcon />}
 
       <label htmlFor="checkbox">{label}</label>
     </StyledCheckbox>

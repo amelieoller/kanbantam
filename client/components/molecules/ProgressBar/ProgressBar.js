@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import MinusCircle from '_assets/icons/minus-circle.svg';
-import PlusCircle from '_assets/icons/plus-circle.svg';
+import MinusCircleIcon from '_assets/icons/minus-circle.svg';
+import PlusCircleIcon from '_assets/icons/plus-circle.svg';
 import Button from '_atoms/Button';
 
 const ProgressBar = ({
@@ -47,7 +47,7 @@ const ProgressBar = ({
             size="small"
             noBackground
           >
-            <MinusCircle data-type="isClickable" />
+            <MinusCircleIcon data-type="isClickable" />
           </Button>
         )}
 
@@ -67,7 +67,7 @@ const ProgressBar = ({
           size="small"
           noBackground
         >
-          <PlusCircle data-type="isClickable" />
+          <PlusCircleIcon data-type="isClickable" />
         </Button>
       </ProgressBarWrapper>
     </Wrapper>

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 
 import { attemptDeleteTodo } from '_actions/todos';
-import X from '_assets/icons/x.svg';
+import XIcon from '_assets/icons/x.svg';
 
 const CompletedTodos = ({ todayCompletedTodos }) => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const CompletedTodos = ({ todayCompletedTodos }) => {
           <ListItem key={t.id}>
             <TodoText categoryColor={category && category.color}>{t.text}</TodoText>
             <Right>
-              <X onClick={() => deleteTodo(t.id)} />
+              <XIcon onClick={() => deleteTodo(t.id)} />
             </Right>
           </ListItem>
         );

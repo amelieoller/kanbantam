@@ -8,9 +8,9 @@ import { attemptUpdateBoard } from '_actions/boards';
 import { attemptUpdateTodo } from '_actions/todos';
 import { formatTime, formatYearMonthDay } from '_utils/dates';
 import { useInterval } from '_hooks/useInterval';
-import PauseCircle from '_assets/icons/pause-circle.svg';
-import PlayCircle from '_assets/icons/play-circle.svg';
-import Repeat from '_assets/icons/repeat.svg';
+import PauseCircleIcon from '_assets/icons/pause-circle.svg';
+import PlayCircleIcon from '_assets/icons/play-circle.svg';
+import RepeatIcon from '_assets/icons/repeat.svg';
 import notification from '_assets/sounds/notification.mp3';
 
 const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarOpen }) => {
@@ -145,11 +145,11 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
       <Controls>
         {!isRunning ? (
-          <PlayCircle onClick={playOrPauseTimer} />
+          <PlayCircleIcon onClick={playOrPauseTimer} />
         ) : (
-          <PauseCircle onClick={playOrPauseTimer} />
+          <PauseCircleIcon onClick={playOrPauseTimer} />
         )}
-        <Repeat onClick={switchSessions} />
+        <RepeatIcon onClick={switchSessions} />
       </Controls>
 
       <ProgressBar
@@ -170,9 +170,9 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
       <Controls>
         {!isRunning ? (
-          <PlayCircle onClick={playOrPauseTimer} />
+          <PlayCircleIcon onClick={playOrPauseTimer} />
         ) : (
-          <PauseCircle onClick={playOrPauseTimer} />
+          <PauseCircleIcon onClick={playOrPauseTimer} />
         )}
       </Controls>
     </MinimalPomodoroWrapper>

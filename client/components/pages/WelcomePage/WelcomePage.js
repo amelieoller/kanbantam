@@ -7,7 +7,7 @@ import LoginSection from '_templates/LoginSection';
 import RegisterSection from '_templates/RegisterSection';
 import backgroundImageLarge from '_assets/images/background-image-large.jpg';
 import backgroundImageSmall from '_assets/images/background-image-small.jpg';
-import Github from '_assets/icons/github.svg';
+import GithubIcon from '_assets/icons/github.svg';
 
 const WelcomePageStyles = styled.div`
   height: 100vh;
@@ -70,7 +70,7 @@ const Button = styled.button`
   }
 `;
 
-const GithubIcon = styled.a`
+const GithubIconWrapper = styled.a`
   position: absolute;
   bottom: 0;
   right: 0;
@@ -118,14 +118,14 @@ const WelcomePage = () => {
       </LoginArea>
 
       <ImageArea>
-        <GithubIcon
+        <GithubIconWrapper
           href="https://github.com/amelieoller/kanban-2.0"
           target="_blank"
           rel="noopener noreferrer"
           className="github-icon"
         >
-          <Github />
-        </GithubIcon>
+          <GithubIcon />
+        </GithubIconWrapper>
       </ImageArea>
     </WelcomePageStyles>
   );

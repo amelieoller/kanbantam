@@ -10,9 +10,9 @@ import ProgressBar from '_molecules/ProgressBar';
 import { attemptUpdateTodo } from '_actions/todos';
 import { formatDaysToNow } from '_utils/dates.js';
 import useCombinedRefs from '_hooks/useCombinedRefs';
-import Calendar from '_assets/icons/calendar.svg';
-import CheckCircle from '_assets/icons/check-circle.svg';
-import Flag from '_assets/icons/flag.svg';
+import CalendarIcon from '_assets/icons/calendar.svg';
+import CheckCircleIcon from '_assets/icons/check-circle.svg';
+import FlagIcon from '_assets/icons/flag.svg';
 import { setCurrentTodo } from '_actions/currentTodo';
 
 const fromNow = (date) => formatDaysToNow(parseISO(date));
@@ -128,7 +128,7 @@ const Todo = ({
       selectedCategory={selectedCategory}
     >
       <DoneButton onClick={completeTodo} data-type="isClickable" id="done-button">
-        <CheckCircle data-type="isClickable" />
+        <CheckCircleIcon data-type="isClickable" />
       </DoneButton>
       <Main>
         <ReactMarkdown source={todo.text} linkTarget="_blank" />
@@ -143,13 +143,13 @@ const Todo = ({
                   todo.priority === 1 ? 'mediumturquoise' : todo.priority === 2 ? 'orange' : 'coral'
                 }
               >
-                <Flag />
+                <FlagIcon />
               </TopBadge>
             )}
 
             {!!todo.dueDate && (
               <TopBadge>
-                <Calendar />
+                <CalendarIcon />
                 <span>due {fromNow(todo.dueDate)}</span>
               </TopBadge>
             )}

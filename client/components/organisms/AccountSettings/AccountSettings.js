@@ -6,11 +6,11 @@ const R = require('ramda');
 
 import SlideOutMenu from '_organisms/SlideOutMenu';
 import ChangePassword from '_organisms/ChangePassword';
-import AlertCircle from '_assets/icons/alert-circle.svg';
-import Lock from '_assets/icons/lock.svg';
-import SettingsIcon from '_assets/icons/settings.svg';
-import Trash from '_assets/icons/trash-2.svg';
-import X from '_assets/icons/x.svg';
+import AlertCircleIcon from '_assets/icons/alert-circle.svg';
+import LockIcon from '_assets/icons/lock.svg';
+import SettingsIconIcon from '_assets/icons/settings.svg';
+import TrashIcon from '_assets/icons/trash-2.svg';
+import XIcon from '_assets/icons/x.svg';
 import { attemptDeleteUser } from '../../../store/actions/user';
 
 const AccountSettings = () => {
@@ -47,7 +47,7 @@ const AccountSettings = () => {
         width={350}
       >
         <StyledAccountSettings>
-          <X
+          <XIcon
             className="close-button"
             onClick={() => {
               toggleSettingsMenu(false);
@@ -58,7 +58,7 @@ const AccountSettings = () => {
 
           {/* Account Settings */}
           <h2>
-            <Lock />
+            <LockIcon />
             Change Your Password
           </h2>
 
@@ -66,7 +66,7 @@ const AccountSettings = () => {
 
           {/* Delete Account */}
           <h2>
-            <AlertCircle />
+            <AlertCircleIcon />
             Danger Zone
           </h2>
 
@@ -80,13 +80,13 @@ const AccountSettings = () => {
                 deleteAccount();
             }}
           >
-            <Trash />
+            <TrashIcon />
             Delete this account
           </DeleteSection>
         </StyledAccountSettings>
       </SlideOutMenu>
 
-      <SettingsIcon onClick={() => toggleSettingsMenu(true)} />
+      <SettingsIconIcon onClick={() => toggleSettingsMenu(true)} />
     </>
   );
 };

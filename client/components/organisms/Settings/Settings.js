@@ -10,13 +10,13 @@ import Input from '_atoms/Input';
 import Categories from '_organisms/Categories';
 import SlideOutMenu from '_organisms/SlideOutMenu';
 import { attemptUpdateBoard, attemptDeleteBoard } from '_actions/boards';
-import AlertCircle from '_assets/icons/alert-circle.svg';
-import Eye from '_assets/icons/eye.svg';
-import Heart from '_assets/icons/heart.svg';
-import List from '_assets/icons/list.svg';
+import AlertCircleIcon from '_assets/icons/alert-circle.svg';
+import EyeIcon from '_assets/icons/eye.svg';
+import HeartIcon from '_assets/icons/heart.svg';
+import ListIcon from '_assets/icons/list.svg';
 import SettingsIcon from '_assets/icons/settings.svg';
-import Trash from '_assets/icons/trash-2.svg';
-import X from '_assets/icons/x.svg';
+import TrashIcon from '_assets/icons/trash-2.svg';
+import XIcon from '_assets/icons/x.svg';
 
 const StyledSettings = styled.div`
   background-color: ${(props) => props.theme.colors.surface};
@@ -116,7 +116,7 @@ const Settings = ({ currentBoard }) => {
         width={350}
       >
         <StyledSettings>
-          <X
+          <XIcon
             className="close-button"
             onClick={() => {
               toggleSettingsMenu(false);
@@ -127,7 +127,7 @@ const Settings = ({ currentBoard }) => {
 
           {/* Presets */}
           <h2>
-            <Heart />
+            <HeartIcon />
             Card Presets
           </h2>
           <InputWrapper>
@@ -167,14 +167,14 @@ const Settings = ({ currentBoard }) => {
 
           {/* Categories */}
           <h2>
-            <List />
+            <ListIcon />
             Categories
           </h2>
           <Categories boardId={currentBoard.id} />
 
           {/* Focus Mode */}
           <h2>
-            <Eye /> Focus Mode
+            <EyeIcon /> Focus Mode
           </h2>
           <InputWrapper>
             <Dropdown
@@ -208,7 +208,7 @@ const Settings = ({ currentBoard }) => {
 
           {/* Delete Board */}
           <h2>
-            <AlertCircle />
+            <AlertCircleIcon />
             Danger Zone
           </h2>
           <DeleteSection
@@ -219,7 +219,7 @@ const Settings = ({ currentBoard }) => {
                 deleteBoard();
             }}
           >
-            <Trash />
+            <TrashIcon />
             Delete this board
           </DeleteSection>
         </StyledSettings>

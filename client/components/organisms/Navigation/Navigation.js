@@ -11,12 +11,12 @@ import Settings from '_organisms/Settings';
 import AccountSettings from '_organisms/AccountSettings';
 import { attemptLogout } from '_thunks/auth';
 import { attemptUpdateBoard } from '_actions/boards';
-import Eye from '_assets/icons/eye.svg';
-import EyeOff from '_assets/icons/eye-off.svg';
-import Logo from '_assets/icons/logo.svg';
-import Logout from '_assets/icons/log-out.svg';
-import Moon from '_assets/icons/moon.svg';
-import Sun from '_assets/icons/sun.svg';
+import EyeIcon from '_assets/icons/eye.svg';
+import EyeOffIcon from '_assets/icons/eye-off.svg';
+import LogoIcon from '_assets/icons/logo.svg';
+import LogoutIcon from '_assets/icons/log-out.svg';
+import MoonIcon from '_assets/icons/moon.svg';
+import SunIcon from '_assets/icons/sun.svg';
 
 function Navigation({ pathname }) {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ function Navigation({ pathname }) {
   return (
     <StyledNavigation role="navigation" isHome={isHome} navBackground={navBackground}>
       <Left to="/">
-        <Logo />
+        <LogoIcon />
         {!isThinDisplay && 'Kanban 2.0'}
       </Left>
 
@@ -69,26 +69,26 @@ function Navigation({ pathname }) {
             />
 
             {currentBoard.focusMode ? (
-              <Eye
+              <EyeIcon
                 onClick={() => handleUpdateBoard({ focusMode: false })}
                 style={{ color: 'tomato' }}
               />
             ) : (
-              <EyeOff onClick={() => handleUpdateBoard({ focusMode: true })} />
+              <EyeOffIcon onClick={() => handleUpdateBoard({ focusMode: true })} />
             )}
 
             <Settings currentBoard={currentBoard} />
 
             {currentBoard.theme === 'light' ? (
-              <Moon onClick={() => handleUpdateBoard({ theme: 'dark' })} />
+              <MoonIcon onClick={() => handleUpdateBoard({ theme: 'dark' })} />
             ) : (
-              <Sun onClick={() => handleUpdateBoard({ theme: 'light' })} />
+              <SunIcon onClick={() => handleUpdateBoard({ theme: 'light' })} />
             )}
           </>
         )}
 
         {isHome && <AccountSettings />}
-        <Logout onClick={logout} />
+        <LogoutIcon onClick={logout} />
       </Right>
     </StyledNavigation>
   );

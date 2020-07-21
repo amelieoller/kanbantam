@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { TwitterPicker } from 'react-color';
 
 import useOnClickOutside from '_hooks/useOnClickOutside';
-import Droplet from '_assets/icons/droplet.svg';
+import DropletIcon from '_assets/icons/droplet.svg';
 
 const ColorDropdown = ({ onChange, currentColor }) => {
   const colorRef = useRef();
@@ -28,7 +28,7 @@ const ColorDropdown = ({ onChange, currentColor }) => {
         color={currentColor}
         onClick={() => setIsColorPickerOpen((prevState) => !prevState)}
       >
-        <Droplet />
+        <DropletIcon />
       </ColorSwatch>
 
       {isColorPickerOpen && (

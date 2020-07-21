@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { attemptAddTodo } from '_actions/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
-import Plus from '_assets/icons/plus.svg';
+import PlusIcon from '_assets/icons/plus.svg';
 import Button from '_atoms/Button';
 
 function AddTodo({ board, listId, lastCardSortVal }) {
@@ -65,7 +65,7 @@ function AddTodo({ board, listId, lastCardSortVal }) {
         size="large"
         noBackground
       >
-        <Plus />
+        <PlusIcon />
       </Button>
     </ButtonWrapper>
   );

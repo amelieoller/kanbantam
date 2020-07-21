@@ -8,10 +8,10 @@ import CompletedTodos from '_organisms/CompletedTodos';
 import Pomodoro from '_templates/Pomodoro';
 import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder } from '_utils/sorting';
-import ChevronLeft from '_assets/icons/chevrons-left.svg';
-import ChevronRight from '_assets/icons/chevrons-right.svg';
-import Award from '_assets/icons/award.svg';
-import Clock from '_assets/icons/clock.svg';
+import ChevronLeftIcon from '_assets/icons/chevrons-left.svg';
+import ChevronRightIcon from '_assets/icons/chevrons-right.svg';
+import AwardIcon from '_assets/icons/award.svg';
+import ClockIcon from '_assets/icons/clock.svg';
 
 function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
   const dispatch = useDispatch();
@@ -48,13 +48,13 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
   return (
     <SidebarWrapper isSidebarOpen={isSidebarOpen}>
       <CollapseButton onClick={() => handleToggleClick()} aria-label="Expand sidebar">
-        {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
+        {isSidebarOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
       </CollapseButton>
       <SidebarContent>
         <SectionWrapper>
           {isSidebarOpen && (
             <SectionHeader>
-              <Clock />
+              <ClockIcon />
               <h2>Pomodoro</h2>
             </SectionHeader>
           )}
@@ -70,7 +70,7 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
 
         <SectionWrapper>
           <SectionHeader>
-            <Award />
+            <AwardIcon />
             <h2>Completed Todos</h2>
           </SectionHeader>
 

@@ -8,7 +8,7 @@ import Button from '_atoms/Button';
 import AddTodo from '_molecules/AddTodo';
 import List from '_organisms/List';
 import { attemptDeleteList, attemptUpdateList } from '_actions/lists';
-import Trash from '_assets/icons/trash-2.svg';
+import TrashIcon from '_assets/icons/trash-2.svg';
 
 const Column = ({
   id,
@@ -60,7 +60,7 @@ const Column = ({
                   size="small"
                   noBackground
                 >
-                  <Trash />
+                  <TrashIcon />
                 </Button>
               </>
             )}
