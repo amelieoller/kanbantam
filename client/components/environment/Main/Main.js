@@ -11,7 +11,6 @@ import Navigation from '_organisms/Navigation';
 import BoardPage from '_pages/BoardPage';
 import BoardsPage from '_pages/BoardsPage';
 import LostPage from '_pages/LostPage';
-import SettingsPage from '_pages/SettingsPage';
 import WelcomePage from '_pages/WelcomePage/WelcomePage';
 import { attemptGetUser } from '_thunks/user';
 import { clearData } from '_actions/user';
@@ -109,7 +108,6 @@ function Main({ location, theme: { colors } }) {
                 return <BoardPage boardId={routerProps.match.params.id} />;
               }}
             />
-            <Route path="/settings" component={SettingsPage} />
             <Route path="*" component={LostPage} />
           </Switch>
         </>
