@@ -8,7 +8,7 @@ import {
   UPDATE_BOARD_ID,
 } from '_actions/boards';
 
-import { LOGOUT_USER } from '_actions/user';
+import { CLEAR_DATA } from '_actions/user';
 import { byIdReplaceAtIndex } from '_utils/filtering';
 
 export default function boards(state = [], action) {
@@ -23,7 +23,7 @@ export default function boards(state = [], action) {
       return byIdReplaceAtIndex(state, action.payload.id, { id: action.newId });
     case REMOVE_BOARD:
       return state.filter((todo) => todo.id !== action.payload.id);
-    case LOGOUT_USER:
+    case CLEAR_DATA:
       return [];
     default:
       return state;

@@ -1,5 +1,5 @@
 import { SET_CURRENT_TODO, CLEAR_CURRENT_TODO } from '_actions/currentTodo';
-import { LOGOUT_USER } from '_actions/user';
+import { CLEAR_DATA } from '_actions/user';
 
 function currentTodo(state = {}, action) {
   switch (action.type) {
@@ -7,7 +7,7 @@ function currentTodo(state = {}, action) {
       return action.todo;
     case CLEAR_CURRENT_TODO:
       return {};
-    case LOGOUT_USER:
+    case CLEAR_DATA:
       return {};
     default:
       return state;

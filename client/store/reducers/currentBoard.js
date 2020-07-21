@@ -1,5 +1,5 @@
 import { SET_CURRENT_BOARD, CLEAR_CURRENT_BOARD } from '_actions/currentBoard';
-import { LOGOUT_USER } from '_actions/user';
+import { CLEAR_DATA } from '_actions/user';
 
 function currentBoard(state = {}, action) {
   switch (action.type) {
@@ -7,7 +7,7 @@ function currentBoard(state = {}, action) {
       return action.board;
     case CLEAR_CURRENT_BOARD:
       return {};
-    case LOGOUT_USER:
+    case CLEAR_DATA:
       return {};
     default:
       return state;

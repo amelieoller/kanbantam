@@ -14,6 +14,7 @@ import LostPage from '_pages/LostPage';
 import SettingsPage from '_pages/SettingsPage';
 import WelcomePage from '_pages/WelcomePage/WelcomePage';
 import { attemptGetUser } from '_thunks/user';
+import { clearData } from '_actions/user';
 import '_styles/codeMirrorStyles.css';
 
 function Main({ location, theme: { colors } }) {
@@ -26,6 +27,7 @@ function Main({ location, theme: { colors } }) {
 
   useEffect(() => {
     setAuth(!R.isEmpty(user));
+    dispatch(clearData());
   }, [user]);
 
   useEffect(() => {

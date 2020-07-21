@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
 
 import { SET_TODOS, ADD_TODO, UPDATE_TODO, REMOVE_TODO, UPDATE_TODO_ID } from '_actions/todos';
-import { LOGOUT_USER } from '_actions/user';
+import { CLEAR_DATA } from '_actions/user';
 import { byIdReplaceAtIndex } from '_utils/filtering';
 
 export default function todos(state = [], action) {
@@ -16,7 +16,7 @@ export default function todos(state = [], action) {
       return byIdReplaceAtIndex(state, action.payload.id, { id: action.newId });
     case REMOVE_TODO:
       return state.filter((todo) => todo.id !== action.payload.id);
-    case LOGOUT_USER:
+    case CLEAR_DATA:
       return [];
     default:
       return state;

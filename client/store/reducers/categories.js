@@ -7,7 +7,7 @@ import {
   REMOVE_CATEGORY,
   UPDATE_CATEGORY_ID,
 } from '_actions/categories';
-import { LOGOUT_USER } from '_actions/user';
+import { CLEAR_DATA } from '_actions/user';
 import { byIdReplaceAtIndex } from '_utils/filtering';
 
 export default function categories(state = [], action) {
@@ -22,7 +22,7 @@ export default function categories(state = [], action) {
       return byIdReplaceAtIndex(state, action.payload.id, { id: action.newId });
     case REMOVE_CATEGORY:
       return state.filter((category) => category.id !== action.payload.id);
-    case LOGOUT_USER:
+    case CLEAR_DATA:
       return [];
     default:
       return state;
