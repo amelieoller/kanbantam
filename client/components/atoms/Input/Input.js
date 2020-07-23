@@ -1,59 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Input = ({
-  label,
-  placeholder = label,
-  required,
-  type,
-  handleOnBlur,
-  defaultValue,
-  helpText,
-}) => {
-  const [inputValue, setInputValue] = useState(defaultValue);
-
-  useEffect(() => {
-    setInputValue(defaultValue);
-  }, [defaultValue]);
-
-  const renderRequiredLabel = () => <span className="input-required">*</span>;
-
-  const handleInputChange = (e) => setInputValue(e.target.value);
-
-  const handleSubmit = (e) => {
-    let { value } = e.target;
-
-    if (type === 'number' && value === '') {
-      handleOnBlur(0);
-    } else if (!value) {
-      handleOnBlur(defaultValue);
-    } else if (value !== defaultValue) {
-      handleOnBlur(value);
-    }
-  };
-
+const Input = ({ label, type, helpText, ...inputProps }) => {
   const renderInputNode = () => {
     const inputID = label.toLowerCase();
 
     return (
       <InputWrapper>
-        <StyledLabel htmlFor={inputID}>
-          {label} {required ? renderRequiredLabel() : null}
-        </StyledLabel>
+        <StyledLabel htmlFor={inputID}>{label}</StyledLabel>
 
         <StyledInput
           id={inputID}
           type={type}
           name={inputID}
-          placeholder={placeholder}
-          onChange={handleInputChange}
-          onBlur={handleSubmit}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') handleSubmit(e);
-          }}
-          required={required}
-          value={inputValue}
+          placeholder={inputProps.placeholder || label}
+          {...inputProps}
         />
 
         {helpText && <HelpText>{helpText}</HelpText>}
@@ -98,17 +60,14 @@ const HelpText = styled.div`
 `;
 
 Input.propTypes = {
-  handleOnBlur: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   type: PropTypes.oneOf(['email', 'money', 'number', 'password', 'phone', 'text', 'zip', 'date']),
-  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   helpText: PropTypes.string,
 };
 
 Input.defaultProps = {
-  defaultValue: '',
   required: false,
   type: 'text',
 };

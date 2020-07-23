@@ -9,16 +9,19 @@ import Button from '_atoms/Button';
 import Input from '_atoms/Input';
 import { attemptLogin } from '_thunks/auth';
 import useKeyPress from '_hooks/useKeyPress';
+import useFormInput from '_hooks/useFormInput';
 
 function Login({ setIsLogin }) {
   const dispatch = useDispatch();
 
   const [remember, setRemember] = useState(false);
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+
+  const password = useFormInput('');
 
   useEffect(() => {
     const username = localStorage.getItem('username');
+
     if (username) {
       setRemember(true);
       setUsername(username);
@@ -26,7 +29,7 @@ function Login({ setIsLogin }) {
   }, []);
 
   const login = () => {
-    const userCredentials = { username, password };
+    const userCredentials = { username, password: password.value };
 
     if (remember) {
       localStorage.setItem('username', username);
@@ -45,13 +48,8 @@ function Login({ setIsLogin }) {
   return (
     <StyledLogin>
       <InputWrapper>
-        <Input label="Username" handleOnBlur={setUsername} defaultValue={username} />
-        <Input
-          label="Password"
-          handleOnBlur={setPassword}
-          defaultValue={password}
-          type="password"
-        />
+        <Input label="Username" onChange={(e) => setUsername(e.target.value)} value={username} />
+        <Input label="Password" type="password" {...password} />
       </InputWrapper>
       <ForgotPassword>
         <Link to="/recovery">Forgot your password?</Link>

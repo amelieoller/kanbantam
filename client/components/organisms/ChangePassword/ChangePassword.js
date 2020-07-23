@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import styled from 'styled-components';
 
 import { attemptUpdatePassword } from '_thunks/user';
 import { validatePassword } from '_utils/validation';
 import Button from '_atoms/Button';
+import Input from '_atoms/Input';
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
@@ -19,46 +20,6 @@ const ChangePassword = () => {
   const [valid, setValid] = useState(false);
 
   const match = newPassword === confirmPassword;
-
-  const newPasswordHelpClasses = classNames({
-    help: true,
-    'is-danger': !valid,
-    'is-success': valid,
-  });
-
-  const newPasswordIconClasses = classNames({
-    fa: true,
-    'fa-check': valid,
-    'is-success': valid,
-    'fa-warning': newPassword && !valid,
-    'is-danger': newPassword && !valid,
-  });
-
-  const newPasswordInputClasses = classNames({
-    input: true,
-    'is-success': valid,
-    'is-danger': newPassword && !valid,
-  });
-
-  const confirmPasswordIconClasses = classNames({
-    fa: true,
-    'fa-check': confirmPassword && match,
-    'is-success': confirmPassword && match,
-    'fa-warning': confirmPassword && !match,
-    'is-danger': confirmPassword && !match,
-  });
-
-  const confirmPasswordInputClasses = classNames({
-    input: true,
-    'is-success': confirmPassword && match,
-    'is-danger': confirmPassword && !match,
-  });
-
-  const confirmPasswordHelpClasses = classNames({
-    help: true,
-    'is-success': match,
-    'is-danger': !match,
-  });
 
   const updateOldPassword = (e) => setOldPassword(e.target.value);
   const updateConfirmPassword = (e) => setConfirmPassword(e.target.value);
@@ -89,76 +50,67 @@ const ChangePassword = () => {
   };
 
   return (
-    <div>
-      <div className="field">
-        <label htmlFor="old-password" className="label">
-          Old Password
-        </label>
-        <p className="control">
-          <input
-            id="old-password"
-            className="input"
-            type="password"
-            placeholder="Old Password"
-            value={oldPassword}
-            onChange={updateOldPassword}
-          />
-        </p>
-      </div>
+    <FormWrapper>
+      <InputWrapper>
+        <Input
+          label="Old Password"
+          type="password"
+          value={oldPassword}
+          onChange={updateOldPassword}
+        />
+        <ForgotPassword>
+          <Link to="/recovery">Forgot your password?</Link>
+        </ForgotPassword>
+      </InputWrapper>
 
-      <p className="has-space-below">
-        <Link to="/recovery">Forgot your password?</Link>
-      </p>
+      <InputWrapper>
+        <Input
+          label="New Password"
+          type="password"
+          value={newPassword}
+          onChange={updateNewPassword}
+        />
 
-      <div className="field has-help">
-        <label htmlFor="new-password" className="label">
-          New Password
-        </label>
-        <p className="control has-icons-right">
-          <input
-            id="new-password"
-            className={newPasswordInputClasses}
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={updateNewPassword}
-          />
-          <span className="icon is-small is-right">
-            <i className={newPasswordIconClasses} />
-          </span>
-        </p>
-        {newPassword && <p className={newPasswordHelpClasses}>{message}</p>}
-      </div>
+        {newPassword && <AlertMessage valid={valid}>{message}</AlertMessage>}
+      </InputWrapper>
 
-      <div className="field has-help">
-        <label htmlFor="confirm-password" className="label">
-          Confirm Password
-        </label>
-        <p className="control has-icons-right">
-          <input
-            id="confirm-password"
-            className={confirmPasswordInputClasses}
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={updateConfirmPassword}
-          />
-          <span className="icon is-small is-right">
-            <i className={confirmPasswordIconClasses} />
-          </span>
-        </p>
+      <InputWrapper>
+        <Input
+          label="Confirm Password"
+          type="password"
+          value={confirmPassword}
+          onChange={updateConfirmPassword}
+        />
+
         {confirmPassword && (
-          <p className={confirmPasswordHelpClasses}>
+          <AlertMessage match={match}>
             {match ? 'Passwords match' : 'Passwords must match'}
-          </p>
+          </AlertMessage>
         )}
-      </div>
+      </InputWrapper>
 
       <Button onClick={save} disabled={!match || !valid || !oldPassword} label="Update Password">
         Update Password
       </Button>
-    </div>
+    </FormWrapper>
   );
 };
+
+const FormWrapper = styled.div``;
+
+const InputWrapper = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const AlertMessage = styled.div`
+  color: ${({ valid, match }) => (valid || match ? 'green' : 'red')};
+  text-align: right;
+  font-size: 1rem;
+`;
+
+const ForgotPassword = styled.div`
+  text-align: right;
+  font-size: 1rem;
+`;
 
 export default ChangePassword;
