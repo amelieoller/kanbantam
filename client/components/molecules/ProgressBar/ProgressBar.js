@@ -112,9 +112,8 @@ const ProgressFiller = styled.div`
 `;
 
 const TextLeft = styled.span`
-  /* color: ${({ theme }) => theme.colors.lighter(4, 'onSurface')}; */
   color: ${({ theme, percentage }) =>
-    percentage < 40 ? theme.colors.lighter(4, 'onSurface') : theme.colors.onSurfaceVariant};
+    percentage < 40 ? theme.colors.lighter(2, 'onSurface') : theme.colors.onSurfaceVariant};
   font-size: 0.75rem;
   font-style: italic;
   white-space: nowrap;

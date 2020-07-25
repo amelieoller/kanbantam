@@ -244,7 +244,7 @@ const GlobalStyles = createGlobalStyle`
     left: 5px;
     padding: 0 8px;
     position: absolute;
-    transform: translateY(-260%);
+    transform: translateY(-65px);
     transition: transform 0.3s;
     z-index: 3;
     color: ${({ theme }) => theme.colors.onPrimary};
@@ -255,7 +255,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   .skip-to-content-link:focus {
-    transform: translateY(-130%);
+    transform: translateY(-33px);
   }
 
   /* Codemirror */

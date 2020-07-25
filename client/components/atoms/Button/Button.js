@@ -17,11 +17,11 @@ const propsCSS = {
     background-color: transparent;
     color: ${({ theme }) => theme.colors.onSurface};
     border: 2px solid
-      ${({ theme, buttonType }) => (buttonType ? theme.colors[buttonType] : theme.colors.secondary)};
+      ${({ theme, buttonType }) => (buttonType ? theme.colors[buttonType] : theme.colors.primary)};
 
     &:hover {
       background-color: ${({ theme, buttonType }) =>
-        buttonType ? theme.colors[buttonType] : theme.colors.secondary};
+        buttonType ? theme.colors[buttonType] : theme.colors.primary};
       color: ${({ theme, buttonType }) =>
         buttonType ? theme.colors[withOnText(buttonType)] : theme.colors.onSecondary};
     }
@@ -60,7 +60,7 @@ const propsCSS = {
     padding: 0;
 
     &:hover {
-      color: ${({ theme }) => theme.colors.secondary};
+      color: ${({ theme }) => theme.colors.primary};
       background: transparent;
       border: transparent;
     }
@@ -85,21 +85,21 @@ const propsCSS = {
 const StyledButton = styled.button`
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   padding: ${({ theme }) => theme.sizes.spacingInput};
-  background: ${({ theme }) => theme.colors.secondary};
+  background: ${({ theme }) => theme.colors.primary};
   border: none;
   color: ${({ theme }) => theme.colors.onSecondary};
   cursor: pointer;
   font-size: 1.3rem;
   border: 2px solid
-    ${({ theme, buttonType }) => (buttonType ? theme.colors[buttonType] : theme.colors.secondary)};
+    ${({ theme, buttonType }) => (buttonType ? theme.colors[buttonType] : theme.colors.primary)};
   display: flex;
   align-items: center;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.darker(1, 'secondary')};
+    background: ${({ theme }) => theme.colors.darker(1, 'primary')};
     border: 2px solid
       ${({ theme, buttonType }) =>
-        buttonType ? theme.colors.darker(1, buttonType) : theme.colors.darker(1, 'secondary')};
+        buttonType ? theme.colors.darker(1, buttonType) : theme.colors.darker(1, 'primary')};
   }
 
   svg {

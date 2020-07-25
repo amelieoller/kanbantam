@@ -18,9 +18,9 @@ const baseRgbDark = {
 };
 
 const emphasisOpacity = {
-  high: 0.87,
-  medium: 0.6,
-  disabled: 0.38,
+  high: 0.92,
+  medium: 0.7,
+  disabled: 0.55,
 };
 
 const darkColors = {

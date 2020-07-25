@@ -127,7 +127,13 @@ const Todo = ({
       inPomodori={isWithinPomodoro}
       selectedCategory={selectedCategory}
     >
-      <DoneButton onClick={completeTodo} data-type="isClickable" id="done-button">
+      <DoneButton
+        onClick={completeTodo}
+        data-type="isClickable"
+        id="done-button"
+        aria-label="Finish todo"
+        label="Finish todo"
+      >
         <CheckCircleIcon data-type="isClickable" />
       </DoneButton>
       <Main>
