@@ -7,45 +7,39 @@ import Button from '_atoms/Button';
 import Input from '_atoms/Input';
 import ColorDropdown from '_molecules/ColorDropdown';
 import { attemptAddCategory } from '_actions/categories';
+import useKeyPress from '_hooks/useKeyPress';
 
 function AddCategory({ boardId }) {
   const dispatch = useDispatch();
 
-  const initialCategory = { title: '', color: '#FF6900' };
+  const startingColor = '#FF6900';
 
-  const [newCategory, setNewCategory] = useState(initialCategory);
+  const [title, setTitle] = useState('');
+  const [color, setColor] = useState(startingColor);
 
   const handleAddCategory = () => {
-    if (newCategory.title) {
-      setNewCategory(initialCategory);
-
+    if (title) {
       dispatch(
         attemptAddCategory({
-          ...newCategory,
+          title,
+          color,
           board: boardId,
         }),
       );
+
+      setTitle('');
+      setColor(startingColor);
     }
   };
 
-  const updateColor = (color) => {
-    setNewCategory({ ...newCategory, color });
-  };
-
-  const handleOnBlur = (modelAttribute, value) => {
-    setNewCategory({ ...newCategory, [modelAttribute]: value });
-  };
+  useKeyPress('Enter', handleAddCategory);
 
   return (
     <Wrapper>
       <NewCategoryWrapper>
-        <Input
-          label="New Category"
-          handleOnBlur={(value) => handleOnBlur('title', value)}
-          defaultValue={newCategory.title}
-        />
+        <Input onChange={(e) => setTitle(e.target.value)} value={title} label="New Category" />
 
-        <ColorDropdown onChange={updateColor} currentColor={newCategory.color} />
+        <ColorDropdown onChange={(color) => setColor(color)} currentColor={color} />
       </NewCategoryWrapper>
 
       <Button onClick={handleAddCategory} label="Create category">
