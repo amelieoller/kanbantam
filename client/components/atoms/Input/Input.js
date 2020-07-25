@@ -34,11 +34,6 @@ const InputWrapper = styled.div`
 const StyledLabel = styled.label`
   font-size: 0.85rem;
   text-transform: uppercase;
-  position: absolute;
-  left: 14px;
-  top: -6px;
-  background: white;
-  padding: 2px 6px;
   color: ${({ theme }) => theme.colors.medium('onSurface')};
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
 `;
@@ -50,6 +45,7 @@ const StyledInput = styled.input`
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   font-size: 1.3rem;
   -webkit-appearance: none;
+  margin-top: 3px;
 `;
 
 const HelpText = styled.div`

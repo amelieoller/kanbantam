@@ -68,9 +68,6 @@ const Column = ({
 
           <List
             listId={id}
-            style={{
-              backgroundColor: snapshot.isDragging ? 'blue' : null,
-            }}
             todos={todos}
             board={board}
             listHeight={listHeight}
@@ -105,10 +102,12 @@ const ListHeader = styled.div`
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius};
   background-color: ${({ isDragging, theme }) =>
-    isDragging ? theme.colors.darker(3, 'surfaceVariant') : theme.colors.surfaceVariant};
+    isDragging
+      ? theme.colors.darker(3, 'surfaceVariant')
+      : theme.colors.lighter(1, 'surfaceVariant')};
   transition: color 0.2s ease;
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
-  color: ${({ theme }) => theme.colors.onSurfaceVariant};
+  color: ${({ theme }) => theme.colors.lighter(1, 'onBackground')};
   font-weight: 500;
 
   &:hover {

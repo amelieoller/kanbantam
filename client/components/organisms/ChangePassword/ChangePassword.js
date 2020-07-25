@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { attemptUpdatePassword } from '_thunks/user';
@@ -58,9 +57,6 @@ const ChangePassword = () => {
           value={oldPassword}
           onChange={updateOldPassword}
         />
-        <ForgotPassword>
-          <Link to="/recovery">Forgot your password?</Link>
-        </ForgotPassword>
       </InputWrapper>
 
       <InputWrapper>
@@ -104,11 +100,6 @@ const InputWrapper = styled.div`
 
 const AlertMessage = styled.div`
   color: ${({ valid, match }) => (valid || match ? 'green' : 'red')};
-  text-align: right;
-  font-size: 1rem;
-`;
-
-const ForgotPassword = styled.div`
   text-align: right;
   font-size: 1rem;
 `;
