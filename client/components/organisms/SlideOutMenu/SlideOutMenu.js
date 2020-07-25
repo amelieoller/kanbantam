@@ -195,6 +195,8 @@ const SlideOutMenu = ({
         onKeyDown={closeCallback}
         role="button"
         tabIndex={0}
+        label="Close settings"
+        aria-label="Close settings"
       />
       <Swipe onSwipeStart={onSwipeStart} onSwipeMove={onSwipeMove} onSwipeEnd={onSwipeEnd}>
         <div

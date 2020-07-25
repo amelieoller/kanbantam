@@ -27,6 +27,8 @@ const ColorDropdown = ({ onChange, currentColor }) => {
       <ColorSwatch
         color={currentColor}
         onClick={() => setIsColorPickerOpen((prevState) => !prevState)}
+        label="Select color"
+        aria-label="Select color"
       >
         <DropletIcon />
       </ColorSwatch>
@@ -48,7 +50,6 @@ const ColorDropdown = ({ onChange, currentColor }) => {
             ]}
             onChangeComplete={handleChangeComplete}
             width="auto"
-            triangle="top-right"
           />
         </ColorWrapper>
       )}
@@ -59,6 +60,7 @@ const ColorDropdown = ({ onChange, currentColor }) => {
 const ColorWrapper = styled.span`
   position: absolute !important;
   top: 45px;
+  z-index: 1;
 `;
 
 const ColorSwatch = styled.button`

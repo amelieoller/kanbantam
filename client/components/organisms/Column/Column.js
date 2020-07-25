@@ -58,6 +58,8 @@ const Column = ({
                   onClick={deleteList}
                   label={`Delete list ${currentTitle}`}
                   size="small"
+                  color="#969696"
+                  hoverColor="#eb134cb3"
                   noBackground
                 >
                   <TrashIcon />

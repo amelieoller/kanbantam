@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -16,43 +16,49 @@ const Category = ({ category }) => {
   const [color, setColor] = useState(category.color);
   const [hasBeenModified, setHasBeenModified] = useState(false);
 
+  useEffect(() => {
+    if (category.title === title && category.color === color) {
+      setHasBeenModified(false);
+    } else if (!hasBeenModified) {
+      setHasBeenModified(true);
+    }
+  }, [category.title, category.color, color, title]);
+
   const deleteCategory = () => dispatch(attemptDeleteCategory(category.id));
 
-  const handleUpdateCategory = () => {
+  const saveCategory = () => {
     if (hasBeenModified) {
       dispatch(attemptUpdateCategory({ id: category.id, title: title, color: color }));
       setHasBeenModified(false);
     }
   };
 
+  const handleTitleChange = ({ target: { value } }) => setTitle(value);
+  const handleColorChange = (newColor) => setColor(newColor);
+
   return (
     <StyledCategory key={category.id}>
-      <Input
-        label={`Edit ${title}`}
-        handleOnBlur={(newTitle) => {
-          setHasBeenModified(true);
-          setTitle(newTitle);
-        }}
-        defaultValue={title}
-      />
-      <ColorDropdown
-        onChange={(newColor) => {
-          setHasBeenModified(true);
-          setColor(newColor);
-        }}
-        currentColor={color}
-      />
+      <Input label={`Edit ${title}`} onChange={handleTitleChange} defaultValue={title} />
+      <ColorDropdown onChange={handleColorChange} currentColor={color} />
       <IconWrapper
         onClick={() => {
           if (window.confirm(`Are you sure you want to delete the board "${title}"?`))
             deleteCategory();
         }}
-        color="red"
+        isDelete={true}
+        label={`Delete ${title}`}
+        aria-label={`Delete ${title}`}
       >
         <TrashIcon />
       </IconWrapper>
 
-      <IconWrapper onClick={handleUpdateCategory} color={hasBeenModified ? 'green' : 'grey'}>
+      <IconWrapper
+        onClick={saveCategory}
+        hasBeenModified={hasBeenModified}
+        disabled={!hasBeenModified}
+        label={`Save ${title}`}
+        aria-label={`Save ${title}`}
+      >
         <SaveIcon />
       </IconWrapper>
     </StyledCategory>
@@ -64,18 +70,29 @@ const StyledCategory = styled.div`
   justify-content: space-between;
   margin-bottom: 3px;
   position: relative;
+  align-items: flex-end;
+
+  button {
+    height: 31px;
+    width: 31px;
+  }
 `;
 
 const IconWrapper = styled.button`
-  background: ${({ color }) => color};
-  border: none;
+  background: transparent;
+  border: 2px solid
+    ${({ hasBeenModified, theme }) =>
+      hasBeenModified ? theme.colors.success : theme.colors.lighter(5, 'onBackground')};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   margin-left: ${({ theme }) => theme.sizes.spacingSmall};
   display: flex;
   align-items: center;
+  color: ${({ hasBeenModified, theme }) =>
+    hasBeenModified ? theme.colors.success : theme.colors.lighter(5, 'onBackground')};
 
-  svg {
-    color: white;
+  &:hover {
+    border: 2px solid ${({ isDelete, theme }) => isDelete && theme.colors.error};
+    color: ${({ isDelete, theme }) => isDelete && theme.colors.error};
   }
 `;
 

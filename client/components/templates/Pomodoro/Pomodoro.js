@@ -190,12 +190,12 @@ const MinimalClock = styled.div`
 
   & > *:first-child {
     font-size: 2.4rem;
-    color: ${({ theme }) => theme.colors.darker(5, 'surfaceVariant')};
+    color: ${({ theme }) => theme.colors.onBackground};
   }
 
   & > *:last-child {
     font-size: 1.4rem;
-    color: ${({ theme }) => theme.colors.surfaceVariant};
+    color: ${({ theme }) => theme.colors.darker(4, 'surfaceVariant')};
   }
 `;
 

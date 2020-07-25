@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   transition: background-color 0.2s ease, opacity 0.1s ease;
   user-select: none;
   background-color: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+  border: 1px solid ${({ theme }) => theme.colors.lighter(1, 'surfaceVariant')};
   padding-bottom: 0;
   border-bottom-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-bottom-left-radius: ${({ theme }) => theme.sizes.borderRadius};

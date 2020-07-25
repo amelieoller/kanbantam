@@ -63,6 +63,11 @@ const NewCategoryWrapper = styled.div`
   display: flex;
   position: relative;
   margin-bottom: ${({ theme }) => theme.sizes.spacing};
+  align-items: flex-end;
+
+  button {
+    height: 31px;
+  }
 `;
 
 AddCategory.propTypes = {

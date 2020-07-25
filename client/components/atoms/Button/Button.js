@@ -60,7 +60,6 @@ const propsCSS = {
     padding: 0;
 
     &:hover {
-      color: ${({ theme }) => theme.colors.primary};
       background: transparent;
       border: transparent;
     }
@@ -87,7 +86,7 @@ const StyledButton = styled.button`
   padding: ${({ theme }) => theme.sizes.spacingInput};
   background: ${({ theme }) => theme.colors.primary};
   border: none;
-  color: ${({ theme }) => theme.colors.onSecondary};
+  color: ${({ theme, color }) => (color ? color : theme.colors.onSecondary)};
   cursor: pointer;
   font-size: 1.3rem;
   border: 2px solid
@@ -97,6 +96,7 @@ const StyledButton = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.colors.darker(1, 'primary')};
+    color: ${({ hoverColor }) => hoverColor && hoverColor};
     border: 2px solid
       ${({ theme, buttonType }) =>
         buttonType ? theme.colors.darker(1, buttonType) : theme.colors.darker(1, 'primary')};

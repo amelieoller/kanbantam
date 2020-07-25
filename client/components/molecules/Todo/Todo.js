@@ -130,7 +130,7 @@ const Todo = ({
       <DoneButton
         onClick={completeTodo}
         data-type="isClickable"
-        id="done-button"
+        className="done-button"
         aria-label="Finish todo"
         label="Finish todo"
       >
@@ -277,7 +277,7 @@ const Container = styled.div`
     background: ${({ theme }) => theme.colors.darker(1, 'surface')};
   }
 
-  &:hover #done-button {
+  &:hover .done-button {
     display: block;
   }
 `;

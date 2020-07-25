@@ -2,14 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Dropdown = ({
-  children,
-  label,
-  required,
-  handleOnBlur,
-  defaultValue,
-  helpText,
-}) => {
+const Dropdown = ({ children, label, required, handleOnBlur, defaultValue, helpText }) => {
   const renderRequiredLabel = () => <span className="input-required">*</span>;
 
   const renderInputNode = () => {
@@ -26,6 +19,8 @@ const Dropdown = ({
           name={name}
           onChange={handleOnBlur}
           value={defaultValue}
+          label={label}
+          aria-label={label}
         >
           {children}
         </StyledSelect>
@@ -72,8 +67,8 @@ const StyledSelect = styled.select`
       ${({ theme }) => theme.colors.surfaceVariant},
       ${({ theme }) => theme.colors.surfaceVariant}
     );
-  background-position: calc(100% - 15px) calc(0.7em + 2px),
-    calc(100% - 10px) calc(0.7em + 2px), calc(100% - 2em) 0.2em;
+  background-position: calc(100% - 15px) calc(0.7em + 2px), calc(100% - 10px) calc(0.7em + 2px),
+    calc(100% - 2em) 0.2em;
   background-size: 5px 5px, 5px 5px, 1px 1.5em;
   background-repeat: no-repeat;
 `;
