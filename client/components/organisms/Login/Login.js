@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import * as R from 'ramda';
-import { Link } from 'react-router-dom';
 
 import Button from '_atoms/Button';
 import Input from '_atoms/Input';
-import { attemptLogin } from '_thunks/auth';
+import { attemptLogin, attemptRegister } from '_thunks/auth';
 import useKeyPress from '_hooks/useKeyPress';
-import useFormInput from '_hooks/useFormInput';
+import { validateUsername, validatePassword } from '_utils/validation';
+import { postCheckUsername } from '_api/users';
 
-function Login({ setIsLogin }) {
+function Login() {
   const dispatch = useDispatch();
 
   const [remember, setRemember] = useState(false);
   const [username, setUsername] = useState('');
-
-  const password = useFormInput('');
+  const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
+  const [usernameAvailable, setUsernameAvailable] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [usernameMessage, setUsernameMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
 
   useEffect(() => {
     const username = localStorage.getItem('username');
@@ -28,8 +31,13 @@ function Login({ setIsLogin }) {
     }
   }, []);
 
+  useEffect(() => {
+    setUsernameMessage('');
+    setPasswordMessage('');
+  }, [isLogin]);
+
   const login = () => {
-    const userCredentials = { username, password: password.value };
+    const userCredentials = { username, password: password };
 
     if (remember) {
       localStorage.setItem('username', username);
@@ -38,37 +46,91 @@ function Login({ setIsLogin }) {
     dispatch(attemptLogin(userCredentials)).catch(R.identity);
   };
 
-  useKeyPress('Enter', login);
+  const signup = () => {
+    if (usernameAvailable && passwordValid) {
+      const newUser = {
+        username,
+        password,
+      };
+
+      dispatch(attemptRegister(newUser)).catch(R.identity);
+    }
+  };
+
+  useKeyPress('Enter', isLogin ? login : signup);
 
   const rememberMe = () => {
     localStorage.removeItem('username');
     setRemember(!remember);
   };
 
+  const checkUsername = (newUsername) => {
+    const { valid, message } = validateUsername(newUsername);
+
+    if (valid) {
+      setUsernameMessage('Checking username...');
+      setUsernameAvailable(false);
+
+      postCheckUsername(newUsername)
+        .then((res) => {
+          setUsernameAvailable(res.available);
+          setUsernameMessage(res.message);
+        })
+        .catch(R.identity);
+    } else {
+      setUsernameAvailable(valid);
+      setUsernameMessage(message);
+    }
+  };
+
+  const checkPassword = (newUsername, newPassword) => {
+    const { valid, message } = validatePassword(newUsername, newPassword);
+
+    setPasswordValid(valid);
+    setPasswordMessage(message);
+  };
+
+  const handleUsernameChange = ({ target: { value } }) => {
+    setUsername(value);
+    if (!isLogin) checkUsername(value);
+  };
+
+  const handlePasswordChange = ({ target: { value } }) => {
+    setPassword(value);
+    if (!isLogin) checkPassword(username, value);
+  };
+
   return (
     <StyledLogin>
+      <h1>{isLogin ? 'Login' : 'Signup'}</h1>
       <InputWrapper>
-        <Input label="Username" onChange={(e) => setUsername(e.target.value)} value={username} />
-        <Input label="Password" type="password" {...password} />
+        <Input label="Username" onChange={handleUsernameChange} value={username} />
+        {!isLogin && <Message>{usernameMessage}</Message>}
       </InputWrapper>
-      <ForgotPassword>
-        <Link to="/recovery">Forgot your password?</Link>
-      </ForgotPassword>
+      <InputWrapper>
+        <Input label="Password" type="password" onChange={handlePasswordChange} />
+        {!isLogin ? (
+          <Message>{passwordMessage}</Message>
+        ) : (
+          <RememberMe>
+            <label>
+              <input name="rememberMe" type="checkbox" checked={remember} onChange={rememberMe} />
+              Remember me
+            </label>
+          </RememberMe>
+        )}
+      </InputWrapper>
       <ButtonWrapper>
-        <Button onClick={login} label="Log in">
-          Log In
+        <Button onClick={isLogin ? login : signup} label="Log in">
+          {isLogin ? 'Log In' : 'Sign Up'}
         </Button>
-        <RememberMe>
-          <label>
-            <input name="rememberMe" type="checkbox" checked={remember} onChange={rememberMe} />
-            Remember me
-          </label>
-        </RememberMe>
       </ButtonWrapper>
 
       <NoAccountYet>
-        Don't have an account yet?
-        <button onClick={() => setIsLogin(false)}>Sign Up</button>
+        {isLogin ? "Don't have an account yet?" : 'Already have an account?'}
+        <button onClick={() => setIsLogin((prevLogin) => !prevLogin)}>
+          {isLogin ? 'Sign Up' : 'Log In'}
+        </button>
       </NoAccountYet>
     </StyledLogin>
   );
@@ -77,24 +139,17 @@ function Login({ setIsLogin }) {
 const StyledLogin = styled.div``;
 
 const InputWrapper = styled.div`
-  & > *:first-child {
-    margin-bottom: 1.5rem;
-  }
+  margin-bottom: 0.8rem;
+`;
+
+const Message = styled.div`
+  text-align: right;
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: 1.8rem;
   button {
-    width: 100%;
-  }
-`;
-
-const ForgotPassword = styled.div`
-  text-align: right;
-  margin-top: 3px;
-
-  a {
-    color: ${({ theme }) => theme.colors.medium('onBackground')};
+    margin-left: auto;
+    margin-top: 1rem;
   }
 `;
 
@@ -128,8 +183,6 @@ const NoAccountYet = styled.div`
   }
 `;
 
-Login.propTypes = {
-  setIsLogin: PropTypes.func,
-};
+Login.propTypes = {};
 
 export default Login;
