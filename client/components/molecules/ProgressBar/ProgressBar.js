@@ -127,6 +127,7 @@ ProgressBar.propTypes = {
   handleBarUpdate: PropTypes.func.isRequired,
   increment: PropTypes.number.isRequired,
   minus: PropTypes.bool,
+  incrementLabel: PropTypes.string.isRequired,
 };
 
 ProgressBar.defaultProps = {

@@ -158,6 +158,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
         type="Pomodori"
         handleBarUpdate={handleBarUpdate}
         increment={1}
+        incrementLabel="Increment pomodori"
         minus
       />
     </StyledPomodoro>

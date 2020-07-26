@@ -154,6 +154,9 @@ Sidebar.propTypes = {
     defaultFocusList: PropTypes.string,
     category: PropTypes.string,
   }),
+  todayCompletedTodos: PropTypes.arrayOf(
+    PropTypes.shape({ text: PropTypes.string, id: PropTypes.string }),
+  ),
 };
 
 export default Sidebar;

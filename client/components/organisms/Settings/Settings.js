@@ -17,51 +17,6 @@ import ListIcon from '_assets/icons/list.svg';
 import SettingsIcon from '_assets/icons/settings.svg';
 import TrashIcon from '_assets/icons/trash-2.svg';
 import XIcon from '_assets/icons/x.svg';
-
-const StyledSettings = styled.div`
-  background-color: ${(props) => props.theme.colors.surface};
-  color: ${(props) => props.theme.colors.onSurface};
-  width: 100%;
-  min-height: 100%;
-  padding: 20px;
-
-  .close-button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin: 20px;
-    font-size: 28px;
-    color: ${(props) => props.theme.colors.monotoneAccent};
-    cursor: pointer;
-    padding: 4px;
-    background: ${(props) => props.theme.colors.background};
-  }
-
-  h1,
-  h2,
-  h3 {
-    font-weight: 400;
-  }
-
-  h1 {
-    margin: 0;
-  }
-
-  h2 {
-    margin-bottom: 0.8rem;
-    margin-top: 2.3rem;
-    display: flex;
-
-    svg {
-      margin-right: 0.5rem;
-    }
-  }
-
-  h2 + p {
-    margin-top: 0.3rem;
-  }
-`;
-
 const Settings = ({ currentBoard }) => {
   const dispatch = useDispatch();
 
@@ -229,6 +184,50 @@ const Settings = ({ currentBoard }) => {
     </>
   );
 };
+
+const StyledSettings = styled.div`
+  background-color: ${(props) => props.theme.colors.surface};
+  color: ${(props) => props.theme.colors.onSurface};
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+
+  .close-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 20px;
+    font-size: 28px;
+    color: ${(props) => props.theme.colors.monotoneAccent};
+    cursor: pointer;
+    padding: 4px;
+    background: ${(props) => props.theme.colors.background};
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 400;
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  h2 {
+    margin-bottom: 0.8rem;
+    margin-top: 2.3rem;
+    display: flex;
+
+    svg {
+      margin-right: 0.5rem;
+    }
+  }
+
+  h2 + p {
+    margin-top: 0.3rem;
+  }
+`;
 
 const DeleteSection = styled.div`
   display: flex;
