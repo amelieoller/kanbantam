@@ -102,7 +102,6 @@ function Login() {
 
   return (
     <StyledLogin>
-      <h1>{isLogin ? 'Login' : 'Signup'}</h1>
       <InputWrapper>
         <Input label="Username" onChange={handleUsernameChange} value={username} />
         {!isLogin && <Message>{usernameMessage}</Message>}

@@ -16,7 +16,7 @@ const WelcomePageStyles = styled.main`
 
   @media ${(props) => props.theme.media.tablet} {
     grid-template-columns: auto;
-    grid-template-rows: 50% auto;
+    grid-template-rows: 60% auto;
   }
 `;
 
@@ -25,9 +25,12 @@ const LoginArea = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-width: 450px;
+  margin: auto;
+  width: 100%;
 
   @media ${(props) => props.theme.media.tablet} {
-    padding: 50px 30px;
+    padding: 10px 30px;
     justify-content: flex-start;
   }
 `;
