@@ -6,31 +6,6 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Todo from '_molecules/Todo';
 import { formatYearMonthDay } from '_utils/dates';
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  transition: background-color 0.2s ease, opacity 0.1s ease;
-  user-select: none;
-  background-color: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.lighter(1, 'surfaceVariant')};
-  padding-bottom: 0;
-  border-bottom-right-radius: ${({ theme }) => theme.sizes.borderRadius};
-  border-bottom-left-radius: ${({ theme }) => theme.sizes.borderRadius};
-`;
-
-const DropZone = styled.div`
-  /* stop the list collapsing when empty */
-  min-height: 100px;
-  /* not relying on the items for a margin-bottom as it will collapse when the list is empty */
-  margin: ${({ theme }) => theme.sizes.spacingSmall};
-`;
-
-const ScrollContainer = styled.div`
-  overflow-x: hidden;
-  overflow-y: auto;
-  max-height: ${({ listHeight }) => listHeight}px;
-`;
-
 const List = ({ listId, todos, listHeight, placeholderProps, board, completedListId }) => {
   const [withinPomodoroTodos, setWithinPomodoroTodos] = useState([]);
 
@@ -128,6 +103,31 @@ const List = ({ listId, todos, listHeight, placeholderProps, board, completedLis
     </Droppable>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.2s ease, opacity 0.1s ease;
+  user-select: none;
+  background-color: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.lighter(1, 'surfaceVariant')};
+  padding-bottom: 0;
+  border-bottom-right-radius: ${({ theme }) => theme.sizes.borderRadius};
+  border-bottom-left-radius: ${({ theme }) => theme.sizes.borderRadius};
+`;
+
+const DropZone = styled.div`
+  /* stop the list collapsing when empty */
+  min-height: 100px;
+  /* not relying on the items for a margin-bottom as it will collapse when the list is empty */
+  margin: ${({ theme }) => theme.sizes.spacingSmall};
+`;
+
+const ScrollContainer = styled.div`
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: ${({ listHeight }) => listHeight}px;
+`;
 
 const Placeholder = styled.div`
   position: absolute;

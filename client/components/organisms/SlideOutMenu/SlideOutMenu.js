@@ -4,75 +4,6 @@ import styled from 'styled-components';
 import Swipe from 'react-easy-swipe';
 import clsx from 'clsx';
 
-const StyledCheeseburger = styled.div`
-  visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
-`;
-
-const overlayStyle = () => ({
-  position: 'fixed',
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  zIndex: 1001,
-  background: 'rgba(0, 0, 0, 0.3)',
-  opacity: 0,
-  transition: `opacity 0.4s, transform 0s 0.4s`,
-  transform: `translate3d(-100%, 0px, 0px)`,
-});
-
-const overlayActiveStyle = (options) => ({
-  ...overlayStyle(options),
-  opacity: 1,
-  transition: `opacity 0.4s`,
-  transform: 'none',
-});
-
-const menuOuterStyle = (options) => ({
-  position: 'fixed',
-  left: 'inherit',
-  right: 0,
-  top: 0,
-  bottom: 0,
-  zIndex: 1002,
-  width: options.width,
-  maxWidth: '80%',
-  transition: `transform 0.4s`,
-  transform: `translate3d(100%, 0px, 0px)`,
-  transformOrigin: 'left',
-  backgroundColor: 'white',
-});
-
-const menuOuterActiveStyle = (options) => ({
-  ...menuOuterStyle(options),
-  transform: `translate3d(0px, 0px, 0px)`,
-});
-
-const menuShadowStyle = () => ({
-  position: 'absolute',
-  zIndex: -1,
-  width: '100%',
-  height: '100%',
-  transition: `opacity 0.4s`,
-  boxShadow: '0 0 15px 0 rgba(0, 0, 0, .2)',
-  opacity: 0,
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-});
-
-const menuShadowActiveStyle = (options) => ({
-  ...menuShadowStyle(options),
-  opacity: 1,
-});
-
-const menuInnerStyle = () => ({
-  height: '100%',
-  paddingBottom: 0,
-  overflowY: 'auto',
-});
-
 const IDLE = 'idle';
 const VERTICAL = 'vertical';
 const HORIZONTAL = 'horizontal';
@@ -218,6 +149,75 @@ const SlideOutMenu = ({
     </StyledCheeseburger>
   );
 };
+
+const StyledCheeseburger = styled.div`
+  visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
+`;
+
+const overlayStyle = () => ({
+  position: 'fixed',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  zIndex: 1001,
+  background: 'rgba(0, 0, 0, 0.3)',
+  opacity: 0,
+  transition: `opacity 0.4s, transform 0s 0.4s`,
+  transform: `translate3d(-100%, 0px, 0px)`,
+});
+
+const overlayActiveStyle = (options) => ({
+  ...overlayStyle(options),
+  opacity: 1,
+  transition: `opacity 0.4s`,
+  transform: 'none',
+});
+
+const menuOuterStyle = (options) => ({
+  position: 'fixed',
+  left: 'inherit',
+  right: 0,
+  top: 0,
+  bottom: 0,
+  zIndex: 1002,
+  width: options.width,
+  maxWidth: '80%',
+  transition: `transform 0.4s`,
+  transform: `translate3d(100%, 0px, 0px)`,
+  transformOrigin: 'left',
+  backgroundColor: 'white',
+});
+
+const menuOuterActiveStyle = (options) => ({
+  ...menuOuterStyle(options),
+  transform: `translate3d(0px, 0px, 0px)`,
+});
+
+const menuShadowStyle = () => ({
+  position: 'absolute',
+  zIndex: -1,
+  width: '100%',
+  height: '100%',
+  transition: `opacity 0.4s`,
+  boxShadow: '0 0 15px 0 rgba(0, 0, 0, .2)',
+  opacity: 0,
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+});
+
+const menuShadowActiveStyle = (options) => ({
+  ...menuShadowStyle(options),
+  opacity: 1,
+});
+
+const menuInnerStyle = () => ({
+  height: '100%',
+  paddingBottom: 0,
+  overflowY: 'auto',
+});
 
 SlideOutMenu.propTypes = {
   isOpen: PropTypes.bool.isRequired,

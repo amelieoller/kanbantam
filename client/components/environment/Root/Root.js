@@ -9,7 +9,7 @@ import GlobalStyles from '_styles/GlobalStyles';
 import ModalStyles from '_styles/ModalStyles';
 import { light } from '_styles/Theme';
 
-export default function Root({ history, store }) {
+function Root({ history, store }) {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
@@ -23,6 +23,8 @@ export default function Root({ history, store }) {
     </Provider>
   );
 }
+
+export default Root;
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,

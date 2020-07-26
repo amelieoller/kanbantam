@@ -8,6 +8,31 @@ import backgroundImageLarge from '_assets/images/background-image-large.jpg';
 import backgroundImageSmall from '_assets/images/background-image-small.jpg';
 import GithubIcon from '_assets/icons/github.svg';
 
+const WelcomePage = () => {
+  return (
+    <WelcomePageStyles>
+      <LoginArea>
+        <Header>Kanban 2.0</Header>
+
+        <Login />
+      </LoginArea>
+
+      <ImageArea>
+        <GithubIconWrapper
+          href="https://github.com/amelieoller/kanban-2.0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="github-icon"
+          label="GitHub Repository"
+          aria-label="GitHub Repository"
+        >
+          <GithubIcon />
+        </GithubIconWrapper>
+      </ImageArea>
+    </WelcomePageStyles>
+  );
+};
+
 const WelcomePageStyles = styled.main`
   height: 100vh;
   width: 100%;
@@ -72,31 +97,6 @@ const ImageArea = styled.div`
     background-position-y: initial;
   }
 `;
-
-const WelcomePage = () => {
-  return (
-    <WelcomePageStyles>
-      <LoginArea>
-        <Header>Kanban 2.0</Header>
-
-        <Login />
-      </LoginArea>
-
-      <ImageArea>
-        <GithubIconWrapper
-          href="https://github.com/amelieoller/kanban-2.0"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="github-icon"
-          label="GitHub Repository"
-          aria-label="GitHub Repository"
-        >
-          <GithubIcon />
-        </GithubIconWrapper>
-      </ImageArea>
-    </WelcomePageStyles>
-  );
-};
 
 WelcomePage.propTypes = {
   dispatch: PropTypes.func.isRequired,

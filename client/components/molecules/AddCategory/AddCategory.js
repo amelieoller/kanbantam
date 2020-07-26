@@ -43,7 +43,7 @@ function AddCategory({ boardId }) {
       </NewCategoryWrapper>
 
       <Button onClick={handleAddCategory} label="Create category">
-        <span>Create Category</span>
+        Create Category
       </Button>
     </Wrapper>
   );

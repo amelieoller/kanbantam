@@ -49,25 +49,6 @@ function AddBoardTile({ lastBoardSortVal }) {
   );
 }
 
-const AddBoardTileButton = styled.button`
-  border: 0;
-  background: ${({ theme }) => theme.colors.darker(1, 'surface')};
-  cursor: pointer;
-  transition: background 0.1s;
-
-  font-size: 15px;
-  font-weight: 500;
-  border-radius: ${({ theme }) => theme.sizes.borderRadius};
-  box-shadow: ${({ theme }) => theme.shadows.one};
-  padding: ${({ theme }) => theme.sizes.spacing};
-  color: ${({ theme }) => theme.colors.onSurface};
-
-  &:hover,
-  &:focus {
-    background: ${({ theme }) => theme.colors.surfaceVariant};
-  }
-`;
-
 const NewBoardForm = styled.form`
   background: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme }) => theme.sizes.spacing};
@@ -91,6 +72,25 @@ const NewBoardButton = styled.input`
   font-size: inherit;
   font-weight: inherit;
   color: white;
+`;
+
+const AddBoardTileButton = styled.button`
+  border: 0;
+  background: ${({ theme }) => theme.colors.darker(1, 'surface')};
+  cursor: pointer;
+  transition: background 0.1s;
+
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
+  box-shadow: ${({ theme }) => theme.shadows.one};
+  padding: ${({ theme }) => theme.sizes.spacing};
+  color: ${({ theme }) => theme.colors.onSurface};
+
+  &:hover,
+  &:focus {
+    background: ${({ theme }) => theme.colors.surfaceVariant};
+  }
 `;
 
 AddBoardTile.propTypes = {

@@ -17,6 +17,7 @@ import ListIcon from '_assets/icons/list.svg';
 import SettingsIcon from '_assets/icons/settings.svg';
 import TrashIcon from '_assets/icons/trash-2.svg';
 import XIcon from '_assets/icons/x.svg';
+
 const Settings = ({ currentBoard }) => {
   const dispatch = useDispatch();
 

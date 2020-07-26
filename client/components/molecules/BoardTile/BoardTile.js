@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+function BoardTile({ board }) {
+  return (
+    <StyledBoardTile key={board.id} to={`/boards/${board.id}`}>
+      {board.title}
+    </StyledBoardTile>
+  );
+}
+
 const StyledBoardTile = styled(Link)`
   background: ${({ theme }) => theme.colors.surface};
   cursor: grab;
@@ -18,14 +26,6 @@ const StyledBoardTile = styled(Link)`
     box-shadow: ${({ theme }) => theme.shadows.three};
   }
 `;
-
-function BoardTile({ board }) {
-  return (
-    <StyledBoardTile key={board.id} to={`/boards/${board.id}`}>
-      {board.title}
-    </StyledBoardTile>
-  );
-}
 
 BoardTile.propTypes = {
   board: PropTypes.shape({

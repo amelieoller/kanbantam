@@ -5,27 +5,6 @@ import styled from 'styled-components';
 import CheckSquareIcon from '_assets/icons/check-square.svg';
 import SquareIcon from '_assets/icons/square.svg';
 
-const StyledCheckbox = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.medium('onSurface')};
-
-  svg {
-    color: ${({ theme, isChecked }) => isChecked && theme.colors.secondary};
-    margin-right: 6px;
-  }
-
-  &:hover svg {
-    color: ${({ theme, isChecked }) =>
-      isChecked ? theme.colors.darker(1, 'secondary') : theme.colors.secondary};
-  }
-
-  label {
-    cursor: pointer;
-  }
-`;
-
 const Checkbox = ({ label, onChange, checked }) => {
   const [isChecked, setIsChecked] = useState(checked ? 1 : 0);
 
@@ -47,6 +26,27 @@ const Checkbox = ({ label, onChange, checked }) => {
     </StyledCheckbox>
   );
 };
+
+const StyledCheckbox = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.medium('onSurface')};
+
+  svg {
+    color: ${({ theme, isChecked }) => isChecked && theme.colors.secondary};
+    margin-right: 6px;
+  }
+
+  &:hover svg {
+    color: ${({ theme, isChecked }) =>
+      isChecked ? theme.colors.darker(1, 'secondary') : theme.colors.secondary};
+  }
+
+  label {
+    cursor: pointer;
+  }
+`;
 
 Checkbox.defaultProps = {
   checked: false,

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -60,7 +60,7 @@ const Todo = ({
   };
 
   const handleClick = (e) => {
-    const { tagName, checked, id, type, dataset, parentElement } = e.target;
+    const { tagName, checked, type, dataset, parentElement } = e.target;
 
     const elAttribute = dataset.type;
     const elAttributeParent = parentElement.dataset.type;
@@ -96,22 +96,6 @@ const Todo = ({
 
   const completeTodo = () => {
     dispatch(attemptUpdateTodo({ id: todo.id, list: completedListId, completed: true }));
-  };
-
-  const formatMarkdown = (markdown) => {
-    let i = 0;
-    return marked(markdown, { sanitize: true, gfm: true, breaks: true })
-      .replace(/<a/g, '<a target="_blank"')
-      .replace(/\[(\s|x)\]/g, (match) => {
-        let newString;
-        if (match === '[ ]') {
-          newString = `<input id=${i} onclick="return false" type="checkbox">`;
-        } else {
-          newString = `<input id=${i} checked onclick="return false" type="checkbox">`;
-        }
-        i += 1;
-        return newString;
-      });
   };
 
   return (

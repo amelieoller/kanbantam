@@ -1,6 +1,17 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
+const Spinner = () => {
+  return (
+    <Container>
+      <Wrapper>
+        <Style />
+        <Hill />
+      </Wrapper>
+    </Container>
+  );
+};
+
 const climbingBox = keyframes`
   0% {transform:translate(0, -1em) rotate(-45deg)}
   5% {transform:translate(0, -1em) rotate(-50deg)}
@@ -15,25 +26,20 @@ const climbingBox = keyframes`
   100% {transform:translate(0, -1em) rotate(-225deg)}
 `;
 
-const Spinner = () => {
-  return (
-    <Container>
-      <Wrapper>
-        <Style />
-        <Hill />
-      </Wrapper>
-    </Container>
-  );
-};
-
-const Hill = styled.div`
-  position: absolute;
+const Container = styled.div`
   width: 7.1em;
   height: 7.1em;
-  top: 1.7em;
-  left: 1.7em;
-  border-left: 0.25em solid ${({ theme }) => theme.colors.primary};
-  transform: rotate(45deg);
+`;
+
+const Wrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -2.7em;
+  margin-left: -2.7em;
+  width: 5.4em;
+  height: 5.4em;
+  font-size: 25px;
 `;
 
 const Style = styled.div`
@@ -50,21 +56,14 @@ const Style = styled.div`
   animation: ${climbingBox} 2.5s infinite cubic-bezier(0.79, 0, 0.47, 0.97);
 `;
 
-const Wrapper = styled.div`
+const Hill = styled.div`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -2.7em;
-  margin-left: -2.7em;
-  width: 5.4em;
-  height: 5.4em;
-  font-size: 25px;
-`;
-
-const Container = styled.div`
-  /* position: relative; */
   width: 7.1em;
   height: 7.1em;
+  top: 1.7em;
+  left: 1.7em;
+  border-left: 0.25em solid ${({ theme }) => theme.colors.primary};
+  transform: rotate(45deg);
 `;
 
 export default Spinner;
