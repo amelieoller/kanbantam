@@ -52,12 +52,10 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
       </CollapseButton>
       <SidebarContent>
         <SectionWrapper>
-          {isSidebarOpen && (
-            <SectionHeader>
-              <ClockIcon />
-              <h2>Pomodoro</h2>
-            </SectionHeader>
-          )}
+          <SectionHeader isSidebarOpen={isSidebarOpen}>
+            <ClockIcon />
+            <h2>Pomodoro</h2>
+          </SectionHeader>
 
           <Pomodoro
             currentBoard={currentBoard}
@@ -69,7 +67,7 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
         </SectionWrapper>
 
         <SectionWrapper>
-          <SectionHeader>
+          <SectionHeader isSidebarOpen={isSidebarOpen}>
             <AwardIcon />
             <h2>Completed Todos</h2>
           </SectionHeader>
@@ -82,20 +80,27 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
 }
 
 const SectionWrapper = styled.div`
-  padding-bottom: 3rem;
+  padding: 0.8rem 0 2.5rem 0;
 `;
 
 const SectionHeader = styled.div`
-  display: grid;
-  grid-template-columns: 30px auto;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(230 230 230);
+  padding-bottom: 5px;
+  color: ${({ theme }) => theme.colors.lighter(4, 'onBackground')};
 
   svg {
-    margin-right: 4px;
+    margin: ${({ isSidebarOpen }) => (isSidebarOpen ? '0 2px 0 0' : '0 5px')};
     width: 30px;
+    flex-shrink: 0;
+    color: ${({ theme }) => theme.colors.lighter(8, 'onBackground')};
   }
 
   h2 {
     margin: 0;
+    text-transform: uppercase;
+    font-size: 14px;
   }
 `;
 

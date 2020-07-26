@@ -137,90 +137,99 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
   const [minutes, seconds] = formatTime(timePassedMs, sessionLength);
 
-  return isSidebarOpen ? (
+  const renderPlayPauseButtons = () => {
+    if (!isRunning) {
+      return <PlayCircleIcon className="play" onClick={playOrPauseTimer} />;
+    }
+    return <PauseCircleIcon className="pause" onClick={playOrPauseTimer} />;
+  };
+
+  return (
     <StyledPomodoro>
-      <h1>
-        {minutes}:{seconds}
-      </h1>
+      {/* Clock */}
+      <Clock isSidebarOpen={isSidebarOpen}>
+        <span className="minutes">{minutes}</span>
+        <span className="seconds">{seconds}</span>
+      </Clock>
 
-      <Controls>
-        {!isRunning ? (
-          <PlayCircleIcon onClick={playOrPauseTimer} />
-        ) : (
-          <PauseCircleIcon onClick={playOrPauseTimer} />
-        )}
-        <RepeatIcon onClick={switchSessions} />
+      {/* Controls */}
+      <Controls isSidebarOpen={isSidebarOpen}>
+        {renderPlayPauseButtons()}
+        <RepeatIcon className="repeat" onClick={switchSessions} />
       </Controls>
 
-      <ProgressBar
-        total={currentBoard.totalPomodori}
-        elapsed={currentBoard.elapsedPomodori && currentBoard.elapsedPomodori[formattedDate]}
-        type="Pomodori"
-        handleBarUpdate={handleBarUpdate}
-        increment={1}
-        incrementLabel="Increment pomodori"
-        minus
-      />
+      {/* Progress Bar */}
+      {isSidebarOpen && (
+        <ProgressBarWrapper>
+          <ProgressBar
+            total={currentBoard.totalPomodori}
+            elapsed={currentBoard.elapsedPomodori && currentBoard.elapsedPomodori[formattedDate]}
+            type="Pomodori"
+            handleBarUpdate={handleBarUpdate}
+            increment={1}
+            incrementLabel="Increment pomodori"
+            minus
+          />
+        </ProgressBarWrapper>
+      )}
     </StyledPomodoro>
-  ) : (
-    <MinimalPomodoroWrapper>
-      <MinimalClock>
-        <span>{minutes}</span>
-        <span>{seconds}</span>
-      </MinimalClock>
-
-      <Controls>
-        {!isRunning ? (
-          <PlayCircleIcon onClick={playOrPauseTimer} />
-        ) : (
-          <PauseCircleIcon onClick={playOrPauseTimer} />
-        )}
-      </Controls>
-    </MinimalPomodoroWrapper>
   );
 };
 
-const MinimalPomodoroWrapper = styled.div`
-  margin-top: 1rem;
-`;
+const StyledPomodoro = styled.div``;
 
-const MinimalClock = styled.div`
+const Clock = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: ${({ isSidebarOpen }) => (isSidebarOpen ? 'row' : 'column')};
+  align-items: ${({ isSidebarOpen }) => (isSidebarOpen ? 'baseline' : 'center')};
+  justify-content: center;
+  margin-bottom: ${({ isSidebarOpen }) => (isSidebarOpen ? '10px' : '5px')};
+  margin-top: 10px;
 
-  & > *:first-child {
-    font-size: 2.4rem;
+  .minutes {
+    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '3rem' : '2.4rem')};
     color: ${({ theme }) => theme.colors.onBackground};
   }
 
-  & > *:last-child {
-    font-size: 1.4rem;
+  .seconds {
+    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '2rem' : '1.4rem')};
     color: ${({ theme }) => theme.colors.darker(4, 'surfaceVariant')};
   }
 `;
 
-const StyledPomodoro = styled.div`
-  text-align: center;
+const Controls = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: ${({ isSidebarOpen }) => (isSidebarOpen ? 'row' : 'column')};
 
-  h1 {
-    font-size: 2rem;
+  .repeat {
+    height: 18px;
+  }
+
+  .play,
+  .pause {
+    height: 35px;
+  }
+
+  .play {
+    color: ${({ theme }) => theme.colors.success};
+  }
+
+  .pause {
+    color: ${({ theme }) => theme.colors.error};
+  }
+
+  svg {
+    transition: all 0.3s ease;
+    color: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
+    cursor: pointer;
+    margin: 5px 0;
   }
 `;
 
-const Controls = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minMax(40px, 1fr));
-
-  svg {
-    color: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
-  }
-
-  & > * {
-    cursor: pointer;
-    margin: 8px auto;
-    height: 25px;
-  }
+const ProgressBarWrapper = styled.div`
+  margin-top: 10px;
 `;
 
 Pomodoro.propTypes = {
