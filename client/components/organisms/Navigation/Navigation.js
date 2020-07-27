@@ -52,7 +52,7 @@ function Navigation({ pathname }) {
     <StyledNavigation role="navigation" isHome={isHome} navBackground={navBackground}>
       <Left to="/">
         <LogoIcon />
-        {!isThinDisplay && 'Kanban 2.0'}
+        {!isThinDisplay && 'Kanbantam'}
       </Left>
 
       <Right>

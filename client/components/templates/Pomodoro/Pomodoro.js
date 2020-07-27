@@ -97,7 +97,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     setEndTime(0);
     setIsRunning(false);
 
-    document.title = 'Kanban';
+    document.title = 'Kanbantam';
   };
 
   const playOrPauseTimer = () => setIsRunning((prevIsRunning) => !prevIsRunning);
