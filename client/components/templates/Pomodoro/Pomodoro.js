@@ -192,7 +192,7 @@ const Clock = styled.div`
   }
 
   .seconds {
-    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '2rem' : '1.4rem')};
+    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '1.8rem' : '1.4rem')};
     color: ${({ theme }) => theme.colors.darker(4, 'surfaceVariant')};
   }
 `;

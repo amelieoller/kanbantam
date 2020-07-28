@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Input = ({ label, type, helpText, ...inputProps }) => {
+const Input = ({ label, type, helpText, noLabel, ...inputProps }) => {
   const renderInputNode = () => {
     const inputID = label.toLowerCase();
 
     return (
       <InputWrapper>
-        <StyledLabel htmlFor={inputID}>{label}</StyledLabel>
+        {!noLabel && <StyledLabel htmlFor={inputID}>{label}</StyledLabel>}
 
         <StyledInput
           id={inputID}
@@ -35,7 +35,6 @@ const StyledLabel = styled.label`
   font-size: 0.85rem;
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.medium('onSurface')};
-  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
 `;
 
 const StyledInput = styled.input`
@@ -45,7 +44,6 @@ const StyledInput = styled.input`
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   font-size: 1.3rem;
   -webkit-appearance: none;
-  margin-top: 3px;
 `;
 
 const HelpText = styled.div`
@@ -61,11 +59,13 @@ Input.propTypes = {
   required: PropTypes.bool,
   type: PropTypes.oneOf(['email', 'money', 'number', 'password', 'phone', 'text', 'zip', 'date']),
   helpText: PropTypes.string,
+  noLabel: PropTypes.bool,
 };
 
 Input.defaultProps = {
   required: false,
   type: 'text',
+  noLabel: false,
 };
 
 export default Input;

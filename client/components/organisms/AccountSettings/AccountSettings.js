@@ -108,6 +108,7 @@ const StyledAccountSettings = styled.div`
     cursor: pointer;
     padding: 4px;
     background: ${({ theme }) => theme.colors.background};
+    height: 28px;
   }
 
   h1,

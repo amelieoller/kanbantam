@@ -12,7 +12,7 @@ const WelcomePage = () => {
   return (
     <WelcomePageStyles>
       <LoginArea>
-        <Header>Kanbantam</Header>
+        <Header>Kanban 2.0</Header>
 
         <Login />
       </LoginArea>

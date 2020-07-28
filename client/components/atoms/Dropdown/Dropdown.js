@@ -41,11 +41,6 @@ const InputWrapper = styled.div`
 const StyledLabel = styled.label`
   font-size: 0.85rem;
   text-transform: uppercase;
-  position: absolute;
-  left: 14px;
-  top: -5px;
-  background: white;
-  padding: 0 6px;
   color: ${({ theme }) => theme.colors.medium('onSurface')};
 `;
 
@@ -55,6 +50,7 @@ const StyledSelect = styled.select`
   border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   font-size: 1.3rem;
+  margin-top: 3px;
 
   -webkit-appearance: none;
   -moz-appearance: none;

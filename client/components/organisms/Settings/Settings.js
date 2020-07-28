@@ -203,6 +203,7 @@ const StyledSettings = styled.div`
     cursor: pointer;
     padding: 4px;
     background: ${(props) => props.theme.colors.background};
+    height: 28px;
   }
 
   h1,
