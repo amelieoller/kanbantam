@@ -59,7 +59,12 @@ const NewCategoryWrapper = styled.div`
   margin-bottom: ${({ theme }) => theme.sizes.spacing};
   align-items: flex-end;
 
+  svg {
+    height: 18px;
+  }
+
   button {
+    padding: 0 6px;
     height: 31px;
   }
 `;

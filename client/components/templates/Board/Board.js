@@ -37,8 +37,15 @@ function Board({ board, theme: { sizes } }) {
     const sortedLists = sortItemsByOrder(filteredListsWithoutSpecial);
 
     // Category filter
-    const filteredTodos =
-      board.category === '' ? todos : todos.filter((t) => t.category === board.category);
+    let filteredTodos;
+
+    if (board.category === '') {
+      filteredTodos = todos.filter((t) => t.category === 'none');
+    } else if (board.category == 'all') {
+      filteredTodos = todos;
+    } else {
+      filteredTodos = todos.filter((t) => t.category === board.category);
+    }
 
     const todosByListId = sortedLists.reduce((acc, list) => {
       const todosFilteredByList = filteredTodos.filter((t) => t.list === list.id);

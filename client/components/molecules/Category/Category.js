@@ -38,7 +38,7 @@ const Category = ({ category }) => {
 
   return (
     <StyledCategory key={category.id}>
-      <Input label={`Edit ${title}`} onChange={handleTitleChange} defaultValue={title} />
+      <Input noLabel label={`Edit ${title}`} onChange={handleTitleChange} defaultValue={title} />
       <ColorDropdown onChange={handleColorChange} currentColor={color} />
       <IconWrapper
         onClick={() => {
@@ -68,30 +68,32 @@ const Category = ({ category }) => {
 const StyledCategory = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
   position: relative;
-  align-items: flex-end;
+
+  svg {
+    height: 18px;
+  }
 
   button {
-    height: 31px;
-    width: 31px;
+    padding: 0 6px;
   }
 `;
 
 const IconWrapper = styled.button`
   background: transparent;
-  border: 2px solid
+  border: 1px solid
     ${({ hasBeenModified, theme }) =>
-      hasBeenModified ? theme.colors.success : theme.colors.lighter(5, 'onBackground')};
+      hasBeenModified ? theme.colors.success : theme.colors.surfaceVariant};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   margin-left: ${({ theme }) => theme.sizes.spacingSmall};
   display: flex;
   align-items: center;
   color: ${({ hasBeenModified, theme }) =>
-    hasBeenModified ? theme.colors.success : theme.colors.lighter(5, 'onBackground')};
+    hasBeenModified ? theme.colors.success : theme.colors.surfaceVariant};
 
   &:hover {
-    border: 2px solid ${({ isDelete, theme }) => isDelete && theme.colors.error};
+    border: 1px solid ${({ isDelete, theme }) => isDelete && theme.colors.error};
     color: ${({ isDelete, theme }) => isDelete && theme.colors.error};
   }
 `;

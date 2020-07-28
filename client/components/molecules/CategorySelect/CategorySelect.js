@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
 import useOnClickOutside from '_hooks/useOnClickOutside';
-import ListIcon from '_assets/icons/list.svg';
 
 const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
   const colorRef = useRef();
@@ -21,7 +20,11 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
     if (categories) {
       const cat = categories.find((c) => c.id === currentCategoryId);
 
-      setCurrentCategory(cat);
+      if (currentCategoryId === 'all') {
+        setCurrentCategory('all');
+      } else {
+        setCurrentCategory(cat);
+      }
     }
   }, [categories, currentCategoryId]);
 
@@ -33,6 +36,8 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
     }
   };
 
+  console.log(currentCategory);
+
   return (
     <CategorySelectWrapper>
       {!noToggle && (
@@ -41,8 +46,9 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
           onClick={() => setIsCategoryPickerOpen((prevState) => !prevState)}
           isEmpty={!currentCategory}
           isInPicker={false}
+          className={currentCategory === 'all' ? 'rainbow' : ''}
         >
-          {currentCategory ? currentCategory.title[0] : <ListIcon />}
+          {currentCategory && currentCategory.title ? currentCategory.title[0] : ''}
         </CategoryOption>
       )}
 
@@ -55,9 +61,17 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
               isEmpty={true}
               isInPicker
               isSelected={!currentCategory}
-            >
-              <ListIcon />
-            </CategoryOption>
+              className="border"
+            ></CategoryOption>
+
+            <CategoryOption
+              value=""
+              onClick={() => handleChangeComplete('all')}
+              isEmpty={true}
+              isInPicker
+              isSelected={currentCategory === 'all'}
+              className="rainbow"
+            ></CategoryOption>
 
             {categories.map((c) => (
               <CategoryOption
@@ -66,6 +80,7 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
                 value={c.id}
                 onClick={() => handleChangeComplete(c.id)}
                 isEmpty={false}
+                isInPicker
                 isSelected={currentCategory ? c.id === currentCategory.id : false}
               >
                 {c.title[0]}
@@ -88,7 +103,7 @@ const CategoryOptions = styled.div`
   top: 45px;
   right: 0;
   background: rgb(255, 255, 255);
-  border: 0px solid rgba(0, 0, 0, 0.25);
+  /* border: 0px solid rgba(0, 0, 0, 0.25); */
   box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
   border-radius: 4px;
   padding: ${({ theme }) => theme.sizes.spacingSmall};
@@ -101,8 +116,8 @@ const CategoryOptions = styled.div`
 const CategoryOption = styled.div`
   cursor: pointer;
   background: ${({ color }) => (color ? color : 'white')};
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   position: relative;
   outline: none;
   float: left;
@@ -111,9 +126,26 @@ const CategoryOption = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  color: ${({ isEmpty }) => isEmpty && 'black'};
-  border: 2px solid
-    ${({ isSelected, theme }) => (isSelected ? theme.colors.primary : theme.colors.surfaceVariant)};
+  color: ${({ isEmpty }) => isEmpty && 'white'};
+  border-radius: 50%;
+  font-size: 14px;
+  border: ${({ isInPicker }) => (isInPicker ? 'none' : '2px solid')};
+  border: ${({ isSelected, theme }) =>
+    isSelected && `2px solid ${theme.colors.lighter(2, 'onBackground')}`};
+
+  &.border {
+    border: 2px solid ${({ theme }) => theme.colors.lighter(1, 'surfaceVariant')};
+  }
+
+  &.rainbow {
+    background: linear-gradient(120deg, transparent 36.66%, #fcb900 36.66%) 100% 0,
+      linear-gradient(60deg, #eb144c 63.34%, transparent 63.34%) 0 0,
+      linear-gradient(-60deg, transparent 36.66%, #9900ef 36.66%) 0 100%,
+      linear-gradient(60deg, transparent 36.66%, #00d084 36.66%) 100% 100%,
+      linear-gradient(#0693e3, #0693e3) 50% 100%, #ff6900;
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+  }
 `;
 
 CategorySelect.propTypes = {
