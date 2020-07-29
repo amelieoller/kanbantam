@@ -145,6 +145,12 @@ const GlobalStyles = createGlobalStyle`
     overflow: visible;
   }
 
+  input[type="text"],
+  input[type="email"],
+  input[type="date"] {
+    height: 2.584rem;
+  }
+
   button,
   select {
     text-transform: none;
@@ -256,27 +262,6 @@ const GlobalStyles = createGlobalStyle`
 
   .skip-to-content-link:focus {
     transform: translateY(-33px);
-  }
-
-  /* Codemirror */
-  .react-codemirror2.code-mirror {
-    @media ${(props) => props.theme.media.tabletSmall} {
-      margin-bottom: 8px;
-    }
-  }
-
-  .react-codemirror2.code-mirror > div {
-    width: 265px;
-    background: white;
-    padding: 3px;
-    border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
-    border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-    font-size: 1.2rem;
-    height: 100%;
-
-    @media ${(props) => props.theme.media.tabletSmall} {
-      width: calc(100vw - 90px);
-    }
   }
 `;
 

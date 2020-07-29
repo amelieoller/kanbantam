@@ -195,7 +195,7 @@ const sizes = {
 const media = {
   desktop: `(max-width: 992px)`,
   tablet: `(max-width: 768px)`,
-  tabletSmall: `(max-width: 550px)`,
+  tabletSmall: `(max-width: 680px)`,
   phone: `(max-width: 480px)`,
   phoneSmall: `(max-width: 376px)`,
 };

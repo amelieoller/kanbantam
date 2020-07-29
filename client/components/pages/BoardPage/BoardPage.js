@@ -13,6 +13,7 @@ import { attemptGetBoards } from '_actions/boards';
 import { attemptGetTodos } from '_actions/todos';
 import { setCurrentBoard } from '_actions/currentBoard';
 import { light, dark } from '_styles/Theme';
+import ModalStyles from '_styles/ModalStyles';
 
 function BoardPage({ boardId }) {
   const dispatch = useDispatch();
@@ -69,6 +70,8 @@ function BoardPage({ boardId }) {
 
   return !loading ? (
     <ThemeProvider theme={currentBoard.theme === 'light' ? light : dark}>
+      <ModalStyles sidebarWidth={currentBoard.sidebarOpen ? 250 : 50} />
+
       <Board key={currentBoard.id} board={currentBoard} />
     </ThemeProvider>
   ) : (
