@@ -8,6 +8,7 @@ import CompletedTodos from '_organisms/CompletedTodos';
 import Pomodoro from '_templates/Pomodoro';
 import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder } from '_utils/sorting';
+import { filterByCategory } from '_utils/filtering';
 import ChevronLeftIcon from '_assets/icons/chevrons-left.svg';
 import ChevronRightIcon from '_assets/icons/chevrons-right.svg';
 import AwardIcon from '_assets/icons/award.svg';
@@ -16,24 +17,22 @@ import ClockIcon from '_assets/icons/clock.svg';
 function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
   const dispatch = useDispatch();
 
-  const [currentTodos, setCurrentTodos] = useState(null);
+  const [firstTodo, setFirstTodo] = useState(null);
 
   const { todos } = useSelector(R.pick(['todos']));
 
   useEffect(() => {
+    const focusListId = currentBoard.defaultFocusList;
+
     if (currentBoard.defaultFocusList && todos.length !== 0) {
-      // find default focus list, then the first todo in that list
-      const focusListId = currentBoard.defaultFocusList;
-      let filteredTodos = todos.filter((t) => t.list === focusListId);
+      // Get only todos from the focus list
+      const todosFromFocusList = todos.filter((t) => t.list === focusListId);
+      // Filter those todos by category (if a category filter is selected)
+      const todosFilteredByCategory = filterByCategory(currentBoard.category, todosFromFocusList);
+      // Sort the todos by order
+      const sortedTodos = sortItemsByOrder(todosFilteredByCategory);
 
-      if (currentBoard.category) {
-        // If cards are being filtered by category make sure the currentTodos array only contains those todos
-        filteredTodos = filteredTodos.filter((t) => t.category === currentBoard.category);
-      }
-
-      const sortedTodos = sortItemsByOrder(filteredTodos);
-      // also filter todos by if there is a category selected to view, use board category
-      setCurrentTodos(sortedTodos);
+      setFirstTodo(sortedTodos[0]);
     }
   }, [currentBoard.defaultFocusList, currentBoard.category, todos]);
 
@@ -59,7 +58,7 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
 
           <Pomodoro
             currentBoard={currentBoard}
-            firstTodo={currentTodos && currentTodos[0]}
+            firstTodo={firstTodo}
             workLength={25}
             breakLength={5}
             isSidebarOpen={isSidebarOpen}
@@ -134,7 +133,7 @@ const CollapseButton = styled.button`
   height: 30px;
   width: 30px;
   padding: 0;
-  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+  border: 2px solid ${({ theme }) => theme.colors.surfaceVariant};
   cursor: pointer;
   outline: none;
   display: flex;
@@ -142,7 +141,8 @@ const CollapseButton = styled.button`
   align-items: center;
   background: ${({ theme }) => theme.colors.surface};
 
-  &:hover {
+  &:hover,
+  &:focus {
     background: ${({ theme }) => theme.colors.darker(1, 'surface')};
   }
 

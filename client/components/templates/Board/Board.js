@@ -14,6 +14,7 @@ import { attemptUpdateTodo } from '_actions/todos';
 import reorder, { reorderTodoList } from '_utils/dragAndDrop';
 import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
 import { formatYearMonthDay } from '_utils/dates';
+import { filterByCategory } from '_utils/filtering';
 import useResize from '_hooks/useResize';
 
 function Board({ board, theme: { sizes } }) {
@@ -37,15 +38,7 @@ function Board({ board, theme: { sizes } }) {
     const sortedLists = sortItemsByOrder(filteredListsWithoutSpecial);
 
     // Category filter
-    let filteredTodos;
-
-    if (board.category === '') {
-      filteredTodos = todos.filter((t) => t.category === 'none');
-    } else if (board.category == 'all') {
-      filteredTodos = todos;
-    } else {
-      filteredTodos = todos.filter((t) => t.category === board.category);
-    }
+    let filteredTodos = filterByCategory(board.category, todos);
 
     const todosByListId = sortedLists.reduce((acc, list) => {
       const todosFilteredByList = filteredTodos.filter((t) => t.list === list.id);
@@ -294,7 +287,7 @@ function Board({ board, theme: { sizes } }) {
         </DragDropContext>
       </main>
 
-      <TodoModal completedListId={completedListId} />
+      <TodoModal completedListId={completedListId} isSidebarOpen={board.sidebarOpen} />
     </StyledBoard>
   );
 }
@@ -306,7 +299,6 @@ const StyledBoard = styled.div`
   background: ${({ theme }) => theme.colors.boardBackground};
   width: max-content;
   position: relative;
-  overflow: scroll;
   max-width: 100vw;
   max-height: 100vh;
 
