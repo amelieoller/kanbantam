@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 const R = require('ramda');
 
+import Button from '_atoms/Button';
 import SlideOutMenu from '_organisms/SlideOutMenu';
 import ChangePassword from '_organisms/ChangePassword';
 import AlertCircleIcon from '_assets/icons/alert-circle.svg';
 import LockIcon from '_assets/icons/lock.svg';
-import SettingsIconIcon from '_assets/icons/settings.svg';
+import SettingsIcon from '_assets/icons/settings.svg';
 import TrashIcon from '_assets/icons/trash-2.svg';
 import XIcon from '_assets/icons/x.svg';
 import { attemptDeleteUser } from '../../../store/actions/user';
@@ -86,7 +87,9 @@ const AccountSettings = () => {
         </StyledAccountSettings>
       </SlideOutMenu>
 
-      <SettingsIconIcon onClick={() => toggleSettingsMenu(true)} />
+      <Button onClick={() => toggleSettingsMenu(true)} label="Open account settings" noBackground>
+        <SettingsIcon />
+      </Button>
     </>
   );
 };

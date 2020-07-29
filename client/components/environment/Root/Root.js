@@ -6,7 +6,6 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import Main from '_environment/Main';
 import GlobalStyles from '_styles/GlobalStyles';
-import ModalStyles from '_styles/ModalStyles';
 import { light } from '_styles/Theme';
 
 function Root({ history, store }) {
@@ -15,7 +14,6 @@ function Root({ history, store }) {
       <ConnectedRouter history={history}>
         <ThemeProvider theme={light}>
           <GlobalStyles />
-          <ModalStyles />
 
           <Main />
         </ThemeProvider>

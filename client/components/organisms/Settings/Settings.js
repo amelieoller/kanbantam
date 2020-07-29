@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 const R = require('ramda');
 
+import Button from '_atoms/Button';
 import Checkbox from '_atoms/Checkbox';
 import Dropdown from '_atoms/Dropdown';
 import Input from '_atoms/Input';
@@ -109,8 +110,8 @@ const Settings = ({ currentBoard }) => {
           <InputWrapper>
             <Input
               label="Default Minutes"
-              handleOnBlur={(value) => {
-                const newMinutes = value === '' ? 0 : value;
+              onChange={(e) => {
+                const newMinutes = e.target.value === '' ? 0 : e.target.value;
 
                 setSettingsPending(true);
                 setDefaultTime(parseInt(newMinutes, 10));
@@ -181,7 +182,9 @@ const Settings = ({ currentBoard }) => {
         </StyledSettings>
       </SlideOutMenu>
 
-      <SettingsIcon onClick={() => toggleSettingsMenu(true)} />
+      <Button onClick={() => toggleSettingsMenu(true)} label="Open board settings" noBackground>
+        <SettingsIcon />
+      </Button>
     </>
   );
 };

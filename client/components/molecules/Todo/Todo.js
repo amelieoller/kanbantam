@@ -109,7 +109,7 @@ const Todo = ({
       id={todo.id}
       categoryColor={todoCategory && todoCategory.color}
       inPomodori={isWithinPomodoro}
-      selectedCategory={selectedCategory}
+      selectedCategory={selectedCategory === 'all' ? '' : selectedCategory}
     >
       <DoneButton
         onClick={completeTodo}

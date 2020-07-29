@@ -14,6 +14,7 @@ const Input = ({ label, type, helpText, noLabel, ...inputProps }) => {
           id={inputID}
           type={type}
           name={inputID}
+          noLabel={noLabel}
           placeholder={inputProps.placeholder || label}
           {...inputProps}
         />
@@ -44,6 +45,7 @@ const StyledInput = styled.input`
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   font-size: 1.3rem;
   -webkit-appearance: none;
+  margin-top: ${({ noLabel }) => !noLabel && '3px'};
 `;
 
 const HelpText = styled.div`
