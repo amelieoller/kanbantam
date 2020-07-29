@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
+import Button from '_atoms/Button';
 import ProgressBar from '_molecules/ProgressBar';
 import { attemptUpdateBoard } from '_actions/boards';
 import { attemptUpdateTodo } from '_actions/todos';
@@ -139,9 +140,17 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
   const renderPlayPauseButtons = () => {
     if (!isRunning) {
-      return <PlayCircleIcon className="play" onClick={playOrPauseTimer} />;
+      return (
+        <Button onClick={playOrPauseTimer} label="Play" noBackground>
+          <PlayCircleIcon className="play" />
+        </Button>
+      );
     }
-    return <PauseCircleIcon className="pause" onClick={playOrPauseTimer} />;
+    return (
+      <Button onClick={playOrPauseTimer} label="Pause" noBackground>
+        <PauseCircleIcon className="pause" />
+      </Button>
+    );
   };
 
   return (
@@ -155,7 +164,9 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
       {/* Controls */}
       <Controls isSidebarOpen={isSidebarOpen}>
         {renderPlayPauseButtons()}
-        <RepeatIcon className="repeat" onClick={switchSessions} />
+        <Button onClick={switchSessions} label="Switch sessions" noBackground>
+          <RepeatIcon className="repeat" />
+        </Button>
       </Controls>
 
       {/* Progress Bar */}
