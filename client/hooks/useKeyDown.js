@@ -1,23 +1,23 @@
 import { useEffect } from 'react';
 
-function useKeyPress(key, callback, active = true) {
+function useKeyDown(key, callback, active = true) {
   useEffect(() => {
-    const keypress = (e) => {
+    const keydown = (e) => {
       if (e.key === key) {
         callback();
       }
     };
 
     if (active) {
-      window.addEventListener('keypress', keypress);
+      window.addEventListener('keydown', keydown);
     }
 
     return () => {
       if (active) {
-        window.removeEventListener('keypress', keypress);
+        window.removeEventListener('keydown', keydown);
       }
     };
   }, [callback, active]);
 }
 
-export default useKeyPress;
+export default useKeyDown;

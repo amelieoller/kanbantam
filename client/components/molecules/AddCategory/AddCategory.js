@@ -7,7 +7,7 @@ import Button from '_atoms/Button';
 import Input from '_atoms/Input';
 import ColorDropdown from '_molecules/ColorDropdown';
 import { attemptAddCategory } from '_actions/categories';
-import useKeyPress from '_hooks/useKeyPress';
+import useKeyDown from '_hooks/useKeyDown';
 
 function AddCategory({ boardId }) {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ function AddCategory({ boardId }) {
     }
   };
 
-  useKeyPress('Enter', handleAddCategory);
+  useKeyDown('Enter', handleAddCategory);
 
   return (
     <Wrapper>

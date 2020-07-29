@@ -6,7 +6,7 @@ import * as R from 'ramda';
 import Button from '_atoms/Button';
 import Input from '_atoms/Input';
 import { attemptLogin, attemptRegister } from '_thunks/auth';
-import useKeyPress from '_hooks/useKeyPress';
+import useKeyDown from '_hooks/useKeyDown';
 import { validateUsername, validatePassword } from '_utils/validation';
 import { postCheckUsername } from '_api/users';
 
@@ -57,7 +57,7 @@ function Login() {
     }
   };
 
-  useKeyPress('Enter', isLogin ? login : signup);
+  useKeyDown('Enter', isLogin ? login : signup);
 
   const rememberMe = () => {
     localStorage.removeItem('username');
