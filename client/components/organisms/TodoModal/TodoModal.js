@@ -100,8 +100,6 @@ function TodoModal({ completedListId, isSidebarOpen }) {
     },
   };
 
-  console.log(updatedTodo.priority);
-
   return (
     <ModalWrapper>
       <Modal
@@ -114,7 +112,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
         <CodeMirrorArea
           label="Text"
           handleOnChange={(value) => updateTodo('text', value)}
-          value={updatedTodo.text}
+          defaultValue={updatedTodo.text}
           style={{
             minHeight: isThinDisplay ? 'none' : boundingRect.height,
             width: isThinDisplay ? '100%' : boundingRect.width,
@@ -139,6 +137,19 @@ function TodoModal({ completedListId, isSidebarOpen }) {
           <span>
             <CategoryLabel>Priority</CategoryLabel>
             <Priorities>
+              <Button
+                onClick={() => updateTodo('priority', 0)}
+                label="Priority 0"
+                style={{
+                  background: `${
+                    updatedTodo.priority === 0 ? lighten(0.1, 'grey') : lighten(0.29, 'grey')
+                  }`,
+                  border: 'none',
+                }}
+              >
+                0 <Flag />
+              </Button>
+
               <Button
                 onClick={() => updateTodo('priority', 1)}
                 label="Priority 1"
@@ -224,7 +235,7 @@ const CategoryLabel = styled.div`
 
 const Priorities = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
 
   button {
