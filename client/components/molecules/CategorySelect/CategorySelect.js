@@ -4,15 +4,15 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
+import Button from '_atoms/Button';
 import useOnClickOutside from '_hooks/useOnClickOutside';
+import useKeyDown from '_hooks/useKeyDown';
 
 const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
   const colorRef = useRef();
 
   const [isCategoryPickerOpen, setIsCategoryPickerOpen] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('');
-
-  useOnClickOutside(colorRef, () => setIsCategoryPickerOpen(false));
 
   const { categories } = useSelector(R.pick(['categories']));
 
@@ -21,12 +21,15 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
       const cat = categories.find((c) => c.id === currentCategoryId);
 
       if (currentCategoryId === 'all') {
-        setCurrentCategory('all');
+        setCurrentCategory({ id: 'all' });
       } else {
         setCurrentCategory(cat);
       }
     }
   }, [categories, currentCategoryId]);
+
+  useOnClickOutside(colorRef, () => setIsCategoryPickerOpen(false));
+  useKeyDown('Escape', () => setIsCategoryPickerOpen(false));
 
   const handleChangeComplete = (newCategoryId) => {
     setIsCategoryPickerOpen(false);
@@ -36,102 +39,87 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
     }
   };
 
-  console.log(currentCategory);
-
   return (
-    <CategorySelectWrapper>
+    <>
       {!noToggle && (
-        <CategoryOption
-          color={currentCategory && currentCategory.color}
+        <Button
           onClick={() => setIsCategoryPickerOpen((prevState) => !prevState)}
-          isEmpty={!currentCategory}
-          isInPicker={false}
-          className={currentCategory === 'all' ? 'rainbow' : ''}
+          label="Select category"
+          size="large"
+          noBackground
         >
-          {currentCategory && currentCategory.title ? currentCategory.title[0] : ''}
-        </CategoryOption>
+          <Circle
+            color={currentCategory && currentCategory.color}
+            className={currentCategoryId === 'all' ? 'rainbow' : ''}
+            notInPicker
+          >
+            {currentCategory && currentCategory.title ? currentCategory.title[0] : ''}
+          </Circle>
+        </Button>
       )}
 
       {(noToggle || isCategoryPickerOpen) && (
-        <CategoryOptions ref={colorRef} noToggle={noToggle}>
+        <CategoryOptions ref={colorRef} noToggle={noToggle} className="category-picker">
           <>
-            <CategoryOption
-              value=""
-              onClick={() => handleChangeComplete('')}
-              isEmpty={true}
-              isInPicker
-              isSelected={!currentCategory}
-              className="border"
-            ></CategoryOption>
+            <Button onClick={() => handleChangeComplete('')} label="Select category" noBackground>
+              <Circle className="border"></Circle>
+              <OptionText isSelected={!currentCategory}>Unassigned</OptionText>
+            </Button>
 
-            <CategoryOption
-              value=""
+            <Button
               onClick={() => handleChangeComplete('all')}
-              isEmpty={true}
-              isInPicker
-              isSelected={currentCategory === 'all'}
-              className="rainbow"
-            ></CategoryOption>
+              label="Select category"
+              noBackground
+            >
+              <Circle color={currentCategory && currentCategory.color} className="rainbow"></Circle>
+              <OptionText isSelected={currentCategoryId === 'all'}>All</OptionText>
+            </Button>
 
             {categories.map((c) => (
-              <CategoryOption
-                color={c.color}
-                key={c.id}
-                value={c.id}
+              <Button
                 onClick={() => handleChangeComplete(c.id)}
-                isEmpty={false}
-                isInPicker
-                isSelected={currentCategory ? c.id === currentCategory.id : false}
+                label="Select category"
+                key={c.id}
+                noBackground
               >
-                {c.title[0]}
-              </CategoryOption>
+                <Circle color={c.color}>{c.title[0]}</Circle>
+                <OptionText isSelected={currentCategory ? c.id === currentCategory.id : false}>
+                  {c.title}
+                </OptionText>
+              </Button>
             ))}
           </>
         </CategoryOptions>
       )}
-    </CategorySelectWrapper>
+    </>
   );
 };
 
-const CategorySelectWrapper = styled.div`
-  position: relative;
-  display: inline-block;
+const OptionText = styled.span`
+  font-size: 11px;
+  color: ${({ theme }) => theme.colors.lighter(3, 'onBackground')};
+  margin-top: 3px;
+  text-align: center;
+  font-weight: ${({ isSelected }) => (isSelected ? 'bold' : 'normal')};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 `;
 
-const CategoryOptions = styled.div`
-  position: ${({ noToggle }) => (noToggle ? 'initial' : 'absolute')};
-  top: 45px;
-  right: 0;
-  background: rgb(255, 255, 255);
-  /* border: 0px solid rgba(0, 0, 0, 0.25); */
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
-  border-radius: 4px;
-  padding: ${({ theme }) => theme.sizes.spacingSmall};
-  display: grid;
-  grid-gap: ${({ theme }) => theme.sizes.spacingSmall};
-  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
-  min-width: 100px;
-`;
-
-const CategoryOption = styled.div`
-  cursor: pointer;
-  background: ${({ color }) => (color ? color : 'white')};
-  height: 25px;
-  width: 25px;
-  position: relative;
-  outline: none;
-  float: left;
-  border-radius: 4px;
+const Circle = styled.span`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  border: ${({ notInPicker }) => notInPicker && '2px solid white'};
+  font-weight: 900;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 900;
-  color: ${({ isEmpty }) => isEmpty && 'white'};
-  border-radius: 50%;
-  font-size: 14px;
-  border: ${({ isInPicker }) => (isInPicker ? 'none' : '2px solid')};
-  border: ${({ isSelected, theme }) =>
-    isSelected && `2px solid ${theme.colors.lighter(2, 'onBackground')}`};
+  margin: 0 !important;
+  background: ${({ color }) => (color ? color : 'white')};
 
   &.border {
     border: 2px solid ${({ theme }) => theme.colors.lighter(1, 'surfaceVariant')};
@@ -148,6 +136,41 @@ const CategoryOption = styled.div`
   }
 `;
 
+const CategoryOptions = styled.div`
+  position: ${({ noToggle }) => (noToggle ? 'initial' : 'absolute')};
+  top: 45px;
+  right: 30px;
+  left: 30px;
+  background: rgb(255, 255, 255);
+  box-shadow: ${({ noToggle }) => !noToggle && 'rgba(0, 0, 0, 0.25) 0px 1px 4px'};
+  border: ${({ noToggle, theme }) => noToggle && `1px solid ${theme.colors.surfaceVariant}`};
+  border-radius: 4px;
+  padding: ${({ theme }) => theme.sizes.spacingSmall};
+  display: grid;
+  grid-gap: ${({ theme }) => theme.sizes.spacingSmall};
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  min-width: 100px;
+
+  button {
+    flex-direction: column;
+    border: none;
+    border: ${({ isSelected, theme }) =>
+      isSelected && `2px solid ${theme.colors.lighter(2, 'onBackground')}`};
+    padding: 5px;
+    outline: none;
+
+    & > *:first-child {
+      width: 35px;
+      height: 35px;
+    }
+
+    &:hover,
+    &:focus {
+      background: ${({ theme }) => theme.colors.lighter(9, 'onBackground')};
+    }
+  }
+`;
+
 CategorySelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   currentCategoryId: PropTypes.string,
@@ -156,6 +179,7 @@ CategorySelect.propTypes = {
 
 CategorySelect.defaultProps = {
   currentCategoryId: '',
+  noToggle: false,
 };
 
 export default CategorySelect;
