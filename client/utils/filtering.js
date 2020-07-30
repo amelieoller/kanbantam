@@ -1,3 +1,5 @@
+import { formatYearMonthDay } from '_utils/dates';
+
 export const byIdReplaceAtIndex = (arr, itemId, newItem) => {
   const index = arr.findIndex((obj) => obj.id === itemId);
 
@@ -15,4 +17,12 @@ export const filterByCategory = (categoryId, todos) => {
     // Return only todos filtered by a particular category
     return todos.filter((t) => t.category === categoryId);
   }
+};
+
+export const todosByDate = (todos, date) => {
+  return todos
+    .filter(
+      (t) => t.completed && formatYearMonthDay(new Date(t.updatedAt)) === formatYearMonthDay(date),
+    )
+    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 };

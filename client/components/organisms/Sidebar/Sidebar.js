@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 
 import CompletedTodos from '_organisms/CompletedTodos';
+import TaskGraph from '_organisms/TaskGraph';
 import Pomodoro from '_templates/Pomodoro';
 import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder } from '_utils/sorting';
@@ -14,7 +15,7 @@ import ChevronRightIcon from '_assets/icons/chevrons-right.svg';
 import AwardIcon from '_assets/icons/award.svg';
 import ClockIcon from '_assets/icons/clock.svg';
 
-function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
+function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos, yesterdayCompletedTodos }) {
   const dispatch = useDispatch();
 
   const [firstTodo, setFirstTodo] = useState(null);
@@ -51,11 +52,6 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
       </CollapseButton>
       <SidebarContent>
         <SectionWrapper>
-          <SectionHeader isSidebarOpen={isSidebarOpen}>
-            <ClockIcon />
-            <h2>Pomodoro</h2>
-          </SectionHeader>
-
           <Pomodoro
             currentBoard={currentBoard}
             firstTodo={firstTodo}
@@ -63,15 +59,34 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
             breakLength={5}
             isSidebarOpen={isSidebarOpen}
           />
+
+          <SectionHeader isSidebarOpen={isSidebarOpen}>
+            {/* <ClockIcon /> */}
+            <h2>Pomodoro</h2>
+          </SectionHeader>
         </SectionWrapper>
 
         <SectionWrapper>
+          <CompletedTodos
+            todayCompletedTodos={todayCompletedTodos}
+            yesterdayCompletedTodos={yesterdayCompletedTodos}
+          />
+
           <SectionHeader isSidebarOpen={isSidebarOpen}>
-            <AwardIcon />
+            {/* <AwardIcon /> */}
             <h2>Completed Todos</h2>
           </SectionHeader>
+        </SectionWrapper>
 
-          <CompletedTodos todayCompletedTodos={todayCompletedTodos} />
+        <SectionWrapper>
+          <TaskGraph
+            elapsedPomodori={currentBoard.elapsedPomodori}
+            totalPomodori={currentBoard.totalPomodori}
+          />
+
+          <SectionHeader isSidebarOpen={isSidebarOpen}>
+            <h2>Pomodori Finished</h2>
+          </SectionHeader>
         </SectionWrapper>
       </SidebarContent>
     </SidebarWrapper>
@@ -79,19 +94,24 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos }) {
 }
 
 const SectionWrapper = styled.div`
-  padding: 0.8rem 0 2.5rem 0;
+  padding: 5px;
+  overflow: scroll;
+  position: relative;
 `;
 
 const SectionHeader = styled.div`
   display: flex;
+  justify-content: flex-end;
+  /* color: ${({ theme }) => theme.colors.lighter(4, 'onBackground')}; */
+  color: #c7c3bd;
   align-items: center;
-  border-bottom: 1px solid rgb(230 230 230);
-  padding-bottom: 5px;
-  color: ${({ theme }) => theme.colors.lighter(4, 'onBackground')};
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
 
   svg {
     margin: ${({ isSidebarOpen }) => (isSidebarOpen ? '0 2px 0 0' : '0 5px')};
-    width: 30px;
+    width: 25px;
     flex-shrink: 0;
     color: ${({ theme }) => theme.colors.lighter(8, 'onBackground')};
   }
@@ -99,14 +119,13 @@ const SectionHeader = styled.div`
   h2 {
     margin: 0;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 500;
   }
 `;
 
 const SidebarWrapper = styled.aside`
   background: ${({ theme }) => theme.colors.surface};
-  padding: ${({ theme, isSidebarOpen }) =>
-    !isSidebarOpen ? theme.sizes.spacingSmall : theme.sizes.spacing};
   height: calc(100vh - ${({ theme }) => theme.sizes.navbarHeight});
   box-shadow: 3px 0px 8px 0px rgba(155, 170, 178, 0.1);
   color: ${({ theme }) => theme.colors.onSurface};
@@ -122,18 +141,26 @@ const SidebarWrapper = styled.aside`
 
 const SidebarContent = styled.div`
   overflow: hidden;
+
+  & > *:nth-child(even) {
+    background: #f5f5f5;
+
+    h2 {
+      color: #969696;
+    }
+  }
 `;
 
 const CollapseButton = styled.button`
   position: absolute;
   left: 100%;
-  top: 50%;
+  top: 10px;
   transform: translateX(-50%);
   border-radius: 50%;
-  height: 30px;
-  width: 30px;
+  height: 20px;
+  width: 20px;
   padding: 0;
-  border: 2px solid ${({ theme }) => theme.colors.surfaceVariant};
+  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   cursor: pointer;
   outline: none;
   display: flex;
@@ -147,8 +174,8 @@ const CollapseButton = styled.button`
   }
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 13px;
+    height: 13px;
   }
 `;
 

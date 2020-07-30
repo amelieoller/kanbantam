@@ -157,20 +157,19 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     <StyledPomodoro>
       {/* Clock */}
       <Clock isSidebarOpen={isSidebarOpen}>
+        <Button onClick={switchSessions} label="Switch sessions" noBackground>
+          <RepeatIcon className="repeat" />
+        </Button>
+
         <span className="minutes">{minutes}</span>
         <span className="seconds">{seconds}</span>
       </Clock>
 
       {/* Controls */}
-      <Controls isSidebarOpen={isSidebarOpen}>
-        {renderPlayPauseButtons()}
-        <Button onClick={switchSessions} label="Switch sessions" noBackground>
-          <RepeatIcon className="repeat" />
-        </Button>
-      </Controls>
+      <Controls isSidebarOpen={isSidebarOpen}>{renderPlayPauseButtons()}</Controls>
 
       {/* Progress Bar */}
-      {isSidebarOpen && (
+      {/* {isSidebarOpen && (
         <ProgressBarWrapper>
           <ProgressBar
             total={currentBoard.totalPomodori}
@@ -182,12 +181,30 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
             minus
           />
         </ProgressBarWrapper>
-      )}
+      )} */}
     </StyledPomodoro>
   );
 };
 
-const StyledPomodoro = styled.div``;
+const StyledPomodoro = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: -10px;
+  height: 150px;
+
+  .repeat {
+    height: 15px;
+    padding-right: 8px;
+  }
+
+  svg {
+    transition: all 0.3s ease;
+    color: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
+    cursor: pointer;
+  }
+`;
 
 const Clock = styled.div`
   display: flex;
@@ -200,11 +217,12 @@ const Clock = styled.div`
   .minutes {
     font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '3rem' : '2.4rem')};
     color: ${({ theme }) => theme.colors.onBackground};
+    padding-right: ${({ isSidebarOpen }) => (isSidebarOpen ? '2px' : '0')};
   }
 
   .seconds {
-    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '1.8rem' : '1.4rem')};
-    color: ${({ theme }) => theme.colors.darker(4, 'surfaceVariant')};
+    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '1.7rem' : '1.4rem')};
+    color: ${({ theme }) => theme.colors.darker(3, 'surfaceVariant')};
   }
 `;
 
@@ -213,10 +231,6 @@ const Controls = styled.div`
   justify-content: space-evenly;
   align-items: center;
   flex-direction: ${({ isSidebarOpen }) => (isSidebarOpen ? 'row' : 'column')};
-
-  .repeat {
-    height: 18px;
-  }
 
   .play,
   .pause {
@@ -229,13 +243,6 @@ const Controls = styled.div`
 
   .pause {
     color: ${({ theme }) => theme.colors.error};
-  }
-
-  svg {
-    transition: all 0.3s ease;
-    color: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
-    cursor: pointer;
-    margin: 5px 0;
   }
 `;
 

@@ -98,6 +98,7 @@
     "react-router-dom": "^5.1.2",
     "react-sortable-hoc": "^1.11.0",
     "react-textarea-autosize": "^8.0.1",
+    "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-optimist": "^1.0.0",
