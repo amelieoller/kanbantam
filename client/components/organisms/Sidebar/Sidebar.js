@@ -15,7 +15,13 @@ import ChevronRightIcon from '_assets/icons/chevrons-right.svg';
 import AwardIcon from '_assets/icons/award.svg';
 import ClockIcon from '_assets/icons/clock.svg';
 
-function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos, yesterdayCompletedTodos }) {
+function Sidebar({
+  isSidebarOpen,
+  currentBoard,
+  todayCompletedTodos,
+  yesterdayCompletedTodos,
+  completedListId,
+}) {
   const dispatch = useDispatch();
 
   const [firstTodo, setFirstTodo] = useState(null);
@@ -45,6 +51,13 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos, yesterdayCo
     handleUpdateBoard({ sidebarOpen: !isSidebarOpen });
   };
 
+  const renderSectionHeader = (title) =>
+    isSidebarOpen && (
+      <SectionHeader isSidebarOpen={isSidebarOpen}>
+        <h2>{title}</h2>
+      </SectionHeader>
+    );
+
   return (
     <SidebarWrapper isSidebarOpen={isSidebarOpen}>
       <CollapseButton onClick={() => handleToggleClick()} aria-label="Expand sidebar">
@@ -52,6 +65,8 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos, yesterdayCo
       </CollapseButton>
       <SidebarContent>
         <SectionWrapper>
+          {renderSectionHeader('Pomodoro')}
+
           <Pomodoro
             currentBoard={currentBoard}
             firstTodo={firstTodo}
@@ -59,34 +74,27 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos, yesterdayCo
             breakLength={5}
             isSidebarOpen={isSidebarOpen}
           />
-
-          <SectionHeader isSidebarOpen={isSidebarOpen}>
-            {/* <ClockIcon /> */}
-            <h2>Pomodoro</h2>
-          </SectionHeader>
         </SectionWrapper>
 
         <SectionWrapper>
+          {renderSectionHeader('Completed Todos')}
+
           <CompletedTodos
             todayCompletedTodos={todayCompletedTodos}
             yesterdayCompletedTodos={yesterdayCompletedTodos}
+            completedListId={completedListId}
           />
-
-          <SectionHeader isSidebarOpen={isSidebarOpen}>
-            {/* <AwardIcon /> */}
-            <h2>Completed Todos</h2>
-          </SectionHeader>
         </SectionWrapper>
 
         <SectionWrapper>
-          <TaskGraph
-            elapsedPomodori={currentBoard.elapsedPomodori}
-            totalPomodori={currentBoard.totalPomodori}
-          />
+          {renderSectionHeader('Pomodori Finished')}
 
-          <SectionHeader isSidebarOpen={isSidebarOpen}>
-            <h2>Pomodori Finished</h2>
-          </SectionHeader>
+          <TaskGraph
+            boardId={currentBoard.id}
+            totalPomodori={currentBoard.totalPomodori}
+            elapsedPomodori={currentBoard.elapsedPomodori}
+            isSidebarOpen={isSidebarOpen}
+          />
         </SectionWrapper>
       </SidebarContent>
     </SidebarWrapper>
@@ -94,20 +102,18 @@ function Sidebar({ isSidebarOpen, currentBoard, todayCompletedTodos, yesterdayCo
 }
 
 const SectionWrapper = styled.div`
-  padding: 5px;
-  overflow: scroll;
+  padding: 6px;
   position: relative;
 `;
 
 const SectionHeader = styled.div`
   display: flex;
-  justify-content: flex-end;
-  /* color: ${({ theme }) => theme.colors.lighter(4, 'onBackground')}; */
+  justify-content: center;
   color: #c7c3bd;
   align-items: center;
-  position: absolute;
   right: 3px;
   bottom: 3px;
+  padding-top: 3px;
 
   svg {
     margin: ${({ isSidebarOpen }) => (isSidebarOpen ? '0 2px 0 0' : '0 5px')};
@@ -142,7 +148,7 @@ const SidebarWrapper = styled.aside`
 const SidebarContent = styled.div`
   overflow: hidden;
 
-  & > *:nth-child(even) {
+  & > *:nth-child(odd) {
     background: #f5f5f5;
 
     h2 {
@@ -167,6 +173,7 @@ const CollapseButton = styled.button`
   justify-content: center;
   align-items: center;
   background: ${({ theme }) => theme.colors.surface};
+  z-index: 1;
 
   &:hover,
   &:focus {

@@ -154,11 +154,11 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
   };
 
   return (
-    <StyledPomodoro>
+    <StyledPomodoro isSidebarOpen={isSidebarOpen}>
       {/* Clock */}
       <Clock isSidebarOpen={isSidebarOpen}>
-        <Button onClick={switchSessions} label="Switch sessions" noBackground>
-          <RepeatIcon className="repeat" />
+        <Button className="repeat" onClick={switchSessions} label="Switch sessions" noBackground>
+          <RepeatIcon />
         </Button>
 
         <span className="minutes">{minutes}</span>
@@ -191,12 +191,15 @@ const StyledPomodoro = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: -10px;
-  height: 150px;
+  height: 130px;
 
   .repeat {
-    height: 15px;
-    padding-right: 8px;
+    padding-right: ${({ isSidebarOpen }) => (isSidebarOpen ? '8px' : '0')};
+    padding-bottom: ${({ isSidebarOpen }) => (isSidebarOpen ? '0' : '5px')};
+
+    svg {
+      height: 15px;
+    }
   }
 
   svg {

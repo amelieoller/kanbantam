@@ -246,6 +246,7 @@ function Board({ board, theme: { sizes } }) {
         currentBoard={board}
         todayCompletedTodos={todayCompletedTodos}
         yesterdayCompletedTodos={yesterdayCompletedTodos}
+        completedListId={completedListId}
       />
 
       <main id="main" ref={boardRef}>

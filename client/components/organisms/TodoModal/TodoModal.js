@@ -47,7 +47,14 @@ function TodoModal({ completedListId, isSidebarOpen }) {
   };
 
   const completeTodo = () => {
-    dispatch(attemptUpdateTodo({ id: updatedTodo.id, list: completedListId, completed: true }));
+    dispatch(
+      attemptUpdateTodo({
+        id: updatedTodo.id,
+        list: completedListId,
+        completed_list_id: updatedTodo.list,
+        completed: true,
+      }),
+    );
     dispatch(clearCurrentTodo());
   };
 

@@ -95,7 +95,14 @@ const Todo = ({
   };
 
   const completeTodo = () => {
-    dispatch(attemptUpdateTodo({ id: todo.id, list: completedListId, completed: true }));
+    dispatch(
+      attemptUpdateTodo({
+        id: todo.id,
+        list: completedListId,
+        completed_list_id: todo.list,
+        completed: true,
+      }),
+    );
   };
 
   return (

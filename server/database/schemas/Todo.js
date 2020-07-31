@@ -8,6 +8,7 @@ const todoSchema = new Schema({
   user: { type: Schema.ObjectId, ref: 'User', required: true },
   board: { type: Schema.ObjectId, ref: 'Board', required: true },
   list: { type: Schema.ObjectId, ref: 'List', required: true },
+  completed_list_id: { type: String },
   text: { type: String },
   priority: { type: Number },
   minutes: { type: Number },
