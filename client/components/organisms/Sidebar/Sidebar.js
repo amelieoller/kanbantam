@@ -149,7 +149,7 @@ const SidebarContent = styled.div`
   overflow: hidden;
 
   & > *:nth-child(odd) {
-    background: #f5f5f5;
+    background: #f7f7f7;
 
     h2 {
       color: #969696;

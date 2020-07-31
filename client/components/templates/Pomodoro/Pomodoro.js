@@ -199,6 +199,12 @@ const StyledPomodoro = styled.div`
 
     svg {
       height: 15px;
+
+      &:hover,
+      &:focus {
+        color: ${({ theme }) => theme.colors.surfaceVariant};
+        outline: none;
+      }
     }
   }
 
@@ -242,10 +248,25 @@ const Controls = styled.div`
 
   .play {
     color: ${({ theme }) => theme.colors.success};
+
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.lighter(2, 'success')};
+    }
   }
 
   .pause {
     color: ${({ theme }) => theme.colors.error};
+
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.lighter(2, 'error')};
+    }
+  }
+
+  button:hover,
+  button:focus {
+    outline: none;
   }
 `;
 

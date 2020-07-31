@@ -123,7 +123,7 @@ const ListItem = styled.li`
   align-items: center;
   justify-content: space-between;
   padding-bottom: 1px;
-  background: #f5f5f5;
+  background: #f7f7f7;
   color: ${({ theme }) => theme.colors.onSurface};
   margin: 5px 0;
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
