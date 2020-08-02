@@ -141,14 +141,14 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
   const renderPlayPauseButtons = () => {
     if (!isRunning) {
       return (
-        <Button onClick={playOrPauseTimer} label="Play" noBackground>
-          <PlayCircleIcon className="play" />
+        <Button className="play" onClick={playOrPauseTimer} label="Play" noBackground>
+          <PlayCircleIcon />
         </Button>
       );
     }
     return (
-      <Button onClick={playOrPauseTimer} label="Pause" noBackground>
-        <PauseCircleIcon className="pause" />
+      <Button className="pause" onClick={playOrPauseTimer} label="Pause" noBackground>
+        <PauseCircleIcon />
       </Button>
     );
   };
@@ -196,21 +196,21 @@ const StyledPomodoro = styled.div`
   .repeat {
     padding-right: ${({ isSidebarOpen }) => (isSidebarOpen ? '8px' : '0')};
     padding-bottom: ${({ isSidebarOpen }) => (isSidebarOpen ? '0' : '5px')};
+    color: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
+
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.surfaceVariant};
+      outline: none;
+    }
 
     svg {
       height: 15px;
-
-      &:hover,
-      &:focus {
-        color: ${({ theme }) => theme.colors.surfaceVariant};
-        outline: none;
-      }
     }
   }
 
   svg {
     transition: all 0.3s ease;
-    color: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
     cursor: pointer;
   }
 `;
@@ -243,7 +243,9 @@ const Controls = styled.div`
 
   .play,
   .pause {
-    height: 35px;
+    svg {
+      height: 35px;
+    }
   }
 
   .play {

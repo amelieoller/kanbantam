@@ -132,6 +132,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
             onChange={(e) => updateTodo('minutes', e.target.value === '' ? 0 : +e.target.value)}
             value={updatedTodo.minutes}
             type="number"
+            step="5"
           />
 
           <Input

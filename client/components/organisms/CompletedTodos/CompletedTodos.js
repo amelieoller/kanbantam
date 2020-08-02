@@ -51,21 +51,23 @@ const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos, complete
   };
 
   return (
-    <StyledLists>
-      {!!todayCompletedTodos.length && (
-        <DayWrapper>
-          <h3>Today</h3>
-          {todayCompletedTodos.map((t) => renderListItem(t))}
-        </DayWrapper>
-      )}
+    <ListsWrapper>
+      <StyledLists>
+        {!!todayCompletedTodos.length && (
+          <DayWrapper>
+            <h3>Today</h3>
+            {todayCompletedTodos.map((t) => renderListItem(t))}
+          </DayWrapper>
+        )}
 
-      {!!yesterdayCompletedTodos.length && (
-        <DayWrapper>
-          <h3>Yesterday</h3>
-          {yesterdayCompletedTodos.map((t) => renderListItem(t))}
-        </DayWrapper>
-      )}
-    </StyledLists>
+        {!!yesterdayCompletedTodos.length && (
+          <DayWrapper>
+            <h3>Yesterday</h3>
+            {yesterdayCompletedTodos.map((t) => renderListItem(t))}
+          </DayWrapper>
+        )}
+      </StyledLists>
+    </ListsWrapper>
   );
 };
 
@@ -78,14 +80,18 @@ CompletedTodos.propTypes = {
   ),
 };
 
+const ListsWrapper = styled.ul`
+  padding: 8px 0 20px 0;
+`;
+
 const StyledLists = styled.ul`
   color: ${({ theme }) => theme.colors.lighter(4, 'onSurface')};
   max-height: 200px;
   overflow: scroll;
-  padding: 25px 0;
 `;
 
 const DayWrapper = styled.div`
+  padding-top: 15px;
   h3 {
     margin: 0;
     margin-bottom: 5px;
@@ -127,7 +133,9 @@ const ListItem = styled.li`
   color: ${({ theme }) => theme.colors.onSurface};
   margin: 5px 0;
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-  border-left: 3px solid ${({ categoryColor }) => categoryColor};
+  border-left: 3px solid
+    ${({ categoryColor, theme }) =>
+      categoryColor ? categoryColor : theme.colors.lighter(5, 'onSurface')};
 `;
 
 const TodoText = styled.span`
