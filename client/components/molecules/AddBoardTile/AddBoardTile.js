@@ -29,6 +29,7 @@ function AddBoardTile({ lastBoardSortVal }) {
           default: '',
           focusMode: false,
           category: '',
+          elapsedPomodori: {},
         }),
       );
       setTitle('');

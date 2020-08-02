@@ -9,7 +9,7 @@ export const byIdReplaceAtIndex = (arr, itemId, newItem) => {
 export const filterByCategory = (categoryId, todos) => {
   if (categoryId === '') {
     // Return all todos that don't have a category yet
-    return todos.filter((t) => t.category === 'none');
+    return todos.filter((t) => t.category === 'none' || t.category === '');
   } else if (categoryId == 'all') {
     // Return all todos
     return todos;

@@ -66,6 +66,10 @@ const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos, complete
             {yesterdayCompletedTodos.map((t) => renderListItem(t))}
           </DayWrapper>
         )}
+
+        {!todayCompletedTodos.length && !yesterdayCompletedTodos.length && (
+          <GetStarted>Get started completing todos today!</GetStarted>
+        )}
       </StyledLists>
     </ListsWrapper>
   );
@@ -79,6 +83,13 @@ CompletedTodos.propTypes = {
     PropTypes.shape({ text: PropTypes.string, id: PropTypes.string }),
   ),
 };
+
+const GetStarted = styled.div`
+  font-family: 'Pacifico', cursive;
+  text-align: center;
+  padding-top: 7px;
+  font-size: 14.5px;
+`;
 
 const ListsWrapper = styled.ul`
   padding: 8px 0 20px 0;
