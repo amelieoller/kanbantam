@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
+import Button from '_atoms/Button';
+import Input from '_atoms/Input';
 import { attemptAddBoard } from '_actions/boards';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 
@@ -42,8 +44,10 @@ function AddBoardTile({ lastBoardSortVal }) {
 
   return isOpen ? (
     <NewBoardForm onSubmit={handleAddBoardTile} ref={formRef}>
-      <NewBoardInput type="text" onChange={updateTitle} value={title} autoFocus />
-      <NewBoardButton type="submit" value="Create" />
+      <Input onChange={updateTitle} value={title} label="New Board" noLabel autoFocus></Input>
+      <Button onClick={handleAddBoardTile} label="Create new board">
+        Create
+      </Button>
     </NewBoardForm>
   ) : (
     <AddBoardTileButton onClick={toggleIsOpen}>Add a new board...</AddBoardTileButton>
@@ -55,24 +59,9 @@ const NewBoardForm = styled.form`
   padding: ${({ theme }) => theme.sizes.spacing};
   background: ${({ theme }) => theme.colors.darker(1, 'surface')};
 
-  & > input {
-    border-width: 0;
-    border-radius: ${({ theme }) => theme.sizes.borderRadius};
-    padding: ${({ theme }) => theme.sizes.inputPadding};
+  input {
+    margin-bottom: ${({ theme }) => theme.sizes.spacing};
   }
-`;
-
-const NewBoardInput = styled.input`
-  width: 100%;
-  margin-bottom: ${({ theme }) => theme.sizes.spacing};
-`;
-
-const NewBoardButton = styled.input`
-  background: ${({ theme }) => theme.colors.primary};
-  cursor: pointer;
-  font-size: inherit;
-  font-weight: inherit;
-  color: white;
 `;
 
 const AddBoardTileButton = styled.button`
