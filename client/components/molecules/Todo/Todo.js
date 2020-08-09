@@ -233,6 +233,14 @@ const Container = styled.div`
     }`};
   color: ${({ theme }) => theme.colors.onSurface};
 
+  img {
+    width: 100%;
+  }
+
+  em {
+    font-style: italic;
+  }
+
   ol {
     list-style: none;
     counter-reset: li;
