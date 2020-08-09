@@ -22,6 +22,16 @@ function AddTodo({ board, listId, lastCardSortVal }) {
     e.preventDefault();
 
     if (text) {
+      let todoCategory = '';
+
+      if (board.category === 'all') {
+        todoCategory = '';
+      } else if (board.category) {
+        todoCategory = board.category;
+      } else if (board.defaultCategory) {
+        todoCategory = board.defaultCategory;
+      }
+
       dispatch(
         attemptAddTodo({
           text,
@@ -30,11 +40,7 @@ function AddTodo({ board, listId, lastCardSortVal }) {
           order: lastCardSortVal + 1,
           minutes: board.defaultTime || 0,
           elapsedMinutes: 0,
-          category: board.category
-            ? board.category
-            : board.defaultCategory
-            ? board.defaultCategory
-            : '',
+          category: todoCategory,
           completed: false,
         }),
       );
