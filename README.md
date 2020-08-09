@@ -2,6 +2,10 @@
 
 Kanbantam is a Trello-inspired Kanban app on steroids.
 
+## Screenshots
+
+![Walkthrough](./client/assets/videos/walkthrough.gif)
+
 ## Tech/Framework Used
 
 - [React](https://facebook.github.io/react/) - View Library
@@ -16,9 +20,42 @@ Kanbantam is a Trello-inspired Kanban app on steroids.
 - [Ramda](http://ramdajs.com/) - Functional Library
 - [ESLint](http://eslint.org/) - Code Linter
 
+## Features
+
+- Create, edit, remove, reorder todos, lists, and boards
+- Add time, category, priority, due date to todos
+- Run a pomodoro timer and track finished pomodori
+- Create categories, default lists, minutes
+- Enable focus mode
+- Supports GitHub flavored markdown
+
+## Installation
+
+1. Clone the project
+2. Run `yarn` or `npm install` (this will install all the dependencies)
+
+   ```shell
+   yarn
+   ```
+
+3. Make sure you add your own mongoDB url. Create a `.env` file in the root directory with the following variables:
+
+   ```
+   DATABASE_URL
+   SESSION_SECRET
+   PORT=4000
+   ```
+
+4. Run `yarn dev` and `yarn start:dev` (this will run the application on `localhost:4000`)
+
+   ```shell
+   yarn start:dev
+   yarn dev
+   ```
+
 ## How to use?
 
-If you would like to demo the finished project, you can do that here: https://kanbantam.com/.
+If you would like to demo the finished project, you can do that here: https://kanbantam.com/. If you prefer running the project locally you can achieve that with the instructions in the `Installation` section.
 
 ## Contribute
 
