@@ -23,10 +23,7 @@ module.exports = {
     '^_thunks(.*)$': '<rootDir>/client/store/thunks/$1',
   },
   rootDir: path.join(__dirname, '../..'),
-  setupFiles: [
-    '<rootDir>/client/config/jest.setup.js',
-    '<rootDir>/client/config/enzyme.setup.js',
-  ],
+  setupFiles: ['<rootDir>/client/config/jest.setup.js', '<rootDir>/client/config/enzyme.setup.js'],
   testEnvironment: 'jest-environment-jsdom-global',
   testMatch: [path.join(__dirname, '../../**/?(*.)+(spec|test).[tj]s?(x)')],
   testURL: 'http://localhost',

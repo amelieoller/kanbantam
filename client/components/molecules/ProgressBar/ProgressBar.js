@@ -10,10 +10,11 @@ const ProgressBar = ({
   total,
   elapsed,
   type,
-  handleBarUpdate,
-  increment,
-  minus,
+  handleUpdate,
+  incrementBy,
+  showMinus,
   incrementLabel,
+  decrementLabel,
 }) => {
   const [percentage, setPercentage] = useState(0);
 
@@ -23,26 +24,25 @@ const ProgressBar = ({
     setPercentage(calculatedPercentage > 100 ? 100 : calculatedPercentage);
   }, [total, elapsed]);
 
-  const handleTotalUpdate = (amount) => {
-    let newTotal = total + amount;
+  const handleIncrement = () => handleTotalUpdate(total + incrementBy);
+  const handleDecrement = () => handleTotalUpdate(total - incrementBy);
 
-    // If newTotal are below 0, set to 0
-    if (newTotal < 0) newTotal = 0;
+  const handleTotalUpdate = (newTotal) => {
+    // If newTotal is below 0 or is the same as previousTotal, return
+    if (newTotal === total || newTotal < 0) return;
 
-    // If newTotal are the same as total return
-    if (newTotal === total) return;
-
-    handleBarUpdate(newTotal);
+    handleUpdate(newTotal);
   };
 
   return (
     <Wrapper>
       <ProgressBarWrapper>
-        {minus && (
+        {showMinus && (
           <Button
+            data-testid="decrement-button"
             data-type="isClickable"
-            onClick={() => handleTotalUpdate(-increment)}
-            label="Subtract 10 minutes"
+            onClick={handleDecrement}
+            label={decrementLabel}
             textColor="surfaceVariant"
             size="small"
             noBackground
@@ -53,15 +53,16 @@ const ProgressBar = ({
 
         <ProgressWrapper>
           <ProgressFiller className="filler" percentage={percentage}>
-            <TextLeft percentage={percentage}>
+            <TextLeft percentage={percentage} data-testid="progress-text">
               {total - elapsed} {type} left / {total}
             </TextLeft>
           </ProgressFiller>
         </ProgressWrapper>
 
         <Button
+          data-testid="increment-button"
           data-type="isClickable"
-          onClick={() => handleTotalUpdate(increment)}
+          onClick={handleIncrement}
           label={incrementLabel}
           textColor="surfaceVariant"
           size="small"
@@ -124,14 +125,18 @@ ProgressBar.propTypes = {
   total: PropTypes.number.isRequired,
   elapsed: PropTypes.number,
   type: PropTypes.string.isRequired,
-  handleBarUpdate: PropTypes.func.isRequired,
-  increment: PropTypes.number.isRequired,
-  minus: PropTypes.bool,
-  incrementLabel: PropTypes.string.isRequired,
+  handleUpdate: PropTypes.func.isRequired,
+  incrementBy: PropTypes.number.isRequired,
+  showMinus: PropTypes.bool,
+  incrementLabel: PropTypes.string,
+  decrementLabel: PropTypes.string,
 };
 
 ProgressBar.defaultProps = {
   elapsed: 0,
+  showMinus: true,
+  incrementLabel: 'Increment',
+  decrementLabel: 'Decrement',
 };
 
 export default ProgressBar;

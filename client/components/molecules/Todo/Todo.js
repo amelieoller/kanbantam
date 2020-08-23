@@ -90,7 +90,7 @@ const Todo = ({
     dispatch(setCurrentTodo({ ...todo, boundingRect }));
   };
 
-  const handleBarUpdate = (newTotal) => {
+  const handleMinuteUpdate = (newTotal) => {
     dispatch(attemptUpdateTodo({ id: todo.id, minutes: newTotal }));
   };
 
@@ -158,9 +158,10 @@ const Todo = ({
                 total={todo.minutes}
                 elapsed={todo.elapsedMinutes}
                 type="min"
-                handleBarUpdate={handleBarUpdate}
-                increment={10}
+                handleUpdate={handleMinuteUpdate}
+                incrementBy={10}
                 incrementLabel={`Add 10 minutes to ${todo.text.substring(0, 20)}`}
+                showMinus={false}
               />
             )}
           </FooterRight>

@@ -167,21 +167,6 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
       {/* Controls */}
       <Controls isSidebarOpen={isSidebarOpen}>{renderPlayPauseButtons()}</Controls>
-
-      {/* Progress Bar */}
-      {/* {isSidebarOpen && (
-        <ProgressBarWrapper>
-          <ProgressBar
-            total={currentBoard.totalPomodori}
-            elapsed={currentBoard.elapsedPomodori && currentBoard.elapsedPomodori[formattedDate]}
-            type="Pomodori"
-            handleBarUpdate={handleBarUpdate}
-            increment={1}
-            incrementLabel="Increment pomodori"
-            minus
-          />
-        </ProgressBarWrapper>
-      )} */}
     </StyledPomodoro>
   );
 };
