@@ -19,7 +19,7 @@ const WelcomePage = () => {
 
       <ImageArea>
         <GithubIconWrapper
-          href="https://github.com/amelieoller/kanban-2.0"
+          href="https://github.com/amelieoller/kanbantam"
           target="_blank"
           rel="noopener noreferrer"
           className="github-icon"
