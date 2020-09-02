@@ -34,6 +34,9 @@ function Login() {
   useEffect(() => {
     setUsernameMessage('');
     setPasswordMessage('');
+
+    if (username) checkUsername(username);
+    if (password) checkPassword(username, password);
   }, [isLogin]);
 
   const login = () => {
@@ -92,11 +95,13 @@ function Login() {
 
   const handleUsernameChange = ({ target: { value } }) => {
     setUsername(value);
+
     if (!isLogin) checkUsername(value);
   };
 
   const handlePasswordChange = ({ target: { value } }) => {
     setPassword(value);
+
     if (!isLogin) checkPassword(username, value);
   };
 
