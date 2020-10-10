@@ -32,18 +32,6 @@ const GlobalStyles = createGlobalStyle`
     display: block;
   }
 
-  hr {
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
-    height: 0;
-    overflow: visible;
-  }
-
-  pre {
-    font-family: monospace, monospace;
-    font-size: 1em;
-  }
-
   a {
     background-color: transparent;
     text-decoration: none;
