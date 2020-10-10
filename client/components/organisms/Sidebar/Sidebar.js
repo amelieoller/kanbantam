@@ -6,6 +6,7 @@ import * as R from 'ramda';
 
 import CompletedTodos from '_organisms/CompletedTodos';
 import TaskGraph from '_organisms/TaskGraph';
+import TodaysFocus from '_molecules/TodaysFocus';
 import Pomodoro from '_templates/Pomodoro';
 import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder } from '_utils/sorting';
@@ -74,6 +75,12 @@ function Sidebar({
             breakLength={5}
             isSidebarOpen={isSidebarOpen}
           />
+        </SectionWrapper>
+
+        <SectionWrapper>
+          {renderSectionHeader("Today's Focus")}
+
+          <TodaysFocus />
         </SectionWrapper>
 
         <SectionWrapper>
@@ -148,7 +155,7 @@ const SidebarWrapper = styled.aside`
 const SidebarContent = styled.div`
   overflow: hidden;
 
-  & > *:nth-child(odd) {
+  & > *:nth-child(even) {
     background: #f7f7f7;
 
     h2 {

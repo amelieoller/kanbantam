@@ -48,6 +48,10 @@ const ModalStyles = createGlobalStyle`
       width: calc(100vw - ${({ sidebarWidth }) => `${40 + sidebarWidth}px`});
     }
   }
+
+  .focus-wrapper .react-codemirror2.code-mirror > div {
+    width: 100%;
+  }
 `;
 
 export default ModalStyles;
