@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import * as R from 'ramda';
-import ReactMarkdown from 'react-markdown';
 import { parseISO } from 'date-fns';
 
 import ProgressBar from '_molecules/ProgressBar';
+import MarkdownArea from '_molecules/MarkdownArea';
 import { attemptUpdateTodo } from '_actions/todos';
 import { formatDaysToNow } from '_utils/dates.js';
 import useCombinedRefs from '_hooks/useCombinedRefs';
@@ -42,52 +42,14 @@ const Todo = ({
     }
   }, [categories, todo]);
 
-  const toggleCheckbox = (checked, i) => {
-    let j = 0;
-
-    const newText = todo.text.replace(/\[(\s|x)\]/g, (match) => {
-      let newString;
-      if (i === j) {
-        newString = checked ? '[x]' : '[ ]';
-      } else {
-        newString = match;
-      }
-      j += 1;
-      return newString;
-    });
-
-    dispatch(attemptUpdateTodo({ id: todo.id, text: newText }));
-  };
-
-  const handleClick = (e) => {
-    const { tagName, checked, type, dataset, parentElement } = e.target;
-
-    const elAttribute = dataset.type;
-    const elAttributeParent = parentElement.dataset.type;
-
-    var aElements = e.target.parentNode.parentNode.children;
-    var aElementsLength = aElements.length;
-
-    var index;
-
-    for (var i = 0; i < aElementsLength; i++) {
-      if (aElements[i] == parentElement) {
-        //this condition is never true
-        index = i;
-      }
-    }
-
-    if (tagName.toLowerCase() === 'input' && type.toLowerCase() === 'checkbox') {
-      // The id is a string that describes which number in the order of checkboxes this particular checkbox has
-      toggleCheckbox(checked, parseInt(index, 10));
-    }
-
-    if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
-    if (tagName === 'A' || tagName === 'INPUT') return;
-
+  const handleClick = () => {
     const boundingRect = combinedRef.current.getBoundingClientRect();
 
     dispatch(setCurrentTodo({ ...todo, boundingRect }));
+  };
+
+  const handleTodoTextUpdate = (newText) => {
+    dispatch(attemptUpdateTodo({ id: todo.id, text: newText }));
   };
 
   const handleMinuteUpdate = (newTotal) => {
@@ -111,7 +73,6 @@ const Todo = ({
       ref={combinedRef}
       {...draggableProps}
       {...dragHandleProps}
-      onClick={handleClick}
       data-type="isCard"
       id={todo.id}
       categoryColor={todoCategory && todoCategory.color}
@@ -127,9 +88,12 @@ const Todo = ({
       >
         <CheckCircleIcon data-type="isClickable" />
       </DoneButton>
-      <Main>
-        <ReactMarkdown source={todo.text} linkTarget="_blank" />
-      </Main>
+
+      <MarkdownArea
+        text={todo.text}
+        handleCardClick={handleClick}
+        handleUpdateText={handleTodoTextUpdate}
+      />
 
       {!!(!!todo.priority || !!todo.dueDate | !!todo.minutes) && (
         <Footer>
@@ -232,38 +196,6 @@ const Container = styled.div`
         ? theme.colors.primary
         : 'transparent'
     }`};
-  color: ${({ theme }) => theme.colors.onSurface};
-
-  img {
-    width: 100%;
-  }
-
-  em {
-    font-style: italic;
-  }
-
-  ol {
-    list-style: none;
-    counter-reset: li;
-
-    li {
-      counter-increment: li;
-
-      &::before {
-        content: counter(li);
-        color: ${({ theme }) => theme.colors.disabled('onSurface')};
-        display: inline-block;
-        width: 0.8em;
-      }
-    }
-  }
-
-  ul li::before {
-    content: '•';
-    color: ${({ theme }) => theme.colors.disabled('onSurface')};
-    display: inline-block;
-    width: 0.7em;
-  }
 
   &:hover,
   &:active {
@@ -280,10 +212,6 @@ const Container = styled.div`
   &:hover .done-button {
     display: block;
   }
-`;
-
-const Main = styled.div`
-  font-size: 1.2rem;
 `;
 
 const Footer = styled.div`
