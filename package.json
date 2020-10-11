@@ -73,7 +73,6 @@
     "history": "^4.10.1",
     "immutability-helper": "^3.0.2",
     "immutable": "^3.8.2",
-    "json-style-converter": "^1.0.3",
     "mongoose": "^5.9.7",
     "mongoose-auto-increment-reworked": "^1.2.1",
     "mongoose-immutable": "0.0.2",
