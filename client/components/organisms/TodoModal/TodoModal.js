@@ -33,7 +33,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
     const { boundingRect, ...todo } = currentTodo;
 
     setBoundingRect(boundingRect);
-    setUpdatedTodo(todo);
+    setUpdatedTodo({ ...todo, minutes: todo.minutes === 0 ? '' : todo.minutes });
   }, [currentTodo]);
 
   if (!boundingRect) return null;
@@ -60,7 +60,13 @@ function TodoModal({ completedListId, isSidebarOpen }) {
 
   const handleUpdateTodo = () => {
     if (updatedTodo.text && todoHasChanged) {
-      dispatch(attemptUpdateTodo({ ...updatedTodo, priority: parseInt(updatedTodo.priority) }));
+      dispatch(
+        attemptUpdateTodo({
+          ...updatedTodo,
+          minutes: updatedTodo.minutes === '' ? 0 : +updatedTodo.minutes,
+          priority: parseInt(updatedTodo.priority),
+        }),
+      );
     }
 
     clearTodo();
@@ -125,7 +131,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
         <OptionsWrapper sidebarWidth={sidebarWidth}>
           <Input
             label="Minutes"
-            onChange={(e) => updateTodo('minutes', e.target.value === '' ? 0 : +e.target.value)}
+            onChange={(e) => updateTodo('minutes', e.target.value)}
             value={updatedTodo.minutes}
             type="number"
             step="5"
