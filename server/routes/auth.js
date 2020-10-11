@@ -11,7 +11,7 @@ router.post('/register', (req, res) => {
     res.status(400).send({ message: 'Username and Password required' });
   }
 
-  req.body.username_case = req.body.username;
+  req.body.usernameCase = req.body.username;
   req.body.username = req.body.username.toLowerCase();
 
   const { username } = req.body;

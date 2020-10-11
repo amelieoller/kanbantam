@@ -43,6 +43,7 @@ export const formatTime = (timePassedMs, sessionLength) => {
   return [minutes, formattedSeconds];
 };
 
+// Expects a date created with new Date
 export const formatYearMonthDay = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;

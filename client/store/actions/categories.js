@@ -1,4 +1,3 @@
-import { snakeToCamelCase } from 'json-style-converter/es5';
 import * as R from 'ramda';
 import uniqid from 'uniqid';
 
@@ -26,7 +25,7 @@ export const attemptGetCategories = (boardId) => (dispatch) =>
   getCategories(boardId)
     .then(({ data }) => {
       const categories = R.map(
-        (category) => R.omit(['Id', '_v'], R.assoc('id', category._id, snakeToCamelCase(category))),
+        (category) => R.omit(['Id', '_v'], R.assoc('id', category._id, category)),
         data,
       );
 

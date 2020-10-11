@@ -1,4 +1,3 @@
-import { snakeToCamelCase } from 'json-style-converter/es5';
 import * as R from 'ramda';
 import uniqid from 'uniqid';
 
@@ -25,10 +24,7 @@ export const updateBoardId = (oldId, newId) => ({
 export const attemptGetBoards = (boardId) => (dispatch) =>
   getBoards(boardId)
     .then(({ data }) => {
-      const boards = R.map(
-        (board) => R.omit(['Id', '_v'], R.assoc('id', board._id, snakeToCamelCase(board))),
-        data,
-      );
+      const boards = R.map((board) => R.omit(['Id', '_v'], R.assoc('id', board._id, board)), data);
 
       dispatch(setBoards(boards));
       return data;

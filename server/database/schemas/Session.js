@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const sessionSchema = new Schema({
   session: String,
-  session_id: String,
+  sessionId: String,
   expire: Date,
 });
 

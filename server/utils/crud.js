@@ -38,7 +38,7 @@ const updateOne = (model) => async (req, res) => {
           user: req.user._id,
           _id: req.params.id,
         },
-        { ...req.body, updated_at: Date.now() },
+        { ...req.body, updatedAt: Date.now() },
         { new: true },
       )
       .lean()

@@ -51,8 +51,8 @@ function TodoModal({ completedListId, isSidebarOpen }) {
       attemptUpdateTodo({
         id: updatedTodo.id,
         list: completedListId,
-        completed_list_id: updatedTodo.list,
-        completed: true,
+        completedListId: updatedTodo.list,
+        completedAt: Date.now(),
       }),
     );
     dispatch(clearCurrentTodo());
@@ -120,10 +120,6 @@ function TodoModal({ completedListId, isSidebarOpen }) {
           label="Text"
           handleOnChange={(value) => updateTodo('text', value)}
           defaultValue={updatedTodo.text}
-          style={{
-            minHeight: isThinDisplay ? 'none' : boundingRect.height,
-            width: isThinDisplay ? '100%' : boundingRect.width,
-          }}
         />
 
         <OptionsWrapper sidebarWidth={sidebarWidth}>
