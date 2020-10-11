@@ -17,8 +17,16 @@ const CompletedTodos = () => {
   return (
     <ListsWrapper>
       <StyledLists>
-        <DateSection categories={categories} todosArr={[todayCompletedTodos, 'Today']} />
-        <DateSection categories={categories} todosArr={[yesterdayCompletedTodos, 'Yesterday']} />
+        <DateSection
+          categories={categories}
+          todosArr={[todayCompletedTodos, 'Today']}
+          showAllTodos
+        />
+        <DateSection
+          categories={categories}
+          todosArr={[yesterdayCompletedTodos, 'Yesterday']}
+          showAllTodos
+        />
 
         <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -2)} />
         <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -3)} />
