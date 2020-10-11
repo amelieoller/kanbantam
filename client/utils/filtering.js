@@ -1,5 +1,7 @@
 import { formatYearMonthDay } from '_utils/dates';
 
+const weekDaysFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 export const byIdReplaceAtIndex = (arr, itemId, newItem) => {
   const index = arr.findIndex((obj) => obj.id === itemId);
 
@@ -26,4 +28,14 @@ export const todosByDate = (todos, date) => {
         t.completedAt && formatYearMonthDay(new Date(t.completedAt)) === formatYearMonthDay(date),
     )
     .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+};
+
+export const todosByDateFromToday = (todos, days) => {
+  let date = new Date();
+  date.setDate(date.getDate() + days);
+
+  const listOfTodos = todosByDate(todos, date);
+  const dateText = weekDaysFull[date.getDay()];
+
+  return [listOfTodos, dateText];
 };

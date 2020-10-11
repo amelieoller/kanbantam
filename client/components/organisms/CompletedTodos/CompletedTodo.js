@@ -75,7 +75,9 @@ const CompletedTodo = ({ todo, categories }) => {
       <div className="todo-text" onClick={() => handleTodoClick(todo)}>
         {todo.text}
       </div>
-      <span className={`more-icon noClick-${todo.id}`}>
+
+      <span className={`right-section noClick-${todo.id}`}>
+        <span>{todo.minutes}</span>
         {isOpen ? (
           <ChevronsUp onClick={() => setIsOpen(false)} />
         ) : (
@@ -99,6 +101,7 @@ CompletedTodo.propTypes = {
     id: PropTypes.string.isRequired,
     completedListId: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
+    minutes: PropTypes.number,
   }),
   categories: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string.isRequired })),
 };
@@ -146,8 +149,11 @@ const ListItem = styled.li`
     transition: all 0.2s ease;
   }
 
-  .more-icon {
+  .right-section {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 41px;
 
     svg {
       height: 14px;

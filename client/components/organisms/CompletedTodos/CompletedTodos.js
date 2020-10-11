@@ -4,40 +4,26 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
-import CompletedTodo from './CompletedTodo';
-import { todosByDate } from '_utils/filtering';
+import { todosByDateFromToday } from '_utils/filtering';
+import DateSection from './DateSection';
 
 const CompletedTodos = () => {
   const { categories } = useSelector(R.pick(['categories']));
   const { todos } = useSelector(R.pick(['todos']));
 
-  const today = new Date();
-  let yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  const todayCompletedTodos = todosByDate(todos, today);
-  const yesterdayCompletedTodos = todosByDate(todos, yesterday);
+  const [todayCompletedTodos] = todosByDateFromToday(todos, 0);
+  const [yesterdayCompletedTodos] = todosByDateFromToday(todos, -1);
 
   return (
     <ListsWrapper>
       <StyledLists>
-        {!!todayCompletedTodos.length && (
-          <DayWrapper>
-            <h3>Today</h3>
-            {todayCompletedTodos.map((t) => (
-              <CompletedTodo key={t.id} todo={t} categories={categories} />
-            ))}
-          </DayWrapper>
-        )}
+        <DateSection categories={categories} todosArr={[todayCompletedTodos, 'Today']} />
+        <DateSection categories={categories} todosArr={[yesterdayCompletedTodos, 'Yesterday']} />
 
-        {!!yesterdayCompletedTodos.length && (
-          <DayWrapper>
-            <h3>Yesterday</h3>
-            {yesterdayCompletedTodos.map((t) => (
-              <CompletedTodo key={t.id} todo={t} categories={categories} />
-            ))}
-          </DayWrapper>
-        )}
+        <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -2)} />
+        <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -3)} />
+        <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -4)} />
+        <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -5)} />
 
         {!todayCompletedTodos.length && !yesterdayCompletedTodos.length && (
           <GetStarted>Get started completing todos today!</GetStarted>
@@ -69,7 +55,7 @@ const ListsWrapper = styled.ul`
 
 const StyledLists = styled.ul`
   color: ${({ theme }) => theme.colors.lighter(4, 'onSurface')};
-  max-height: 200px;
+  /* max-height: 200px; */
   overflow: scroll;
 `;
 
