@@ -16,13 +16,7 @@ import ChevronRightIcon from '_assets/icons/chevrons-right.svg';
 import AwardIcon from '_assets/icons/award.svg';
 import ClockIcon from '_assets/icons/clock.svg';
 
-function Sidebar({
-  isSidebarOpen,
-  currentBoard,
-  todayCompletedTodos,
-  yesterdayCompletedTodos,
-  completedListId,
-}) {
+function Sidebar({ isSidebarOpen, currentBoard }) {
   const dispatch = useDispatch();
 
   const [firstTodo, setFirstTodo] = useState(null);
@@ -97,11 +91,7 @@ function Sidebar({
         <SectionWrapper>
           {renderSectionHeader('Completed Todos')}
 
-          <CompletedTodos
-            todayCompletedTodos={todayCompletedTodos}
-            yesterdayCompletedTodos={yesterdayCompletedTodos}
-            completedListId={completedListId}
-          />
+          <CompletedTodos />
         </SectionWrapper>
       </SidebarContent>
     </SidebarWrapper>
@@ -200,9 +190,6 @@ Sidebar.propTypes = {
     defaultFocusList: PropTypes.string,
     category: PropTypes.string,
   }),
-  todayCompletedTodos: PropTypes.arrayOf(
-    PropTypes.shape({ text: PropTypes.string, id: PropTypes.string }),
-  ),
 };
 
 export default Sidebar;

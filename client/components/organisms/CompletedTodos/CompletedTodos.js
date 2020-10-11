@@ -5,9 +5,18 @@ import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
 import CompletedTodo from './CompletedTodo';
+import { todosByDate } from '_utils/filtering';
 
-const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos }) => {
+const CompletedTodos = () => {
   const { categories } = useSelector(R.pick(['categories']));
+  const { todos } = useSelector(R.pick(['todos']));
+
+  const today = new Date();
+  let yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const todayCompletedTodos = todosByDate(todos, today);
+  const yesterdayCompletedTodos = todosByDate(todos, yesterday);
 
   return (
     <ListsWrapper>

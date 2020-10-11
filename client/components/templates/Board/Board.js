@@ -13,7 +13,7 @@ import { attemptUpdateList } from '_actions/lists';
 import { attemptUpdateTodo } from '_actions/todos';
 import reorder, { reorderTodoList } from '_utils/dragAndDrop';
 import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
-import { filterByCategory, todosByDate } from '_utils/filtering';
+import { filterByCategory } from '_utils/filtering';
 import useResize from '_hooks/useResize';
 
 function Board({ board, theme: { sizes } }) {
@@ -29,8 +29,6 @@ function Board({ board, theme: { sizes } }) {
   const [orderedLists, setOrderedLists] = useState([]);
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [completedListId, setCompletedListId] = useState('');
-  const [todayCompletedTodos, setTodayCompletedTodos] = useState([]);
-  const [yesterdayCompletedTodos, setYesterdayCompletedTodos] = useState([]);
 
   useEffect(() => {
     const filteredListsWithoutSpecial = lists.filter((l) => !l.special);
@@ -50,17 +48,6 @@ function Board({ board, theme: { sizes } }) {
       };
     }, {});
 
-    // Get today's and yesterday's dates
-    const today = new Date();
-    let yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    // Find completed todos today
-    const completedToday = todosByDate(todos, today);
-    const completedYesterday = todosByDate(todos, yesterday);
-
-    setTodayCompletedTodos(completedToday);
-    setYesterdayCompletedTodos(completedYesterday);
     setCompletedListId(completedList.id);
     setOrderedLists(sortedLists);
     setListsWithTodos(todosByListId);
@@ -241,13 +228,7 @@ function Board({ board, theme: { sizes } }) {
 
   return (
     <StyledBoard isSidebarOpen={board.sidebarOpen}>
-      <Sidebar
-        isSidebarOpen={board.sidebarOpen}
-        currentBoard={board}
-        todayCompletedTodos={todayCompletedTodos}
-        yesterdayCompletedTodos={yesterdayCompletedTodos}
-        completedListId={completedListId}
-      />
+      <Sidebar isSidebarOpen={board.sidebarOpen} currentBoard={board} />
 
       <main id="main" ref={boardRef}>
         <DragDropContext
