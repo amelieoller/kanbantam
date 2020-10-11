@@ -1,63 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
-import { attemptDeleteTodo } from '_actions/todos';
-import XCircleIcon from '_assets/icons/x-circle.svg';
-import RepeatIcon from '_assets/icons/repeat.svg';
-import { attemptUpdateTodo } from '_actions/todos';
+import CompletedTodo from './CompletedTodo';
 
 const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos }) => {
-  const dispatch = useDispatch();
-
   const { categories } = useSelector(R.pick(['categories']));
-
-  const deleteTodo = (todoId) => {
-    dispatch(attemptDeleteTodo(todoId));
-  };
-
-  const undoTodo = (todo) => {
-    // update the todo with this id
-    // leave the list id, but also add a special list id (completed todos list)
-
-    dispatch(
-      attemptUpdateTodo({
-        id: todo.id,
-        completedListId: null,
-        list: todo.completedListId,
-        completedAt: '',
-      }),
-    );
-  };
-
-  const handleTodoClick = (todo) => {
-    dispatch(
-      attemptUpdateTodo({
-        id: todo.id,
-        highlighted: !todo.highlighted,
-      }),
-    );
-  };
-
-  const renderListItem = (t) => {
-    const category = categories.find((c) => c.id === t.category);
-
-    return (
-      <ListItem key={t.id} categoryColor={category && category.color} highlighted={t.highlighted}>
-        <TodoText onClick={() => handleTodoClick(t)}>{t.text}</TodoText>
-        <Right>
-          <RepeatIcon onClick={() => undoTodo(t)} />
-          <XCircleIcon
-            onClick={() =>
-              window.confirm(`Are you sure you want to delete this todo?`) && deleteTodo(t.id)
-            }
-          />
-        </Right>
-      </ListItem>
-    );
-  };
 
   return (
     <ListsWrapper>
@@ -65,14 +15,18 @@ const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos }) => {
         {!!todayCompletedTodos.length && (
           <DayWrapper>
             <h3>Today</h3>
-            {todayCompletedTodos.map((t) => renderListItem(t))}
+            {todayCompletedTodos.map((t) => (
+              <CompletedTodo key={t.id} todo={t} categories={categories} />
+            ))}
           </DayWrapper>
         )}
 
         {!!yesterdayCompletedTodos.length && (
           <DayWrapper>
             <h3>Yesterday</h3>
-            {yesterdayCompletedTodos.map((t) => renderListItem(t))}
+            {yesterdayCompletedTodos.map((t) => (
+              <CompletedTodo key={t.id} todo={t} categories={categories} />
+            ))}
           </DayWrapper>
         )}
 
@@ -116,59 +70,6 @@ const DayWrapper = styled.div`
     margin: 0;
     margin-bottom: 5px;
   }
-`;
-
-const Right = styled.span`
-  display: flex;
-  width: 40px;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 4px;
-  flex-shrink: 0;
-
-  & > *:first-child {
-    color: #a6a6a6;
-  }
-
-  & > *:last-child {
-    color: ${({ theme }) => theme.colors.error};
-  }
-
-  svg {
-    height: 14px;
-    cursor: pointer;
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.error};
-    }
-  }
-`;
-
-const ListItem = styled.li`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 1px;
-  background: ${({ theme, highlighted }) =>
-    highlighted ? theme.colors.lighter(6, 'onSurface') : theme.colors.lighter(87, 'onSurface')};
-
-  color: ${({ theme }) => theme.colors.onSurface};
-  margin: 5px 0;
-  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-  border-left: 3px solid
-    ${({ categoryColor, theme }) =>
-      categoryColor ? categoryColor : theme.colors.lighter(5, 'onSurface')};
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.lighter(6, 'onSurface')};
-  }
-`;
-
-const TodoText = styled.span`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  padding: 4px;
 `;
 
 export default CompletedTodos;

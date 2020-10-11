@@ -84,16 +84,6 @@ function Sidebar({
         </SectionWrapper>
 
         <SectionWrapper>
-          {renderSectionHeader('Completed Todos')}
-
-          <CompletedTodos
-            todayCompletedTodos={todayCompletedTodos}
-            yesterdayCompletedTodos={yesterdayCompletedTodos}
-            completedListId={completedListId}
-          />
-        </SectionWrapper>
-
-        <SectionWrapper>
           {renderSectionHeader('Pomodori Finished')}
 
           <TaskGraph
@@ -101,6 +91,16 @@ function Sidebar({
             totalPomodori={currentBoard.totalPomodori}
             elapsedPomodori={currentBoard.elapsedPomodori}
             isSidebarOpen={isSidebarOpen}
+          />
+        </SectionWrapper>
+
+        <SectionWrapper>
+          {renderSectionHeader('Completed Todos')}
+
+          <CompletedTodos
+            todayCompletedTodos={todayCompletedTodos}
+            yesterdayCompletedTodos={yesterdayCompletedTodos}
+            completedListId={completedListId}
           />
         </SectionWrapper>
       </SidebarContent>
@@ -155,8 +155,8 @@ const SidebarWrapper = styled.aside`
 const SidebarContent = styled.div`
   overflow: hidden;
 
-  & > *:nth-child(even) {
-    background: #f7f7f7;
+  & > *:nth-child(odd) {
+    background: ${({ theme }) => theme.colors.lighter(87, 'onSurface')};
 
     h2 {
       color: #969696;
