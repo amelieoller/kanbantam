@@ -41,7 +41,6 @@ function AddTodo({ board, listId, lastCardSortVal }) {
           minutes: board.defaultTime || 0,
           elapsedMinutes: 0,
           category: todoCategory,
-          completed: false,
         }),
       );
       setText('');

@@ -151,7 +151,7 @@ List.propTypes = {
   todos: PropTypes.arrayOf(
     PropTypes.shape({
       board: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired,
+      completedAt: PropTypes.string,
       id: PropTypes.string.isRequired,
       list: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,

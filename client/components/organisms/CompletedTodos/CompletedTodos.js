@@ -9,7 +9,7 @@ import XCircleIcon from '_assets/icons/x-circle.svg';
 import RepeatIcon from '_assets/icons/repeat.svg';
 import { attemptUpdateTodo } from '_actions/todos';
 
-const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos, completedListId }) => {
+const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos }) => {
   const dispatch = useDispatch();
 
   const { categories } = useSelector(R.pick(['categories']));
@@ -25,9 +25,18 @@ const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos, complete
     dispatch(
       attemptUpdateTodo({
         id: todo.id,
-        completed_list_id: null,
-        list: todo.completed_list_id,
-        completed: false,
+        completedListId: null,
+        list: todo.completedListId,
+        completedAt: '',
+      }),
+    );
+  };
+
+  const handleTodoClick = (todo) => {
+    dispatch(
+      attemptUpdateTodo({
+        id: todo.id,
+        highlighted: !todo.highlighted,
       }),
     );
   };
@@ -36,8 +45,8 @@ const CompletedTodos = ({ todayCompletedTodos, yesterdayCompletedTodos, complete
     const category = categories.find((c) => c.id === t.category);
 
     return (
-      <ListItem key={t.id} categoryColor={category && category.color}>
-        <TodoText>{t.text}</TodoText>
+      <ListItem key={t.id} categoryColor={category && category.color} highlighted={t.highlighted}>
+        <TodoText onClick={() => handleTodoClick(t)}>{t.text}</TodoText>
         <Right>
           <RepeatIcon onClick={() => undoTodo(t)} />
           <XCircleIcon
@@ -140,13 +149,19 @@ const ListItem = styled.li`
   align-items: center;
   justify-content: space-between;
   padding-bottom: 1px;
-  background: #f7f7f7;
+  background: ${({ theme, highlighted }) =>
+    highlighted ? theme.colors.lighter(6, 'onSurface') : theme.colors.lighter(87, 'onSurface')};
+
   color: ${({ theme }) => theme.colors.onSurface};
   margin: 5px 0;
   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
   border-left: 3px solid
     ${({ categoryColor, theme }) =>
       categoryColor ? categoryColor : theme.colors.lighter(5, 'onSurface')};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.lighter(6, 'onSurface')};
+  }
 `;
 
 const TodoText = styled.span`

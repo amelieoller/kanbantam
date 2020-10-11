@@ -22,7 +22,8 @@ export const filterByCategory = (categoryId, todos) => {
 export const todosByDate = (todos, date) => {
   return todos
     .filter(
-      (t) => t.completed && formatYearMonthDay(new Date(t.updatedAt)) === formatYearMonthDay(date),
+      (t) =>
+        t.completedAt && formatYearMonthDay(new Date(t.completedAt)) === formatYearMonthDay(date),
     )
-    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
 };

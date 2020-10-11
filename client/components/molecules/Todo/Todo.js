@@ -61,8 +61,8 @@ const Todo = ({
       attemptUpdateTodo({
         id: todo.id,
         list: completedListId,
-        completed_list_id: todo.list,
-        completed: true,
+        completedListId: todo.list,
+        completedAt: Date.now(),
       }),
     );
   };
@@ -241,7 +241,7 @@ Todo.propTypes = {
   todo: PropTypes.shape({
     id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
-    completed: PropTypes.bool.isRequired,
+    completedAt: PropTypes.string,
     dueDate: PropTypes.string,
     priority: PropTypes.number,
     minutes: PropTypes.number,
