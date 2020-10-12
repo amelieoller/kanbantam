@@ -20,6 +20,7 @@ const boardSchema = new Schema(
     totalPomodori: { type: Number, default: 0 },
     order: { type: Number, decimal: true, default: 0 },
     elapsedPomodori: { type: Object, default: {} },
+    focusToday: { type: String },
   },
   { minimize: false },
 );

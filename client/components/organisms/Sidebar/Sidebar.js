@@ -74,7 +74,7 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
         <SectionWrapper>
           {renderSectionHeader("Today's Focus")}
 
-          <TodaysFocus />
+          <TodaysFocus boardId={currentBoard.id} boardFocusToday={currentBoard.focusToday} />
         </SectionWrapper>
 
         <SectionWrapper>
@@ -189,6 +189,7 @@ Sidebar.propTypes = {
     id: PropTypes.string.isRequired,
     defaultFocusList: PropTypes.string,
     category: PropTypes.string,
+    focusToday: PropTypes.string,
   }),
 };
 
