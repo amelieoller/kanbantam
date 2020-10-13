@@ -91,6 +91,7 @@ const IconWrapper = styled.button`
   align-items: center;
   color: ${({ hasBeenModified, theme }) =>
     hasBeenModified ? theme.colors.success : theme.colors.surfaceVariant};
+  cursor: ${({ disabled }) => !disabled && 'pointer'};
 
   &:hover {
     border: 1px solid ${({ isDelete, theme }) => isDelete && theme.colors.error};

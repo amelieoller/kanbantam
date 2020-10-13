@@ -70,6 +70,7 @@ const ColorSwatch = styled.button`
   margin-left: ${({ theme }) => theme.sizes.spacingSmall};
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   svg {
     color: white;
