@@ -15,16 +15,38 @@ const TaskOverview = () => {
       <h1>Task Overview</h1>
 
       <StyledTaskOverview>
-        <DateSection categories={categories} todosArr={todosByDateFromToday(todos, 0)} />
-        <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -1)} />
-        <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -2)} />
-        <DateSection categories={categories} todosArr={todosByDateFromToday(todos, -3)} />
+        <DateSection
+          categories={categories}
+          todosArr={todosByDateFromToday(todos, 0)}
+          showAllTodos
+          expand
+        />
+        <DateSection
+          categories={categories}
+          todosArr={todosByDateFromToday(todos, -1)}
+          showAllTodos
+          expand
+        />
+        <DateSection
+          categories={categories}
+          todosArr={todosByDateFromToday(todos, -2)}
+          showAllTodos
+          expand
+        />
+        <DateSection
+          categories={categories}
+          todosArr={todosByDateFromToday(todos, -3)}
+          showAllTodos
+          expand
+        />
       </StyledTaskOverview>
     </StyledTaskOverviewWrapper>
   );
 };
 
-const StyledTaskOverviewWrapper = styled.div``;
+const StyledTaskOverviewWrapper = styled.div`
+  padding-left: 30px;
+`;
 
 const StyledTaskOverview = styled.div`
   display: grid;

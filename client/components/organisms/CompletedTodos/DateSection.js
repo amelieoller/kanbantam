@@ -6,7 +6,7 @@ import CompletedTodo from './CompletedTodo';
 import ChevronsDown from '_assets/icons/chevrons-down.svg';
 import ChevronsUp from '_assets/icons/chevrons-up.svg';
 
-const DateSection = ({ categories, todosArr: [incomingTodos, dayText], showAllTodos }) => {
+const DateSection = ({ categories, todosArr: [incomingTodos, dayText], showAllTodos, expand }) => {
   const [showAll, setShowAll] = useState(showAllTodos);
   const [todos, setTodos] = useState(incomingTodos);
   const highlightedTodos = todos.filter((t) => t.highlighted);
@@ -33,7 +33,7 @@ const DateSection = ({ categories, todosArr: [incomingTodos, dayText], showAllTo
           ))}
       </h3>
       {todos.map((t) => (
-        <CompletedTodo key={t.id} todo={t} categories={categories} />
+        <CompletedTodo key={t.id} todo={t} categories={categories} expand={expand} />
       ))}
     </DayWrapper>
   );

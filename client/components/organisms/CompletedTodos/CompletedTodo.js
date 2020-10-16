@@ -12,14 +12,14 @@ import RepeatIcon from '_assets/icons/repeat.svg';
 import { attemptUpdateTodo } from '_actions/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 
-const CompletedTodo = ({ todo, categories }) => {
+const CompletedTodo = ({ todo, categories, expand }) => {
   const popoverRef = useRef();
 
   const dispatch = useDispatch();
   const category = categories.find((c) => c.id === todo.category);
 
   const [showPopover, setShowPopover] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(expand);
 
   useOnClickOutside(popoverRef, (e) => {
     if (![...e.target.classList].includes(`noClick-${todo.id}`)) setShowPopover(false);
@@ -104,6 +104,10 @@ CompletedTodo.propTypes = {
     minutes: PropTypes.number,
   }),
   categories: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string.isRequired })),
+};
+
+CompletedTodo.defaultProps = {
+  expand: false,
 };
 
 const StyledPopover = styled.div`
