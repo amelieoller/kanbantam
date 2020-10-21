@@ -101,7 +101,7 @@ const Todo = ({
             {!!todo.priority && (
               <TopBadge
                 color={
-                  todo.priority === 1 ? 'mediumturquoise' : todo.priority === 2 ? 'orange' : 'coral'
+                  todo.priority === 1 ? 'coral' : todo.priority === 2 ? 'orange' : 'mediumturquoise'
                 }
               >
                 <FlagIcon />

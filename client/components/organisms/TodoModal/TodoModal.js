@@ -164,11 +164,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
                 onClick={() => updateTodo('priority', 1)}
                 label="Priority 1"
                 style={{
-                  background: `${
-                    updatedTodo.priority === 1
-                      ? 'mediumturquoise'
-                      : lighten(0.29, 'mediumturquoise')
-                  }`,
+                  background: `${updatedTodo.priority === 1 ? 'coral' : lighten(0.29, 'coral')}`,
                   border: 'none',
                 }}
               >
@@ -188,7 +184,11 @@ function TodoModal({ completedListId, isSidebarOpen }) {
                 label="Priority 3"
                 onClick={() => updateTodo('priority', 3)}
                 style={{
-                  background: `${updatedTodo.priority === 3 ? 'coral' : lighten(0.29, 'coral')}`,
+                  background: `${
+                    updatedTodo.priority === 3
+                      ? 'mediumturquoise'
+                      : lighten(0.29, 'mediumturquoise')
+                  }`,
                   border: 'none',
                 }}
               >
