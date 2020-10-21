@@ -104,8 +104,6 @@ const Main = styled.div`
   ol,
   ul {
     li {
-      display: flex;
-
       input[type='checkbox'] {
         margin-right: 3px;
       }
