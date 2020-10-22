@@ -135,6 +135,7 @@ const SidebarWrapper = styled.aside`
   width: ${({ theme, isSidebarOpen }) =>
     isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
   transition: 0.4s ease;
+  overflow-y: scroll;
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   position: fixed;
@@ -143,8 +144,6 @@ const SidebarWrapper = styled.aside`
 `;
 
 const SidebarContent = styled.div`
-  overflow: hidden;
-
   & > *:nth-child(odd) {
     background: ${({ theme }) => theme.colors.lighter(87, 'onSurface')};
 
