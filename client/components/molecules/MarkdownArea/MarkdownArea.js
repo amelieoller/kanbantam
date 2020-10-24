@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown';
 
-const MarkdownArea = ({ text, handleCardClick, handleUpdateText }) => {
+const MarkdownArea = ({ text, handleUpdateText }) => {
   const toggleCheckbox = (checked, i) => {
     let j = 0;
 
@@ -22,37 +22,31 @@ const MarkdownArea = ({ text, handleCardClick, handleUpdateText }) => {
   };
 
   const handleClick = (e) => {
-    const { tagName, checked, type, dataset, parentElement } = e.target;
-
-    const elAttribute = dataset.type;
-    const elAttributeParent = parentElement.dataset.type;
+    const { tagName, checked, type, parentElement } = e.target;
 
     var aElements = e.target.parentNode.parentNode.children;
     var aElementsLength = aElements.length;
 
-    var index;
-
-    for (var i = 0; i < aElementsLength; i++) {
-      if (aElements[i] == parentElement) {
-        //this condition is never true
-        index = i;
-      }
-    }
-
+    // If checkbox is clicked, toggle checkbox and don't open modal
     if (tagName.toLowerCase() === 'input' && type.toLowerCase() === 'checkbox') {
+      var index;
+
+      // Figure out which checkbox was clicked
+      for (var i = 0; i < aElementsLength; i++) {
+        if (aElements[i] == parentElement) {
+          //this condition is never true
+          index = i;
+        }
+      }
+
       // The id is a string that describes which number in the order of checkboxes this particular checkbox has
       toggleCheckbox(checked, parseInt(index, 10));
     }
-
-    if (elAttribute === 'isClickable' || elAttributeParent === 'isClickable') return;
-    if (tagName === 'A' || tagName === 'INPUT') return;
-
-    handleCardClick();
   };
 
   return (
     <Main onClick={handleClick}>
-      <ReactMarkdown source={text} />
+      <ReactMarkdown source={text} linkTarget="_blank" />
     </Main>
   );
 };
@@ -247,7 +241,6 @@ const Main = styled.div`
 
 MarkdownArea.propTypes = {
   text: PropTypes.string.isRequired,
-  handleCardClick: PropTypes.func.isRequired,
   handleUpdateText: PropTypes.func.isRequired,
 };
 

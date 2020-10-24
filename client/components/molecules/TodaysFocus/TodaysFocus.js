@@ -15,8 +15,8 @@ const TodaysFocus = ({ boardId, boardFocusToday }) => {
   const [text, setText] = useState('');
   const [edit, setEdit] = useState(false);
 
-  const saveText = () => {
-    dispatch(attemptUpdateBoard({ id: boardId, focusToday: text }));
+  const saveText = (newText) => {
+    dispatch(attemptUpdateBoard({ id: boardId, focusToday: newText }));
   };
 
   useOnClickOutside(formRef, () => {
@@ -30,6 +30,18 @@ const TodaysFocus = ({ boardId, boardFocusToday }) => {
 
   const changeText = (value) => {
     setText(value);
+    saveText(value);
+  };
+
+  const handleClick = (e) => {
+    const { tagName, dataset, parentElement } = e.target;
+
+    // If an item (with the id of 'isClickable') is clicked, don't open modal
+    if (dataset.type === 'isClickable' || parentElement.dataset.type === 'isClickable') return;
+    // If link is clicked don't open modal
+    if (tagName === 'A' || tagName === 'INPUT') return;
+
+    setEdit(true);
   };
 
   return (
@@ -44,11 +56,9 @@ const TodaysFocus = ({ boardId, boardFocusToday }) => {
           />
         </div>
       ) : (
-        <MarkdownArea
-          text={text}
-          handleCardClick={() => setEdit(true)}
-          handleUpdateText={changeText}
-        />
+        <div onClick={handleClick}>
+          <MarkdownArea text={text} handleUpdateText={changeText} />
+        </div>
       )}
     </TodaysFocusWrapper>
   );

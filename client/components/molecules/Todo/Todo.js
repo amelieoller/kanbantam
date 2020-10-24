@@ -42,12 +42,6 @@ const Todo = ({
     }
   }, [categories, todo]);
 
-  const handleClick = () => {
-    const boundingRect = combinedRef.current.getBoundingClientRect();
-
-    dispatch(setCurrentTodo({ ...todo, boundingRect }));
-  };
-
   const handleTodoTextUpdate = (newText) => {
     dispatch(attemptUpdateTodo({ id: todo.id, text: newText }));
   };
@@ -67,6 +61,19 @@ const Todo = ({
     );
   };
 
+  const handleClick = (e) => {
+    const { tagName, dataset, parentElement } = e.target;
+
+    // If an item (with the id of 'isClickable') is clicked, don't open modal
+    if (dataset.type === 'isClickable' || parentElement.dataset.type === 'isClickable') return;
+    // If link is clicked don't open modal
+    if (tagName === 'A' || tagName === 'INPUT') return;
+
+    const boundingRect = combinedRef.current.getBoundingClientRect();
+
+    dispatch(setCurrentTodo({ ...todo, boundingRect }));
+  };
+
   return (
     <Container
       isDragging={isDragging}
@@ -78,6 +85,7 @@ const Todo = ({
       categoryColor={todoCategory && todoCategory.color}
       inPomodori={isWithinPomodoro}
       selectedCategory={selectedCategory === 'all' ? '' : selectedCategory}
+      onClick={handleClick}
     >
       <DoneButton
         onClick={completeTodo}
@@ -89,11 +97,7 @@ const Todo = ({
         <CheckCircleIcon data-type="isClickable" />
       </DoneButton>
 
-      <MarkdownArea
-        text={todo.text}
-        handleCardClick={handleClick}
-        handleUpdateText={handleTodoTextUpdate}
-      />
+      <MarkdownArea text={todo.text} handleUpdateText={handleTodoTextUpdate} />
 
       {!!(!!todo.priority || !!todo.dueDate | !!todo.minutes) && (
         <Footer>
