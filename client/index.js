@@ -9,6 +9,14 @@ import store from '_client/store';
 
 import Root from '_environment/Root';
 
+import WebFont from 'webfontloader';
+
+WebFont.load({
+  google: {
+    families: ['Roboto:100,400,500', 'Pacifico'],
+  },
+});
+
 if (process.env.NODE_ENV !== 'production') {
   const axe = require('react-axe');
   axe(React, ReactDOM, 1000);
