@@ -110,6 +110,7 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "uniqid": "^5.2.0",
     "uuid": "^7.0.3",
+    "webfontloader": "^1.6.28",
     "webpack": "^4.42.1",
     "webpack-bundle-analyzer": "^3.6.1",
     "webpack-cli": "^3.3.11"
