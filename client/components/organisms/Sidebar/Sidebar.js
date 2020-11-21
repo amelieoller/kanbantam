@@ -71,11 +71,11 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
           />
         </SectionWrapper>
 
-        <SectionWrapper>
+        {/* <SectionWrapper>
           {renderSectionHeader("Today's Focus")}
 
           <TodaysFocus boardId={currentBoard.id} boardFocusToday={currentBoard.focusToday} />
-        </SectionWrapper>
+        </SectionWrapper> */}
 
         <SectionWrapper>
           {renderSectionHeader('Pomodori Finished')}
@@ -155,14 +155,14 @@ const SidebarContent = styled.div`
 
 const CollapseButton = styled.button`
   position: absolute;
-  left: 100%;
-  top: 10px;
+  left: 50%;
+  bottom: 10px;
   transform: translateX(-50%);
   border-radius: 50%;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   padding: 0;
-  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+  border: none;
   cursor: pointer;
   outline: none;
   display: flex;
@@ -177,8 +177,8 @@ const CollapseButton = styled.button`
   }
 
   svg {
-    width: 13px;
-    height: 13px;
+    width: 20px;
+    height: 20px;
   }
 `;
 
