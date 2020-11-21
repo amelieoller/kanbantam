@@ -15,7 +15,7 @@ import { clearCurrentTodo } from '_actions/currentTodo';
 import CheckIcon from '_assets/icons/check-circle.svg';
 import TrashIcon from '_assets/icons/trash-2.svg';
 import SaveIcon from '_assets/icons/save.svg';
-import Flag from '_assets/icons/flag.svg';
+import AlertCircle from '_assets/icons/alert-circle.svg';
 
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#app');
@@ -64,7 +64,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
         attemptUpdateTodo({
           ...updatedTodo,
           minutes: updatedTodo.minutes === '' ? 0 : +updatedTodo.minutes,
-          priority: parseInt(updatedTodo.priority),
+          important: updatedTodo.important,
         }),
       );
     }
@@ -145,54 +145,18 @@ function TodoModal({ completedListId, isSidebarOpen }) {
           />
 
           <span>
-            <CategoryLabel>Priority</CategoryLabel>
+            <CategoryLabel>Mark Important</CategoryLabel>
             <Priorities>
               <Button
-                onClick={() => updateTodo('priority', 0)}
-                label="Priority 0"
+                onClick={() => updateTodo('important', !updatedTodo.important)}
+                label="Important"
                 style={{
-                  background: `${
-                    updatedTodo.priority === 0 ? lighten(0.1, 'grey') : lighten(0.29, 'grey')
-                  }`,
-                  border: 'none',
+                  background: `${updatedTodo.important ? 'red' : 'transparent'}`,
+                  border: `${updatedTodo.important ? '2px solid transparent' : '2px solid red'}`,
+                  color: `${updatedTodo.important ? 'white' : 'red'}`,
                 }}
               >
-                0 <Flag />
-              </Button>
-
-              <Button
-                onClick={() => updateTodo('priority', 1)}
-                label="Priority 1"
-                style={{
-                  background: `${updatedTodo.priority === 1 ? 'coral' : lighten(0.29, 'coral')}`,
-                  border: 'none',
-                }}
-              >
-                1 <Flag />
-              </Button>
-              <Button
-                label="Priority 2"
-                onClick={() => updateTodo('priority', 2)}
-                style={{
-                  background: `${updatedTodo.priority === 2 ? 'orange' : lighten(0.29, 'orange')}`,
-                  border: 'none',
-                }}
-              >
-                2 <Flag />
-              </Button>
-              <Button
-                label="Priority 3"
-                onClick={() => updateTodo('priority', 3)}
-                style={{
-                  background: `${
-                    updatedTodo.priority === 3
-                      ? 'mediumturquoise'
-                      : lighten(0.29, 'mediumturquoise')
-                  }`,
-                  border: 'none',
-                }}
-              >
-                3 <Flag />
+                <AlertCircle />
               </Button>
             </Priorities>
           </span>
@@ -210,10 +174,12 @@ function TodoModal({ completedListId, isSidebarOpen }) {
           <Buttons>
             <Button size="small" onClick={handleUpdateTodo} buttonType="success" label="Save todo">
               <SaveIcon />
+              <span>Save</span>
             </Button>
 
             <Button size="small" onClick={completeTodo} label="Done">
               <CheckIcon />
+              <span>Done</span>
             </Button>
 
             <Button
@@ -228,6 +194,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
               label="Delete todo"
             >
               <TrashIcon />
+              <span>Delete</span>
             </Button>
           </Buttons>
         </OptionsWrapper>

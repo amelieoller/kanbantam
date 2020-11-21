@@ -12,7 +12,7 @@ import { formatDaysToNow } from '_utils/dates.js';
 import useCombinedRefs from '_hooks/useCombinedRefs';
 import CalendarIcon from '_assets/icons/calendar.svg';
 import CheckCircleIcon from '_assets/icons/check-circle.svg';
-import FlagIcon from '_assets/icons/flag.svg';
+import AlertCircleIcon from '_assets/icons/alert-circle.svg';
 import { setCurrentTodo } from '_actions/currentTodo';
 
 const fromNow = (date) => formatDaysToNow(parseISO(date));
@@ -99,16 +99,12 @@ const Todo = ({
 
       <MarkdownArea text={todo.text} handleUpdateText={handleTodoTextUpdate} />
 
-      {!!(!!todo.priority || !!todo.dueDate | !!todo.minutes) && (
+      {!!(!!todo.important || !!todo.dueDate | !!todo.minutes) && (
         <Footer>
           <FooterLeft>
-            {!!todo.priority && (
-              <TopBadge
-                color={
-                  todo.priority === 1 ? 'coral' : todo.priority === 2 ? 'orange' : 'mediumturquoise'
-                }
-              >
-                <FlagIcon />
+            {!!todo.important && (
+              <TopBadge color="coral">
+                <AlertCircleIcon />
               </TopBadge>
             )}
 
@@ -247,7 +243,7 @@ Todo.propTypes = {
     text: PropTypes.string.isRequired,
     completedAt: PropTypes.string,
     dueDate: PropTypes.string,
-    priority: PropTypes.number,
+    important: PropTypes.boolean,
     minutes: PropTypes.number,
     elapsedMinutes: PropTypes.number,
     category: PropTypes.string,

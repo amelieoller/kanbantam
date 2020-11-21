@@ -10,7 +10,7 @@ const todoSchema = new Schema({
   list: { type: Schema.ObjectId, ref: 'List', required: true },
   completedListId: { type: String },
   text: { type: String },
-  priority: { type: Number },
+  important: { type: Boolean },
   minutes: { type: Number },
   elapsedMinutes: { type: Number, defaultValue: 0 },
   dueDate: { type: String },
