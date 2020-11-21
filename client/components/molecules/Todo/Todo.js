@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as R from 'ramda';
 import { parseISO } from 'date-fns';
 
+import Checkmark from '_atoms/Checkmark';
 import ProgressBar from '_molecules/ProgressBar';
 import MarkdownArea from '_molecules/MarkdownArea';
 import { attemptUpdateTodo } from '_actions/todos';
@@ -86,23 +87,13 @@ const Todo = ({
       inPomodori={isWithinPomodoro}
       selectedCategory={selectedCategory === 'all' ? '' : selectedCategory}
       onClick={handleClick}
+      important={todo.important}
     >
-      <DoneButton
-        onClick={completeTodo}
-        data-type="isClickable"
-        className="done-button"
-        aria-label="Finish todo"
-        label="Finish todo"
-      >
-        <CheckCircleIcon data-type="isClickable" />
-      </DoneButton>
-
       <MarkdownArea text={todo.text} handleUpdateText={handleTodoTextUpdate} />
 
-      {!!(!!todo.important || !!todo.dueDate | !!todo.minutes) && (
-        <Footer>
-          <FooterLeft>
-            {!!todo.important && (
+      <Footer>
+        <FooterLeft>
+          {/* {!!todo.important && (
               <TopBadge color="coral">
                 <AlertCircleIcon />
               </TopBadge>
@@ -113,44 +104,28 @@ const Todo = ({
                 <CalendarIcon />
                 <span>due {fromNow(todo.dueDate)}</span>
               </TopBadge>
-            )}
-          </FooterLeft>
+            )} */}
 
-          <FooterRight>
-            {!!todo.minutes && (
-              <ProgressBar
-                total={todo.minutes}
-                elapsed={todo.elapsedMinutes}
-                type="min"
-                handleUpdate={handleMinuteUpdate}
-                incrementBy={10}
-                incrementLabel={`Add 10 minutes to ${todo.text.substring(0, 20)}`}
-                showMinus={false}
-              />
-            )}
-          </FooterRight>
-        </Footer>
-      )}
+          {!!todo.minutes && (
+            <ProgressBar
+              total={todo.minutes}
+              elapsed={todo.elapsedMinutes}
+              type="min"
+              handleUpdate={handleMinuteUpdate}
+              incrementBy={10}
+              incrementLabel={`Add 10 minutes to ${todo.text.substring(0, 20)}`}
+              showMinus={false}
+            />
+          )}
+        </FooterLeft>
+
+        <FooterRight>
+          <Checkmark onClick={completeTodo} />
+        </FooterRight>
+      </Footer>
     </Container>
   );
 };
-
-const DoneButton = styled.button`
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  cursor: pointer;
-  display: none;
-
-  svg {
-    width: 17px;
-    height: 17px;
-    color: ${({ theme }) => theme.colors.lighter(7, 'onSurface')};
-  }
-`;
 
 const TopBadge = styled.span`
   background: ${({ color, theme }) => (color ? color : theme.colors.surfaceVariant)};
@@ -175,18 +150,20 @@ const TopBadge = styled.span`
 `;
 
 const Container = styled.div`
-  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+  border: ${({ theme, important }) =>
+    `${theme.sizes.cardBorder} solid ${important ? '#F4A09A' : 'transparent'}`};
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
-  padding: ${({ theme }) => theme.sizes.spacingSmall};
+  padding: 11px 6px;
   min-height: ${({ theme }) => theme.sizes.minCardHeight};
-  margin-bottom: ${({ theme }) => theme.sizes.spacingSmall};
+  margin-bottom: 7px;
   user-select: none;
   background: ${({ theme }) => theme.colors.surface};
   display: flex;
   flex-direction: column;
   box-shadow: ${({ theme }) => theme.shadows.one};
   position: relative;
-  border-right: ${({ theme, categoryColor, selectedCategory }) =>
+  /* border-right: ${({ theme, categoryColor, selectedCategory }) =>
     `${theme.sizes.cardBorder} solid ${selectedCategory ? 'transparent' : categoryColor}`};
   border-left: ${({ theme, inPomodori, selectedCategory, categoryColor }) =>
     `${theme.sizes.cardBorder} solid ${
@@ -195,46 +172,41 @@ const Container = styled.div`
         : inPomodori
         ? theme.colors.primary
         : 'transparent'
-    }`};
+    }`}; */
 
   &:hover,
-  &:active {
-    box-shadow: ${({ theme }) => theme.shadows.three};
+  &:active,
+  &:focus {
+    box-shadow: ${({ theme }) => theme.shadows.two};
     text-decoration: none;
   }
 
   &:focus {
     outline: none;
-    box-shadow: ${({ theme }) => theme.shadows.two};
-    background: ${({ theme }) => theme.colors.darker(1, 'surface')};
-  }
-
-  &:hover .done-button {
-    display: block;
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-top: ${({ theme }) => theme.sizes.spacingSmall};
+  align-items: center;
+  margin-top: ${({ theme }) => theme.sizes.spacingLarge};
 
   & > *:not(:last-child) {
-    margin-right: 10px;
+    margin-right: 16px;
   }
 `;
 
 const FooterLeft = styled.span`
   display: flex;
   align-items: center;
-  width: 60%;
+  width: 100%;
 `;
 
 const FooterRight = styled.span`
   display: flex;
   align-items: center;
-  width: 40%;
 `;
 
 Todo.propTypes = {

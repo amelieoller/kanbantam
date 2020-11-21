@@ -5,50 +5,62 @@ import styled from 'styled-components';
 import Check from '_assets/icons/check.svg';
 
 const Checkmark = ({ onClick }) => {
+  const size = 14;
+  const stroke = 2;
+
   return (
-    <StyledCheckmark onClick={onClick}>
-      <svg className="check-circle">
+    <StyledCheckmark
+      onClick={onClick}
+      data-type="isClickable"
+      aria-label="Finish todo"
+      label="Finish todo"
+      size={size}
+      stroke={stroke}
+    >
+      <svg className="check-circle" data-type="isClickable">
         <circle
           stroke="white"
-          strokeWidth="2"
+          strokeWidth={stroke}
           fill="transparent"
-          r="13"
-          cx="15"
-          cy="15"
+          r={size - stroke}
+          cx={size}
+          cy={size}
           strokeLinecap="round"
+          data-type="isClickable"
         />
       </svg>
 
-      <Check className="check-mark" />
+      <Check className="check-mark" data-type="isClickable" />
     </StyledCheckmark>
   );
 };
 
 const StyledCheckmark = styled.div`
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: ${({ size }) => `${size * 2}px`};
+  height: ${({ size }) => `${size * 2}px`};
   cursor: pointer;
 
   svg.check-circle {
-    width: 30px;
-    height: 30px;
+    width: ${({ size }) => `${size * 2}px`};
+    height: ${({ size }) => `${size * 2}px`};
 
     circle {
       stroke-dasharray: 5.1 5;
-      stroke: #b9dfc8;
-      transition: all 1s ease;
+      stroke: #eaebf3;
+      transition: all 0.8s ease;
     }
   }
 
   svg.check-mark {
-    width: 18px;
-    height: 18px;
+    width: ${({ size, stroke }) => `${size + stroke}px`};
+    height: ${({ size, stroke }) => `${size + stroke}px`};
     position: absolute;
-    left: 21%;
-    top: 22%;
-    color: #b9dfc8;
-    transition: all 1s ease;
+    left: 23%;
+    top: 24%;
+    color: #eaebf3;
+    transition: all 0.8s ease;
+    stroke-width: 3px;
   }
 
   &:hover {
@@ -56,12 +68,12 @@ const StyledCheckmark = styled.div`
       stroke-dasharray: 18 0;
       fill: #b9dfc847;
       stroke: #85cda2;
-      stroke-width: 3px;
+      stroke-width: 2px;
     }
 
     svg.check-mark {
       color: #85cda2;
-      stroke-width: 4px;
+      stroke-width: 3px;
     }
   }
 `;

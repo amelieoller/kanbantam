@@ -15,6 +15,7 @@ import reorder, { reorderTodoList } from '_utils/dragAndDrop';
 import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
 import { filterByCategory } from '_utils/filtering';
 import useResize from '_hooks/useResize';
+import TaskOverview from '../../molecules/TaskOverview/TaskOverview';
 
 function Board({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
@@ -231,6 +232,7 @@ function Board({ board, theme: { sizes } }) {
       <Sidebar isSidebarOpen={board.sidebarOpen} currentBoard={board} />
 
       <main id="main" ref={boardRef}>
+        {/* <TaskOverview /> */}
         <DragDropContext
           onDragEnd={onDragEnd}
           onDragStart={onDragStart}
@@ -292,19 +294,28 @@ const StyledBoard = styled.div`
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   margin-top: ${({ theme }) => theme.sizes.navbarHeight};
   transition: 0.4s ease;
+
+  /* & > *:last-child {
+    margin-left: ${({ theme, isSidebarOpen }) =>
+      isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
+  } */
 `;
 
 const ListsWrapper = styled.div`
   display: grid;
   grid-auto-columns: ${({ theme }) => theme.sizes.listWidth};
   grid-auto-flow: column;
-  padding: ${({ theme }) => `${theme.sizes.spacing} ${theme.sizes.spacingLarge}`};
+  padding: 25px;
   margin-left: ${({ theme, isSidebarOpen }) =>
     isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
   transition: 0.4s ease;
+  height: 100%;
 
   & > *:not(:last-child) {
-    margin-right: 8px;
+    margin-right: 25px;
+    border-right: 1px solid ${({ theme }) => theme.colors.light};
+    height: 100%;
+    padding-right: 25px;
   }
 
   /* Don't use grid gap, it will add a choppy transition when lists are moved, instead margin has been added to each child */

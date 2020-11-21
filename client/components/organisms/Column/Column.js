@@ -95,7 +95,8 @@ const Container = styled.div`
 `;
 
 const ListHeader = styled.div`
-  padding: ${({ theme }) => theme.sizes.spacing};
+  padding: 2px;
+  margin-bottom: 5px;
   transition: background-color ease 0.2s;
   user-select: none;
   display: flex;
@@ -103,22 +104,25 @@ const ListHeader = styled.div`
   justify-content: space-between;
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius};
-  background-color: ${({ isDragging, theme }) =>
+  background-color: ${({ theme }) => theme.colors.boardBackground};
+  /* background-color: ${({ isDragging, theme }) =>
     isDragging
       ? theme.colors.darker(3, 'surfaceVariant')
-      : theme.colors.lighter(1, 'surfaceVariant')};
+      : theme.colors.lighter(1, 'surfaceVariant')}; */
   transition: color 0.2s ease;
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
-  color: ${({ theme }) => theme.colors.lighter(1, 'onBackground')};
+  color: ${({ theme }) => theme.colors.darkGrey};
   font-weight: 500;
+  font-size: 14px;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.darker(3, 'surfaceVariant')};
+  &:hover, &:active {
+    color: ${({ theme }) => theme.colors.lightGrey};
   }
 
   &:focus {
-    outline: 2px solid indigo;
-    outline-offset: 2px;
+    /* outline: 2px solid indigo;
+    outline-offset: 2px; */
+    outline: none;
   }
 `;
 

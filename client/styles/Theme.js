@@ -1,6 +1,7 @@
 import { lighten, darken, setLightness } from 'polished';
 
 const baseColor = '#202020';
+const baseColorDark = '#202020';
 
 // ************* COLORS *************
 // Variants: e.g. in dark theme - if you want to show the opposite, dark on a light surface
@@ -25,13 +26,20 @@ const emphasisOpacity = {
 
 const darkColors = {
   // ------------ MAIN SURFACES (background, surfaces etc.) ------------
+  dark: '#242432',
+  darkGrey: '#898992',
+  grey: '#9D9EA7',
+  lightGrey: '#CCCCD3',
+  light: '#EAEBF3',
+  white: '#F5F7FA',
+
   // Background
-  background: setLightness(0.04, baseColor),
-  boardBackground: setLightness(0.01, baseColor),
+  background: setLightness(0.04, baseColorDark),
+  boardBackground: '#202020',
 
   // Surface
-  surface: setLightness(0.1, baseColor),
-  surfaceVariant: setLightness(0.25, baseColor),
+  surface: setLightness(0.1, baseColorDark),
+  surfaceVariant: setLightness(0.05, baseColorDark),
 
   // Primary (primary - 200, variant - 700)
   primary: '#BB86FC',
@@ -52,8 +60,8 @@ const darkColors = {
   onBackground: `rgba(${baseRgbDark.white}, ${emphasisOpacity.high})`,
 
   // On Surface
-  onSurface: setLightness(0.9, baseColor),
-  onSurfaceVariant: setLightness(0.005, baseColor),
+  onSurface: setLightness(0.9, baseColorDark),
+  onSurfaceVariant: setLightness(0.005, baseColorDark),
 
   // On Primary
   onPrimary: `rgba(${baseRgbDark.black}, ${emphasisOpacity.high})`,
@@ -100,9 +108,16 @@ const baseRgbLight = {
 
 const lightColors = {
   // ------------ MAIN SURFACES (background, surfaces etc.) ------------
+  dark: '#242432',
+  darkGrey: '#898992',
+  grey: '#9D9EA7',
+  lightGrey: '#CCCCD3',
+  light: '#EAEBF3',
+  white: '#F5F7FA',
+
   // Background
   background: setLightness(0.99, baseColor),
-  boardBackground: setLightness(0.96, baseColor),
+  boardBackground: '#F5F7FA',
 
   // Surface
   surface: setLightness(0.995, baseColor),
@@ -162,10 +177,12 @@ const lightColors = {
 
 // ************* SHADOWS *************
 const shadows = {
-  one:
-    'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 2px 1px -1px',
-  two:
-    'rgba(0, 0, 0, 0.2) 0px 1px 5px 0px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 3px 1px -2px',
+  one: '0px 0px 10px 0px rgba(0,0,0,0.04)',
+  // one:
+  //   'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 2px 1px -1px',
+  two: '0px 0px 10px 0px rgba(0,0,0,0.1)',
+  // two:
+  //   'rgba(0, 0, 0, 0.2) 0px 1px 5px 0px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 3px 1px -2px',
   three:
     'rgba(0, 0, 0, 0.2) 0px 1px 8px 0px, rgba(0, 0, 0, 0.14) 0px 3px 4px 0px, rgba(0, 0, 0, 0.12) 0px 3px 3px -2px',
   button:
@@ -182,14 +199,14 @@ const sizes = {
   spacingSmall: '5px',
   spacingLarge: '15px',
   spacingInput: '6px 11px',
-  listWidth: '285px',
+  listWidth: '330px',
   navbarHeight: '40px',
   sidebarWidthLarge: '250px',
   sidebarWidthSmall: '50px',
   listHeaderHeight: '30px',
   listFooterHeight: '40px',
   minCardHeight: '30px',
-  cardBorder: '3px',
+  cardBorder: '2px',
 };
 
 const media = {

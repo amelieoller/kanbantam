@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import MinusCircleIcon from '_assets/icons/minus-circle.svg';
 import PlusCircleIcon from '_assets/icons/plus-circle.svg';
@@ -42,8 +43,22 @@ const ProgressBar = ({
 
   return (
     <Wrapper>
+      <TopText>
+        <span className="left">
+          <span className="time-done">
+            {elapsed}
+            {type}
+          </span>
+          <span> of {total}</span>
+        </span>
+        <span className="right">
+          {total - elapsed}
+          {type} left
+        </span>
+      </TopText>
+
       <ProgressBarWrapper>
-        {showMinus && (
+        {/* {showMinus && (
           <Button
             data-testid="decrement-button"
             data-type="isClickable"
@@ -55,17 +70,17 @@ const ProgressBar = ({
           >
             <MinusCircleIcon data-type="isClickable" />
           </Button>
-        )}
+        )} */}
 
         <ProgressWrapper>
           <ProgressFiller className="filler" percentage={percentage}>
-            <TextLeft percentage={percentage} data-testid="progress-text">
+            {/* <TextLeft percentage={percentage} data-testid="progress-text">
               {total - elapsed} {type} left / {total}
-            </TextLeft>
+            </TextLeft> */}
           </ProgressFiller>
         </ProgressWrapper>
 
-        <Button
+        {/* <Button
           data-testid="increment-button"
           data-type="isClickable"
           onClick={handleIncrement}
@@ -75,11 +90,30 @@ const ProgressBar = ({
           noBackground
         >
           <PlusCircleIcon data-type="isClickable" />
-        </Button>
+        </Button> */}
       </ProgressBarWrapper>
     </Wrapper>
   );
 };
+
+const TopText = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: #9d9ea7;
+  font-weight: 500;
+  padding: 2px;
+  padding-top: 0;
+  font-size: 10px;
+
+  .left {
+    .time-done {
+      color: #85cda2;
+    }
+  }
+
+  .right {
+  }
+`;
 
 ProgressBar.propTypes = {
   total: PropTypes.number.isRequired,

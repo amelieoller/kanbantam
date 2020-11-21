@@ -18,7 +18,7 @@ export const ProgressBarWrapper = styled.div`
 
 export const ProgressWrapper = styled.div`
   position: relative;
-  height: 12px;
+  height: 8px;
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.lighter(1, 'surfaceVariant')};
   width: 100%;

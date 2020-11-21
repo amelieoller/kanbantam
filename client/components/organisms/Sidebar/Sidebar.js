@@ -60,8 +60,6 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
       </CollapseButton>
       <SidebarContent>
         <SectionWrapper>
-          {renderSectionHeader('Pomodoro')}
-
           <Pomodoro
             currentBoard={currentBoard}
             firstTodo={firstTodo}
@@ -144,12 +142,8 @@ const SidebarWrapper = styled.aside`
 `;
 
 const SidebarContent = styled.div`
-  & > *:nth-child(odd) {
-    background: ${({ theme }) => theme.colors.lighter(87, 'onSurface')};
-
-    h2 {
-      color: #969696;
-    }
+  & > * {
+    border-bottom: 1px solid #eaebf3;
   }
 `;
 

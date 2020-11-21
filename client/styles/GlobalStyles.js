@@ -15,7 +15,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   html {
-    background-color: #f5f5f5;
+    background: ${({ theme }) => theme.colors.boardBackground};
     font-size: 12px;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
