@@ -97,18 +97,16 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
 }
 
 const SectionWrapper = styled.div`
-  padding: 6px;
+  padding: 50px 15px;
   position: relative;
 `;
 
 const SectionHeader = styled.div`
-  display: flex;
-  justify-content: center;
+  position: absolute;
   color: #c7c3bd;
-  align-items: center;
-  right: 3px;
   bottom: 3px;
   padding-top: 3px;
+  left: 8px;
 
   svg {
     margin: ${({ isSidebarOpen }) => (isSidebarOpen ? '0 2px 0 0' : '0 5px')};

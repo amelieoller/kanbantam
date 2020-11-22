@@ -4,13 +4,12 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 import Button from '_atoms/Button';
-import ProgressBar from '_molecules/ProgressBar';
 import { attemptUpdateBoard } from '_actions/boards';
 import { attemptUpdateTodo } from '_actions/todos';
 import { formatTime, formatYearMonthDay } from '_utils/dates';
 import { useInterval } from '_hooks/useInterval';
-import PauseCircleIcon from '_assets/icons/pause-circle.svg';
-import PlayCircleIcon from '_assets/icons/play-circle.svg';
+import PauseIcon from '_assets/icons/pause.svg';
+import PlayIcon from '_assets/icons/play.svg';
 import RepeatIcon from '_assets/icons/repeat.svg';
 import notification from '_assets/sounds/notification.mp3';
 
@@ -27,6 +26,11 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
   const [timePassedMs, setTimePassedMs] = useState(0); // The ms of time that have passed
   const [endTime, setEndTime] = useState(0); // Ms to when the time is run out (time now + length of the session in min * 60000)
   const [isRunning, setIsRunning] = useState(false); // Is the timer running or not
+  const [isHovering, setIsHovering] = useState(false); // Is the user hovering over timer
+  const [strokeDasharray, setStrokeDasharray] = useState('0,20000'); // Circle time elapsed
+
+  const sessionLengthInMs = sessionLength * 60 * 1000;
+  const fullCircleValue = 440;
 
   // -------------- MAIN TIMER FUNCTIONALITY --------------
   const elapseTime = () => {
@@ -56,6 +60,11 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
       // Update title
       const [minutes, seconds] = formatTime(newMsPassed, sessionLength);
       document.title = `${minutes}:${seconds}`;
+
+      // Update pomodoro circle
+      setStrokeDasharray(
+        `${fullCircleValue - (fullCircleValue / sessionLengthInMs) * newMsPassed},20000`,
+      );
 
       // Run the timer updating time passed
       setTimePassedMs(newMsPassed);
@@ -97,6 +106,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     setTimePassedMs(0);
     setEndTime(0);
     setIsRunning(false);
+    setStrokeDasharray('0,20000');
 
     document.title = 'Kanbantam';
   };
@@ -131,92 +141,155 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     );
   };
 
-  // Increase or decrease totalPomodori on the board
-  const handleBarUpdate = (newTotal) => {
-    dispatch(attemptUpdateBoard({ id: currentBoard.id, totalPomodori: newTotal }));
-  };
-
   const [minutes, seconds] = formatTime(timePassedMs, sessionLength);
 
   const renderPlayPauseButtons = () => {
-    if (!isRunning) {
-      return (
-        <Button className="play" onClick={playOrPauseTimer} label="Play" noBackground>
-          <PlayCircleIcon />
-        </Button>
-      );
-    }
-    return (
-      <Button className="pause" onClick={playOrPauseTimer} label="Pause" noBackground>
-        <PauseCircleIcon />
+    const playButton = (
+      <Button className="play" label="Play" noBackground>
+        <PlayIcon />
       </Button>
     );
+
+    const pauseButton = (
+      <Button className="pause" label="Pause" noBackground>
+        <PauseIcon />
+      </Button>
+    );
+
+    return !isRunning ? playButton : pauseButton;
   };
 
   return (
     <StyledPomodoro isSidebarOpen={isSidebarOpen}>
-      {/* Clock */}
-      <Clock isSidebarOpen={isSidebarOpen}>
-        <Button className="repeat" onClick={switchSessions} label="Switch sessions" noBackground>
-          <RepeatIcon />
-        </Button>
+      <Clock
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        onClick={playOrPauseTimer}
+        isRunning={isRunning}
+      >
+        <svg className="striped">
+          <circle strokeWidth="6" fill="transparent" cx="75" cy="75" r="70" />
+        </svg>
 
-        <span className="minutes">{minutes}</span>
-        <span className="seconds">{seconds}</span>
+        <svg preserveAspectRatio="none" className="full">
+          <circle
+            cx="75"
+            cy="75"
+            r="70"
+            id="green-halo"
+            fill="none"
+            strokeDasharray={strokeDasharray}
+            transform="rotate(-90,75,75)"
+            strokeLinecap="round"
+          />
+        </svg>
+
+        <div className="center">
+          {isHovering ? (
+            <Controls isSidebarOpen={isSidebarOpen}>{renderPlayPauseButtons()}</Controls>
+          ) : (
+            <>
+              <span className="minutes">{minutes}</span>
+              <span className="seconds">{seconds}</span>
+            </>
+          )}
+        </div>
       </Clock>
 
-      {/* Controls */}
-      <Controls isSidebarOpen={isSidebarOpen}>{renderPlayPauseButtons()}</Controls>
+      <Button className="repeat" onClick={switchSessions} label="Switch sessions" noBackground>
+        <RepeatIcon />
+      </Button>
     </StyledPomodoro>
   );
 };
+
+const Clock = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+
+  .center {
+    width: 55px;
+    position: absolute;
+    top: 38%;
+    left: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+
+    .minutes {
+      font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '3rem' : '2.4rem')};
+      color: ${({ theme }) => theme.colors.onBackground};
+      padding-right: ${({ isSidebarOpen }) => (isSidebarOpen ? '2px' : '0')};
+    }
+
+    .seconds {
+      font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '1.7rem' : '1.4rem')};
+      color: ${({ theme }) => theme.colors.darker(3, 'surfaceVariant')};
+    }
+  }
+
+  .striped {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+
+    circle {
+      stroke-dasharray: 3 3;
+      stroke: #eaebf3;
+      transition: all 1s ease;
+    }
+  }
+
+  .full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+
+    circle {
+      stroke: ${({ theme, isRunning }) =>
+        isRunning ? theme.colors.lighter(2, 'success') : theme.colors.lighter(2, 'error')};
+      stroke-width: 10px;
+    }
+
+    .time {
+      fill: #898992;
+      font-weight: 100;
+    }
+
+    .minutes {
+      fill: #ccccd3;
+      font-weight: 400;
+    }
+  }
+`;
 
 const StyledPomodoro = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 130px;
 
   .repeat {
-    padding-right: ${({ isSidebarOpen }) => (isSidebarOpen ? '8px' : '0')};
-    padding-bottom: ${({ isSidebarOpen }) => (isSidebarOpen ? '0' : '5px')};
-    color: ${({ theme }) => theme.colors.darker(15, 'surfaceVariant')};
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    color: #eaebf3;
+    outline: none;
 
     &:hover,
     &:focus {
-      color: ${({ theme }) => theme.colors.surfaceVariant};
-      outline: none;
-    }
-
-    svg {
-      height: 15px;
+      color: #898992;
     }
   }
 
   svg {
     transition: all 0.3s ease;
     cursor: pointer;
-  }
-`;
-
-const Clock = styled.div`
-  display: flex;
-  flex-direction: ${({ isSidebarOpen }) => (isSidebarOpen ? 'row' : 'column')};
-  align-items: ${({ isSidebarOpen }) => (isSidebarOpen ? 'baseline' : 'center')};
-  justify-content: center;
-  margin-bottom: ${({ isSidebarOpen }) => (isSidebarOpen ? '10px' : '5px')};
-  margin-top: 10px;
-
-  .minutes {
-    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '3rem' : '2.4rem')};
-    color: ${({ theme }) => theme.colors.onBackground};
-    padding-right: ${({ isSidebarOpen }) => (isSidebarOpen ? '2px' : '0')};
-  }
-
-  .seconds {
-    font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '1.7rem' : '1.4rem')};
-    color: ${({ theme }) => theme.colors.darker(3, 'surfaceVariant')};
   }
 `;
 
@@ -255,10 +328,6 @@ const Controls = styled.div`
   button:focus {
     outline: none;
   }
-`;
-
-const ProgressBarWrapper = styled.div`
-  margin-top: 10px;
 `;
 
 Pomodoro.propTypes = {

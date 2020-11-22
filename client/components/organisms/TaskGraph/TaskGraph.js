@@ -213,9 +213,7 @@ const GoalButtons = styled.div`
   margin-top: ${({ isSidebarOpen }) => !isSidebarOpen && '15px'};
 `;
 
-const GraphWrapper = styled.div`
-  padding: 25px 0;
-`;
+const GraphWrapper = styled.div``;
 
 const LabelToRight = styled.text`
   background: blue;
