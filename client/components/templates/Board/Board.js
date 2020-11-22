@@ -208,13 +208,9 @@ function Board({ board, theme: { sizes } }) {
     const navHeight = parseFloat(sizes.navbarHeight);
     const listHeaderHeight = parseFloat(sizes.listHeaderHeight);
     const listFooterHeight = parseFloat(sizes.listFooterHeight);
-    const doublePadding = parseFloat(sizes.spacing) * 2;
-    const listBorder = 2;
+    const doublePadding = parseFloat(sizes.spacingExtraLarge) * 2;
 
-    const listHeight =
-      screenHeight - navHeight - listHeaderHeight - listFooterHeight - doublePadding - listBorder;
-
-    return listHeight;
+    return screenHeight - navHeight - listHeaderHeight - listFooterHeight - doublePadding;
   };
 
   const isInFocusMode = board.focusMode && board.defaultFocusList && orderedLists.length !== 0;
@@ -294,28 +290,23 @@ const StyledBoard = styled.div`
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   margin-top: ${({ theme }) => theme.sizes.navbarHeight};
   transition: 0.4s ease;
-
-  /* & > *:last-child {
-    margin-left: ${({ theme, isSidebarOpen }) =>
-      isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
-  } */
 `;
 
 const ListsWrapper = styled.div`
   display: grid;
   grid-auto-columns: ${({ theme }) => theme.sizes.listWidth};
   grid-auto-flow: column;
-  padding: 25px;
+  padding: ${({ theme }) => theme.sizes.spacingExtraLarge};
   margin-left: ${({ theme, isSidebarOpen }) =>
     isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
   transition: 0.4s ease;
   height: 100%;
 
   & > *:not(:last-child) {
-    margin-right: 25px;
+    margin-right: ${({ theme }) => theme.sizes.spacingExtraLarge};
     border-right: 1px solid ${({ theme }) => theme.colors.light};
     height: 100%;
-    padding-right: 25px;
+    padding-right: ${({ theme }) => theme.sizes.spacingExtraLarge};
   }
 
   /* Don't use grid gap, it will add a choppy transition when lists are moved, instead margin has been added to each child */

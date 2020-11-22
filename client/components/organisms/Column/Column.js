@@ -96,7 +96,6 @@ const Container = styled.div`
 
 const ListHeader = styled.div`
   padding: 2px;
-  margin-bottom: 5px;
   transition: background-color ease 0.2s;
   user-select: none;
   display: flex;
@@ -105,17 +104,14 @@ const ListHeader = styled.div`
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius};
   border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius};
   background-color: ${({ theme }) => theme.colors.boardBackground};
-  /* background-color: ${({ isDragging, theme }) =>
-    isDragging
-      ? theme.colors.darker(3, 'surfaceVariant')
-      : theme.colors.lighter(1, 'surfaceVariant')}; */
   transition: color 0.2s ease;
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
   color: ${({ theme }) => theme.colors.darkGrey};
   font-weight: 500;
   font-size: 14px;
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     color: ${({ theme }) => theme.colors.lightGrey};
   }
 
