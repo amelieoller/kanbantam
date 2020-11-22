@@ -41,20 +41,44 @@ const ProgressBar = ({
     handleUpdate(newTotal);
   };
 
+  const timeLeft = () => {
+    const minutesLeft = total - elapsed;
+    if (minutesLeft >= 0) {
+      // return `${minutesLeft}${type} left`;
+
+      return (
+        <>
+          <span className="green">
+            {minutesLeft}
+            {type}
+          </span>
+          <span> left</span>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <span className="red">
+            {minutesLeft}
+            {type}
+          </span>
+          <span> over</span>
+        </>
+      );
+    }
+  };
+
   return (
     <Wrapper>
       <TopText>
         <span className="left">
-          <span className="time-done">
+          <span>
             {elapsed}
             {type}
           </span>
           <span> of {total}</span>
         </span>
-        <span className="right">
-          {total - elapsed}
-          {type} left
-        </span>
+        <span className="right">{timeLeft()}</span>
       </TopText>
 
       <ProgressBarWrapper>
@@ -106,12 +130,17 @@ const TopText = styled.div`
   font-size: 10px;
 
   .left {
-    .time-done {
-      color: #85cda2;
-    }
   }
 
   .right {
+  }
+
+  .green {
+    color: #85cda2;
+  }
+
+  .red {
+    color: #f4a09a;
   }
 `;
 
