@@ -204,7 +204,7 @@ const sizes = {
   navbarHeight: '40px',
   sidebarWidthLarge: '250px',
   sidebarWidthSmall: '50px',
-  listHeaderHeight: '35px',
+  listHeaderHeight: '27px',
   listFooterHeight: '40px',
   minCardHeight: '30px',
   cardBorder: '3px',

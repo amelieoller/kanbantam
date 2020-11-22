@@ -133,12 +133,6 @@ const GlobalStyles = createGlobalStyle`
     overflow: visible;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="date"] {
-    height: 2.584rem;
-  }
-
   button,
   select {
     text-transform: none;

@@ -253,7 +253,7 @@ const Clock = styled.div`
     circle {
       stroke: ${({ theme, isRunning }) =>
         isRunning ? theme.colors.lighter(2, 'success') : theme.colors.lighter(2, 'error')};
-      stroke-width: 10px;
+      stroke-width: 8px;
       transition: all 0.5s ease;
     }
 
