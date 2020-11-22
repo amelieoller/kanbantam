@@ -40,7 +40,7 @@ const ModalStyles = createGlobalStyle`
     background: white;
     padding: 3px;
     border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
-    border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+    border-radius: ${({ theme }) => theme.sizes.borderRadius};
     font-size: 1.2rem;
     height: 100%;
 

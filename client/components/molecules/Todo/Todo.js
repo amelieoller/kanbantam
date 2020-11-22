@@ -155,7 +155,6 @@ const Container = styled.div`
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
   padding: 11px 6px;
   min-height: ${({ theme }) => theme.sizes.minCardHeight};
-  margin-bottom: 7px;
   user-select: none;
   background: ${({ theme }) => theme.colors.surface};
   display: flex;
@@ -168,6 +167,10 @@ const Container = styled.div`
     `${theme.sizes.cardBorder} solid ${
       selectedCategory && inPomodori ? categoryColor : inPomodori ? theme.colors.primary : 'inherit'
     }`};
+
+  &:not(:last-child) {
+    margin-bottom: 7px;
+  }
 
   &:hover,
   &:active,

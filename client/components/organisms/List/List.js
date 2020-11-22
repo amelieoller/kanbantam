@@ -121,6 +121,7 @@ const DropZone = styled.div`
   min-height: 40px;
   /* not relying on the items for a margin-bottom as it will collapse when the list is empty */
   /* margin: ${({ theme }) => theme.sizes.spacingSmall}; */
+  padding: 0 20px;
 `;
 
 const ScrollContainer = styled.div`

@@ -59,7 +59,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
       // Update title
       const [minutes, seconds] = formatTime(newMsPassed, sessionLength);
-      document.title = `${minutes}:${seconds}`;
+      document.title = `${isWorkSession ? 'Work' : 'Break'} - ${minutes}:${seconds}`;
 
       // Update pomodoro circle
       setStrokeDasharray(
@@ -254,6 +254,7 @@ const Clock = styled.div`
       stroke: ${({ theme, isRunning }) =>
         isRunning ? theme.colors.lighter(2, 'success') : theme.colors.lighter(2, 'error')};
       stroke-width: 10px;
+      transition: all 0.5s ease;
     }
 
     .time {

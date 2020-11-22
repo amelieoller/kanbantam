@@ -303,10 +303,10 @@ const ListsWrapper = styled.div`
   height: 100%;
 
   & > *:not(:last-child) {
-    margin-right: ${({ theme }) => theme.sizes.spacingExtraLarge};
+    margin-right: ${({ theme }) => theme.sizes.spacingSmall};
     border-right: 1px solid ${({ theme }) => theme.colors.light};
     height: 100%;
-    padding-right: ${({ theme }) => theme.sizes.spacingExtraLarge};
+    padding-right: ${({ theme }) => theme.sizes.spacingSmall};
   }
 
   /* Don't use grid gap, it will add a choppy transition when lists are moved, instead margin has been added to each child */

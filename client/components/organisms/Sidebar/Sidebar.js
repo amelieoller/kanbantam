@@ -76,7 +76,7 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
         </SectionWrapper> */}
 
         <SectionWrapper>
-          {renderSectionHeader('Pomodori Finished')}
+          {/* {renderSectionHeader('Pomodori Finished')} */}
 
           <TaskGraph
             boardId={currentBoard.id}
@@ -87,7 +87,7 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
         </SectionWrapper>
 
         <SectionWrapper>
-          {renderSectionHeader('Completed Todos')}
+          {/* {renderSectionHeader('Completed Todos')} */}
 
           <CompletedTodos />
         </SectionWrapper>

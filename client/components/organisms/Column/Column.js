@@ -95,7 +95,8 @@ const Container = styled.div`
 `;
 
 const ListHeader = styled.div`
-  padding: 2px;
+  /* padding: 2px; */
+  padding: 2px 20px;
   transition: background-color ease 0.2s;
   user-select: none;
   display: flex;

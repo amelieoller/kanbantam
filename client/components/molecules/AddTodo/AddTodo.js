@@ -71,6 +71,7 @@ function AddTodo({ board, listId, lastCardSortVal }) {
 
 const NewTodoForm = styled.form`
   height: 100%;
+  padding: 0 20px;
 `;
 
 const NewTodoInput = styled.input`
@@ -79,7 +80,7 @@ const NewTodoInput = styled.input`
   height: 100%;
   outline: none;
   border: 0;
-  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
   padding: ${({ theme }) => theme.sizes.spacingInput};
 `;
 

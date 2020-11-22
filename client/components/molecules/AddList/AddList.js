@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 import { attemptAddList } from '_actions/lists';
-import useOnClickOutside from '_hooks/useOnClickOutside';
 
 function AddList({ boardId, lastListSortVal }) {
   const formRef = useRef();
@@ -12,9 +11,6 @@ function AddList({ boardId, lastListSortVal }) {
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-
-  useOnClickOutside(formRef, () => setIsOpen(false));
 
   const handleAddList = (e) => {
     e.preventDefault();
@@ -28,22 +24,15 @@ function AddList({ boardId, lastListSortVal }) {
 
   const updateTitle = (e) => setTitle(e.target.value);
 
-  const toggleIsOpen = () => setIsOpen((prevOpen) => !prevOpen);
-
-  return isOpen ? (
+  return (
     <NewListForm onSubmit={handleAddList} ref={formRef}>
       <NewListInput
         type="text"
         onChange={updateTitle}
         value={title}
-        placeholder="New list..."
-        autoFocus
+        placeholder="Add a new list..."
       />
     </NewListForm>
-  ) : (
-    <Button onClick={toggleIsOpen} label="Add new list">
-      Add a new list...
-    </Button>
   );
 }
 
@@ -52,18 +41,19 @@ AddList.propTypes = {
   lastListSortVal: PropTypes.number.isRequired,
 };
 
-const NewListForm = styled.form``;
+const NewListForm = styled.form`
+  padding: 0 25px;
+`;
 
 const NewListInput = styled.input`
   width: 100%;
   font-size: 1.2rem;
   outline: none;
   border: 0;
-  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
   padding: ${({ theme }) => theme.sizes.spacingInput};
-  text-transform: uppercase;
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
-  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+  /* border: 1px solid ${({ theme }) => theme.colors.surfaceVariant}; */
   color: ${({ theme }) => theme.colors.onSurface};
 `;
 
@@ -75,7 +65,7 @@ const Button = styled.button`
   padding: ${({ theme }) => theme.sizes.spacingInput};
   text-align: left;
   font-size: 1.2rem;
-  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
   border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
   color: ${({ theme }) => theme.colors.medium('onSurface')};
