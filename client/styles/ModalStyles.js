@@ -36,7 +36,7 @@ const ModalStyles = createGlobalStyle`
   }
 
   .react-codemirror2.code-mirror > div {
-    width: 265px;
+    width: 279px;
     background: white;
     padding: 3px;
     border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
