@@ -7,6 +7,7 @@ import { attemptAddTodo } from '_actions/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 import PlusIcon from '_assets/icons/plus.svg';
 import Button from '_atoms/Button';
+import PlusButton from '../../atoms/PlusButton';
 
 function AddTodo({ board, listId, lastCardSortVal }) {
   const formRef = useRef();
@@ -63,15 +64,7 @@ function AddTodo({ board, listId, lastCardSortVal }) {
     </NewTodoForm>
   ) : (
     <ButtonWrapper>
-      <Button
-        onClick={toggleIsOpen}
-        label="Add todo to list"
-        textColor="onSurface"
-        size="large"
-        noBackground
-      >
-        <PlusIcon />
-      </Button>
+      <PlusButton onClick={toggleIsOpen} label="Add todo to list" />
     </ButtonWrapper>
   );
 }
@@ -91,11 +84,8 @@ const NewTodoInput = styled.input`
 `;
 
 const ButtonWrapper = styled.div`
-  button {
-    width: 100%;
-    padding: ${({ theme }) => theme.sizes.spacingSmall};
-    justify-content: center;
-  }
+  display: flex;
+  justify-content: center;
 `;
 
 AddTodo.propTypes = {

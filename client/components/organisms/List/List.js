@@ -118,7 +118,7 @@ const Wrapper = styled.div`
 
 const DropZone = styled.div`
   /* stop the list collapsing when empty */
-  min-height: 100px;
+  min-height: 40px;
   /* not relying on the items for a margin-bottom as it will collapse when the list is empty */
   /* margin: ${({ theme }) => theme.sizes.spacingSmall}; */
 `;
