@@ -207,7 +207,7 @@ const sizes = {
   listHeaderHeight: '35px',
   listFooterHeight: '40px',
   minCardHeight: '30px',
-  cardBorder: '2px',
+  cardBorder: '3px',
 };
 
 const media = {

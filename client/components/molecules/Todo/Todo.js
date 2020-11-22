@@ -150,8 +150,7 @@ const TopBadge = styled.span`
 `;
 
 const Container = styled.div`
-  border: ${({ theme, important }) =>
-    `${theme.sizes.cardBorder} solid ${important ? '#F4A09A' : 'transparent'}`};
+  border: ${({ theme, important }) => `2px solid ${important ? '#F4A09A' : 'transparent'}`};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
   padding: 11px 6px;
@@ -163,16 +162,12 @@ const Container = styled.div`
   flex-direction: column;
   box-shadow: ${({ theme }) => theme.shadows.one};
   position: relative;
-  /* border-right: ${({ theme, categoryColor, selectedCategory }) =>
-    `${theme.sizes.cardBorder} solid ${selectedCategory ? 'transparent' : categoryColor}`};
+  border-right: ${({ theme, categoryColor, selectedCategory }) =>
+    `${theme.sizes.cardBorder} solid ${selectedCategory ? 'inherit' : categoryColor}`};
   border-left: ${({ theme, inPomodori, selectedCategory, categoryColor }) =>
     `${theme.sizes.cardBorder} solid ${
-      selectedCategory && inPomodori
-        ? categoryColor
-        : inPomodori
-        ? theme.colors.primary
-        : 'transparent'
-    }`}; */
+      selectedCategory && inPomodori ? categoryColor : inPomodori ? theme.colors.primary : 'inherit'
+    }`};
 
   &:hover,
   &:active,
