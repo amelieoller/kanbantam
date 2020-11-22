@@ -82,6 +82,7 @@ const NewTodoInput = styled.input`
   border: 0;
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   padding: ${({ theme }) => theme.sizes.spacingInput};
+  height: 2.584rem;
 `;
 
 const ButtonWrapper = styled.div`

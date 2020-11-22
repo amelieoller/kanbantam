@@ -30,7 +30,7 @@ function AddList({ boardId, lastListSortVal }) {
         type="text"
         onChange={updateTitle}
         value={title}
-        placeholder="Add a new list..."
+        placeholder="Add new list..."
       />
     </NewListForm>
   );
@@ -55,6 +55,7 @@ const NewListInput = styled.input`
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
   /* border: 1px solid ${({ theme }) => theme.colors.surfaceVariant}; */
   color: ${({ theme }) => theme.colors.onSurface};
+  height: 2.584rem;
 `;
 
 const Button = styled.button`
