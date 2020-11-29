@@ -98,6 +98,16 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     }
   }, [isRunning, endTime]);
 
+  // Every time the timer is started
+  useEffect(() => {
+    if (isRunning && isHovering) {
+      // Remove the icon to show the time after a few seconds
+      setTimeout(() => {
+        setIsHovering(false);
+      }, 2000);
+    }
+  }, [isRunning]);
+
   // -------------- HELPERS --------------
   const switchSessions = () => {
     // Switch sessions and reset everything else
