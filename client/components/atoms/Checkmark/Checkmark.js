@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Check from '_assets/icons/check.svg';
 
-const Checkmark = ({ onClick }) => {
+const Checkmark = ({ onClick, highlight }) => {
   const size = 14;
   const stroke = 2;
 
@@ -16,6 +16,7 @@ const Checkmark = ({ onClick }) => {
       label="Finish todo"
       size={size}
       stroke={stroke}
+      highlight={highlight}
     >
       <svg className="check-circle" data-type="isClickable">
         <circle
@@ -47,7 +48,7 @@ const StyledCheckmark = styled.div`
 
     circle {
       stroke-dasharray: 5.1 5;
-      stroke: #eaebf3;
+      stroke: ${({ highlight }) => (highlight ? '#B9DFC8' : '#eaebf3')};
       transition: all 0.8s ease;
     }
   }
@@ -58,7 +59,7 @@ const StyledCheckmark = styled.div`
     position: absolute;
     left: 23%;
     top: 24%;
-    color: #eaebf3;
+    color: ${({ highlight }) => (highlight ? '#B9DFC8' : '#eaebf3')};
     transition: all 0.8s ease;
     stroke-width: 3px;
   }
@@ -79,6 +80,11 @@ const StyledCheckmark = styled.div`
 
 Checkmark.propTypes = {
   onClick: PropTypes.func.isRequired,
+  highlight: PropTypes.bool,
+};
+
+Checkmark.defaultProps = {
+  highlight: false,
 };
 
 export default Checkmark;

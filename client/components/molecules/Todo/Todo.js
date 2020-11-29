@@ -12,7 +12,6 @@ import { attemptUpdateTodo } from '_actions/todos';
 import { formatDaysToNow } from '_utils/dates.js';
 import useCombinedRefs from '_hooks/useCombinedRefs';
 import CalendarIcon from '_assets/icons/calendar.svg';
-import CheckCircleIcon from '_assets/icons/check-circle.svg';
 import AlertCircleIcon from '_assets/icons/alert-circle.svg';
 import { setCurrentTodo } from '_actions/currentTodo';
 
@@ -120,7 +119,7 @@ const Todo = ({
         </FooterLeft>
 
         <FooterRight>
-          <Checkmark onClick={completeTodo} />
+          <Checkmark onClick={completeTodo} highlight={!!isWithinPomodoro} />
         </FooterRight>
       </Footer>
     </Container>
@@ -163,10 +162,6 @@ const Container = styled.div`
   position: relative;
   border-right: ${({ theme, categoryColor, selectedCategory }) =>
     `${theme.sizes.cardBorder} solid ${selectedCategory ? 'inherit' : categoryColor}`};
-  border-left: ${({ theme, inPomodori, selectedCategory, categoryColor }) =>
-    `${theme.sizes.cardBorder} solid ${
-      selectedCategory && inPomodori ? categoryColor : inPomodori ? theme.colors.primary : 'inherit'
-    }`};
   margin-bottom: 7px;
 
   &:hover,
