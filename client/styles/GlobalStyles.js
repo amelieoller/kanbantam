@@ -19,6 +19,7 @@ const GlobalStyles = createGlobalStyle`
     font-size: 12px;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
+    overflow: hidden;
   }
 
   body {
@@ -26,6 +27,11 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    position: fixed;
+    width: 100%;
   }
 
   main {
@@ -223,6 +229,12 @@ const GlobalStyles = createGlobalStyle`
 
   [hidden] {
     display: none;
+  }
+
+  @media ${(props) => props.theme.media.tabletSmall} {
+    .hide-on-mobile {
+      display: none !important;
+    }
   }
 
   /* Skip to content link */

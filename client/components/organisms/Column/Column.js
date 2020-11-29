@@ -198,7 +198,7 @@ const EditListInput = styled.input`
 
 const ListFooter = styled.div`
   height: ${({ theme }) => theme.sizes.listFooterHeight};
-  padding-top: 15px;
+  padding-top: 7px;
 `;
 
 Column.propTypes = {

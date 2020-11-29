@@ -47,13 +47,12 @@ function Navigation({ pathname }) {
   const logout = () => dispatch(attemptLogout()).catch(R.identity);
 
   const isHome = pathname === '/';
-  const isThinDisplay = window.innerWidth < 680;
 
   return (
     <StyledNavigation role="navigation" isHome={isHome} navBackground={currentCategory.color}>
       <Left to="/">
         <LogoIcon />
-        {!isThinDisplay && 'Kanbantam'}
+        <span className="hide-on-mobile">Kanbantam</span>
       </Left>
 
       <Right>
@@ -130,6 +129,9 @@ const StyledNavigation = styled.nav`
   align-items: center;
   z-index: 2;
   box-shadow: 0px 3px 6px 0px rgba(155, 170, 178, 0.25);
+  min-height: 40px;
+  max-height: 40px;
+  overflow: hidden;
 
   & > * > button:hover,
   & > * > button:focus,

@@ -283,9 +283,13 @@ const StyledBoard = styled.div`
   height: calc(100vh - ${({ theme }) => theme.sizes.navbarHeight});
   background: ${({ theme }) => theme.colors.boardBackground};
   width: max-content;
-  position: relative;
   max-width: 100vw;
   max-height: 100vh;
+  position: relative;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 
   /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
   margin-top: ${({ theme }) => theme.sizes.navbarHeight};

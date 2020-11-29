@@ -32,7 +32,12 @@ const UpdateTextButton = ({ text, handleUpdate }) => {
       onKeyDown={(e) => e.keyCode === 13 && handleSubmit()}
     />
   ) : (
-    <Button onClick={() => setIsEditOpen(true)} label="Open update text input" noBackground>
+    <Button
+      onClick={() => setIsEditOpen(true)}
+      label="Open update text input"
+      className="hide-on-mobile"
+      noBackground
+    >
       {newText}
     </Button>
   );

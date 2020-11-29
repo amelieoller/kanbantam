@@ -1,97 +1,125 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as R from 'ramda';
+import Modal from 'react-modal';
 
 import Button from '_atoms/Button';
-import useOnClickOutside from '_hooks/useOnClickOutside';
-import useKeyDown from '_hooks/useKeyDown';
 
 const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
-  const colorRef = useRef();
-
-  const [isCategoryPickerOpen, setIsCategoryPickerOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('');
 
   const { categories } = useSelector(R.pick(['categories']));
 
   useEffect(() => {
-    if (categories) {
+    if (currentCategoryId === 'all') {
+      setCurrentCategory({ id: 'all' });
+    } else if (categories) {
       const cat = categories.find((c) => c.id === currentCategoryId);
-
-      if (currentCategoryId === 'all') {
-        setCurrentCategory({ id: 'all' });
-      } else {
-        setCurrentCategory(cat);
-      }
+      setCurrentCategory(cat);
     }
   }, [categories, currentCategoryId]);
 
-  useOnClickOutside(colorRef, () => setIsCategoryPickerOpen(false));
-  useKeyDown('Escape', () => setIsCategoryPickerOpen(false));
-
   const handleChangeComplete = (newCategoryId) => {
-    setIsCategoryPickerOpen(false);
+    setIsModalOpen(false);
 
     if (currentCategoryId !== newCategoryId) {
       onChange(newCategoryId);
     }
   };
 
+  const closeModal = () => setIsModalOpen(false);
+  const toggleModal = () => setIsModalOpen((prevState) => !prevState);
+
+  const customStyles = {
+    content: {
+      left: 'auto',
+      right: '0',
+      bottom: 'auto',
+      padding: '0',
+      margin: '5px',
+      border: 'none',
+    },
+  };
+
+  const renderCategoryOptions = () => (
+    <CategoryOptionsComponent
+      handleChangeComplete={handleChangeComplete}
+      currentCategory={currentCategory}
+      currentCategoryId={currentCategoryId}
+      categories={categories}
+    />
+  );
+
   return (
     <>
-      {!noToggle && (
-        <Button
-          onClick={() => setIsCategoryPickerOpen((prevState) => !prevState)}
-          label="Select category"
-          size="large"
-          noBackground
-        >
-          <Circle
-            color={currentCategory && currentCategory.color}
-            className={currentCategoryId === 'all' ? 'rainbow' : ''}
-            notInPicker
-          >
-            {currentCategory && currentCategory.title ? currentCategory.title[0] : ''}
-          </Circle>
-        </Button>
-      )}
-
-      {(noToggle || isCategoryPickerOpen) && (
-        <CategoryOptions ref={colorRef} noToggle={noToggle} className="category-picker">
-          <>
-            <Button onClick={() => handleChangeComplete('')} label="Select category" noBackground>
-              <Circle className="border"></Circle>
-              <OptionText isSelected={!currentCategory}>Unassigned</OptionText>
-            </Button>
-
-            <Button
-              onClick={() => handleChangeComplete('all')}
-              label="Select category"
-              noBackground
+      {noToggle ? (
+        renderCategoryOptions()
+      ) : (
+        <>
+          <Button onClick={toggleModal} label="Select category" size="large" noBackground>
+            <Circle
+              color={currentCategory && currentCategory.color}
+              className={currentCategoryId === 'all' ? 'rainbow' : ''}
+              notInPicker
             >
-              <Circle color={currentCategory && currentCategory.color} className="rainbow"></Circle>
-              <OptionText isSelected={currentCategoryId === 'all'}>All</OptionText>
-            </Button>
+              {currentCategory && currentCategory.title ? currentCategory.title[0] : ''}
+            </Circle>
+          </Button>
 
-            {categories.map((c) => (
-              <Button
-                onClick={() => handleChangeComplete(c.id)}
-                label="Select category"
-                key={c.id}
-                noBackground
-              >
-                <Circle color={c.color}>{c.title[0]}</Circle>
-                <OptionText isSelected={currentCategory ? c.id === currentCategory.id : false}>
-                  {c.title}
-                </OptionText>
-              </Button>
-            ))}
-          </>
-        </CategoryOptions>
+          <Modal
+            isOpen={isModalOpen}
+            onRequestClose={closeModal}
+            contentLabel="Category Modal"
+            style={customStyles}
+          >
+            {renderCategoryOptions()}
+          </Modal>
+        </>
       )}
     </>
+  );
+};
+
+const CategoryOptionsComponent = ({
+  handleChangeComplete,
+  currentCategory,
+  currentCategoryId,
+  categories,
+}) => {
+  console.log('currentCategory', currentCategory);
+  console.log('currentCategoryId', currentCategoryId);
+  console.log('categories', categories);
+  return (
+    <CategoryOptions className="category-picker">
+      <>
+        <Button onClick={() => handleChangeComplete('')} label="Select category" noBackground>
+          <Circle className="border"></Circle>
+          <OptionText isSelected={!currentCategory}>Unassigned</OptionText>
+        </Button>
+
+        <Button onClick={() => handleChangeComplete('all')} label="Select category" noBackground>
+          <Circle color={currentCategory && currentCategory.color} className="rainbow"></Circle>
+          <OptionText isSelected={currentCategoryId === 'all'}>All</OptionText>
+        </Button>
+
+        {categories.map((c) => (
+          <Button
+            onClick={() => handleChangeComplete(c.id)}
+            label="Select category"
+            key={c.id}
+            noBackground
+          >
+            <Circle color={c.color}>{c.title[0]}</Circle>
+            <OptionText isSelected={currentCategory ? c.id === currentCategory.id : false}>
+              {c.title}
+            </OptionText>
+          </Button>
+        ))}
+      </>
+    </CategoryOptions>
   );
 };
 
@@ -137,13 +165,8 @@ const Circle = styled.span`
 `;
 
 const CategoryOptions = styled.div`
-  position: ${({ noToggle }) => (noToggle ? 'initial' : 'absolute')};
-  top: 45px;
-  right: 30px;
-  left: 30px;
   background: rgb(255, 255, 255);
-  box-shadow: ${({ noToggle }) => !noToggle && 'rgba(0, 0, 0, 0.25) 0px 1px 4px'};
-  border: ${({ noToggle, theme }) => noToggle && `1px solid ${theme.colors.surfaceVariant}`};
+  border: ${({ theme }) => `1px solid ${theme.colors.surfaceVariant}`};
   border-radius: 4px;
   padding: ${({ theme }) => theme.sizes.spacingSmall};
   display: grid;
@@ -180,6 +203,18 @@ CategorySelect.propTypes = {
 CategorySelect.defaultProps = {
   currentCategoryId: '',
   noToggle: false,
+};
+
+CategoryOptionsComponent.propTypes = {
+  handleChangeComplete: PropTypes.func.isRequired,
+  currentCategoryId: PropTypes.string,
+  currentCategory: PropTypes.shape({
+    color: PropTypes.string,
+    id: PropTypes.string,
+  }),
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({ title: PropTypes.string, color: PropTypes.string, id: PropTypes.string }),
+  ),
 };
 
 export default CategorySelect;

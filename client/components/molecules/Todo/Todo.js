@@ -167,10 +167,7 @@ const Container = styled.div`
     `${theme.sizes.cardBorder} solid ${
       selectedCategory && inPomodori ? categoryColor : inPomodori ? theme.colors.primary : 'inherit'
     }`};
-
-  &:not(:last-child) {
-    margin-bottom: 7px;
-  }
+  margin-bottom: 7px;
 
   &:hover,
   &:active,

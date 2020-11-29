@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 import { Switch, Route, Redirect } from 'react-router';
@@ -84,39 +84,47 @@ function Main({ location, theme: { colors } }) {
 
   return !loading ? (
     <>
-      <a className="skip-to-content-link" href="#main">
+      {/* <a className="skip-to-content-link" href="#main">
         Skip to Content
-      </a>
+      </a> */}
 
       <Notifications notifications={alerts} style={style} />
 
-      {!auth ? (
-        <>
-          <Switch>
-            <Route exact path="/" component={WelcomePage} />
-            <Redirect to="/" />
-          </Switch>
-        </>
-      ) : (
-        <>
-          <Navigation pathname={location.pathname} />
-          <Switch>
-            <Route exact path="/" component={BoardsPage} />
-            <Route
-              path="/boards/:id"
-              render={(routerProps) => {
-                return <BoardPage boardId={routerProps.match.params.id} />;
-              }}
-            />
-            <Route path="*" component={LostPage} />
-          </Switch>
-        </>
-      )}
+      <MainWrapper>
+        {!auth ? (
+          <>
+            <Switch>
+              <Route exact path="/" component={WelcomePage} />
+              <Redirect to="/" />
+            </Switch>
+          </>
+        ) : (
+          <>
+            <Navigation pathname={location.pathname} />
+            <Switch>
+              <Route exact path="/" component={BoardsPage} />
+              <Route
+                path="/boards/:id"
+                render={(routerProps) => {
+                  return <BoardPage boardId={routerProps.match.params.id} />;
+                }}
+              />
+              <Route path="*" component={LostPage} />
+            </Switch>
+          </>
+        )}
+      </MainWrapper>
     </>
   ) : (
     <Spinner />
   );
 }
+
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
 
 Main.propTypes = {
   location: PropTypes.shape({
