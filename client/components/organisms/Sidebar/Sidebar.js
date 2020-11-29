@@ -148,7 +148,7 @@ const SidebarContent = styled.div`
 const CollapseButton = styled.button`
   position: absolute;
   left: 50%;
-  bottom: 10px;
+  top: calc(85vh - 40px);
   transform: translateX(-50%);
   border-radius: 50%;
   height: 30px;

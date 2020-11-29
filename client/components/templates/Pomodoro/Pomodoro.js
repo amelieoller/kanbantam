@@ -176,6 +176,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
         onMouseLeave={() => setIsHovering(false)}
         onClick={playOrPauseTimer}
         isRunning={isRunning}
+        isSidebarOpen={isSidebarOpen}
       >
         <svg className="striped">
           <circle strokeWidth="6" fill="transparent" cx="75" cy="75" r="70" />
@@ -215,26 +216,26 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
 const Clock = styled.div`
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: ${({ isSidebarOpen }) => (isSidebarOpen ? '150px' : '100%')};
+  height: ${({ isSidebarOpen }) => (isSidebarOpen ? '150px' : '40px')};
 
   .center {
-    width: 55px;
-    position: absolute;
+    width: ${({ isSidebarOpen }) => (isSidebarOpen ? '55px' : '100%')};
+    position: ${({ isSidebarOpen }) => (isSidebarOpen ? 'absolute' : 'initial')};
     top: 38%;
-    left: 33%;
+    left: 32%;
     display: flex;
     justify-content: center;
     align-items: baseline;
 
     .minutes {
-      font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '3rem' : '2.4rem')};
+      font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '2.4rem' : '2rem')};
       color: ${({ theme }) => theme.colors.onBackground};
-      padding-right: ${({ isSidebarOpen }) => (isSidebarOpen ? '2px' : '0')};
+      padding-right: ${({ isSidebarOpen }) => (isSidebarOpen ? '0' : '0')};
     }
 
     .seconds {
-      font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '1.7rem' : '1.4rem')};
+      font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '1.4rem' : '1.1rem')};
       color: ${({ theme }) => theme.colors.darker(3, 'surfaceVariant')};
     }
   }
@@ -245,6 +246,7 @@ const Clock = styled.div`
     left: 0;
     width: 150px;
     height: 150px;
+    display: ${({ isSidebarOpen }) => (isSidebarOpen ? 'block' : 'none')};
 
     circle {
       stroke-dasharray: 3 3;
@@ -259,6 +261,7 @@ const Clock = styled.div`
     left: 0;
     width: 150px;
     height: 150px;
+    display: ${({ isSidebarOpen }) => (!isSidebarOpen ? 'none' : 'block')};
 
     circle {
       stroke: ${({ theme, isRunning }) =>
