@@ -155,11 +155,7 @@ const ListHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius};
-  border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius};
-  background-color: ${({ theme }) => theme.colors.boardBackground};
   transition: color 0.2s ease;
-  /* height: ${({ theme }) => theme.sizes.listHeaderHeight}; */
   color: ${({ theme }) => theme.colors.darkGrey};
   font-weight: 500;
   font-size: 14px;
@@ -170,8 +166,6 @@ const ListHeader = styled.div`
   }
 
   &:focus {
-    /* outline: 2px solid indigo;
-    outline-offset: 2px; */
     outline: none;
   }
 `;
