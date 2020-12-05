@@ -92,6 +92,8 @@ const StyledButton = styled.button`
   border: 2px solid
     ${({ theme, buttonType }) => (buttonType ? theme.colors[buttonType] : theme.colors.primary)};
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 
   &:hover {
@@ -106,10 +108,9 @@ const StyledButton = styled.button`
     height: 17px;
   }
 
-  & > *:not(:last-child) {
-    margin-right: 6px;
+  & > *:not(:first-child) {
+    margin-top: 3px;
   }
-
   ${(props) => props.buttonType && propsCSS.buttonType};
   ${(props) => props.size === 'small' && propsCSS.small};
   ${(props) => props.size === 'large' && propsCSS.large};

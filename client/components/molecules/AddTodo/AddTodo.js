@@ -5,9 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { attemptAddTodo } from '_actions/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
-import PlusIcon from '_assets/icons/plus.svg';
-import Button from '_atoms/Button';
-import PlusButton from '../../atoms/PlusButton';
+import PlusButton from '_atoms/PlusButton';
 
 function AddTodo({ board, listId, lastCardSortVal }) {
   const formRef = useRef();

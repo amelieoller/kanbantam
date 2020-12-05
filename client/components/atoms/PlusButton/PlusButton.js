@@ -4,34 +4,49 @@ import styled from 'styled-components';
 
 import PlusIcon from '_assets/icons/plus.svg';
 
-const PlusButton = ({ onClick, label }) => {
-  const size = 14;
+const PlusButton = ({ onClick, label, children, large }) => {
+  const size = large ? 17.5 : 14;
   const stroke = 2;
 
   return (
-    <StyledPlusButton
-      onClick={onClick}
-      size={size}
-      stroke={stroke}
-      label={label}
-      aria-label={label}
-    >
-      <svg className="plus-circle">
-        <circle
-          stroke="white"
-          strokeWidth={stroke}
-          fill="transparent"
-          r={size - stroke}
-          cx={size}
-          cy={size}
-          strokeLinecap="round"
-        />
-      </svg>
+    <Wrapper>
+      <StyledPlusButton
+        onClick={onClick}
+        size={size}
+        stroke={stroke}
+        label={label}
+        aria-label={label}
+      >
+        <svg className="plus-circle">
+          <circle
+            stroke="white"
+            strokeWidth={stroke}
+            fill="transparent"
+            r={size - stroke}
+            cx={size}
+            cy={size}
+            strokeLinecap="round"
+          />
+        </svg>
 
-      <PlusIcon className="plus-mark" />
-    </StyledPlusButton>
+        <PlusIcon className="plus-mark" />
+      </StyledPlusButton>
+
+      {children && <Label>{children}</Label>}
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const Label = styled.div`
+  margin-top: 2px;
+`;
 
 const StyledPlusButton = styled.div`
   position: relative;
@@ -54,7 +69,7 @@ const StyledPlusButton = styled.div`
     width: ${({ size, stroke }) => `${size + stroke}px`};
     height: ${({ size, stroke }) => `${size + stroke}px`};
     position: absolute;
-    left: 23%;
+    left: 22%;
     top: 23%;
     color: #ccccd3;
     transition: all 0.8s ease;
@@ -76,7 +91,10 @@ const StyledPlusButton = styled.div`
 `;
 
 PlusButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
+  label: PropTypes.string,
+  children: PropTypes.node,
+  large: PropTypes.bool,
 };
 
 export default PlusButton;

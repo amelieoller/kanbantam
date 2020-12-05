@@ -36,6 +36,7 @@ const GlobalStyles = createGlobalStyle`
 
   main {
     display: block;
+    height: 100%;
   }
 
   a {

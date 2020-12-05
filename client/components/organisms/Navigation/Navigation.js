@@ -66,6 +66,7 @@ function Navigation({ pathname }) {
             <CategorySelect
               currentCategoryId={currentBoard.category}
               onChange={(newCategoryId) => handleUpdateBoard({ category: newCategoryId })}
+              boardId={currentBoard.id}
             />
 
             {currentBoard.focusMode ? (

@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 import Modal from 'react-modal';
+import { useDispatch } from 'react-redux';
 
+import { attemptAddCategory } from '_actions/categories';
 import Button from '_atoms/Button';
+import PlusButton from '_atoms/PlusButton';
+import Input from '_atoms/Input';
 
-const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
+const CategorySelect = ({ onChange, currentCategoryId, noToggle, boardId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('');
 
@@ -50,6 +54,7 @@ const CategorySelect = ({ onChange, currentCategoryId, noToggle }) => {
       currentCategory={currentCategory}
       currentCategoryId={currentCategoryId}
       categories={categories}
+      boardId={boardId}
     />
   );
 
@@ -88,40 +93,110 @@ const CategoryOptionsComponent = ({
   currentCategory,
   currentCategoryId,
   categories,
+  boardId,
 }) => {
-  console.log('currentCategory', currentCategory);
-  console.log('currentCategoryId', currentCategoryId);
-  console.log('categories', categories);
+  const [showAddNew, setShowAddNew] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
+
+  const dispatch = useDispatch();
+
+  const colors = [
+    '#FF6900',
+    '#FCB900',
+    '#7BDCB5',
+    '#00D084',
+    '#8ED1FC',
+    '#0693E3',
+    '#ABB8C3',
+    '#EB144C',
+    '#F78DA7',
+    '#9900EF',
+  ];
+
+  const handleCategorySubmit = () => {
+    setShowAddNew(false);
+
+    if (newCategory) {
+      setNewCategory('');
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+      dispatch(
+        attemptAddCategory({
+          title: newCategory,
+          color: randomColor,
+          board: boardId,
+        }),
+      );
+    }
+  };
+
   return (
-    <CategoryOptions className="category-picker">
-      <>
-        <Button onClick={() => handleChangeComplete('')} label="Select category" noBackground>
-          <Circle className="border"></Circle>
-          <OptionText isSelected={!currentCategory}>Unassigned</OptionText>
-        </Button>
-
-        <Button onClick={() => handleChangeComplete('all')} label="Select category" noBackground>
-          <Circle color={currentCategory && currentCategory.color} className="rainbow"></Circle>
-          <OptionText isSelected={currentCategoryId === 'all'}>All</OptionText>
-        </Button>
-
-        {categories.map((c) => (
-          <Button
-            onClick={() => handleChangeComplete(c.id)}
-            label="Select category"
-            key={c.id}
-            noBackground
-          >
-            <Circle color={c.color}>{c.title[0]}</Circle>
-            <OptionText isSelected={currentCategory ? c.id === currentCategory.id : false}>
-              {c.title}
-            </OptionText>
+    <>
+      <CategoryOptions className="category-picker">
+        <>
+          <Button onClick={() => handleChangeComplete('')} label="Select category" noBackground>
+            <Circle className="border"></Circle>
+            <OptionText isSelected={!currentCategory}>Unassigned</OptionText>
           </Button>
-        ))}
-      </>
-    </CategoryOptions>
+          <Button onClick={() => handleChangeComplete('all')} label="Select category" noBackground>
+            <Circle color={currentCategory && currentCategory.color} className="rainbow"></Circle>
+            <OptionText isSelected={currentCategoryId === 'all'}>All</OptionText>
+          </Button>
+          {categories.map((c) => (
+            <Button
+              onClick={() => handleChangeComplete(c.id)}
+              label="Select Category"
+              key={c.id}
+              noBackground
+            >
+              <Circle color={c.color}>{c.title[0]}</Circle>
+              <OptionText isSelected={currentCategory ? c.id === currentCategory.id : false}>
+                {c.title}
+              </OptionText>
+            </Button>
+          ))}
+
+          <PlusButtonContainer>
+            <PlusButton onClick={() => setShowAddNew((prevState) => !prevState)} label="Add" large>
+              <OptionText>Add</OptionText>
+            </PlusButton>
+          </PlusButtonContainer>
+        </>
+      </CategoryOptions>
+
+      {showAddNew && (
+        <NewCategoryForm
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCategorySubmit();
+          }}
+        >
+          <Input
+            label="New Category"
+            onChange={(e) => {
+              setNewCategory(e.target.value);
+            }}
+            value={newCategory}
+            noLabel
+          />
+          <Button label="Add New Category" onClick={handleCategorySubmit}>
+            Add New Category
+          </Button>
+        </NewCategoryForm>
+      )}
+    </>
   );
 };
+
+const NewCategoryForm = styled.form`
+  input {
+    margin: 5px 0;
+  }
+`;
+
+const PlusButtonContainer = styled.div`
+  padding: 5px;
+`;
 
 const OptionText = styled.span`
   font-size: 11px;
@@ -172,7 +247,7 @@ const CategoryOptions = styled.div`
   display: grid;
   grid-gap: ${({ theme }) => theme.sizes.spacingSmall};
   grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-  min-width: 100px;
+  min-width: 120px;
 
   button {
     flex-direction: column;
@@ -198,6 +273,7 @@ CategorySelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   currentCategoryId: PropTypes.string,
   noToggle: PropTypes.bool,
+  boardId: PropTypes.string.isRequired,
 };
 
 CategorySelect.defaultProps = {
@@ -208,6 +284,7 @@ CategorySelect.defaultProps = {
 CategoryOptionsComponent.propTypes = {
   handleChangeComplete: PropTypes.func.isRequired,
   currentCategoryId: PropTypes.string,
+  boardId: PropTypes.string.isRequired,
   currentCategory: PropTypes.shape({
     color: PropTypes.string,
     id: PropTypes.string,

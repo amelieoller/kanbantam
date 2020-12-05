@@ -20,7 +20,7 @@ import AlertCircle from '_assets/icons/alert-circle.svg';
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#app');
 
-function TodoModal({ completedListId, isSidebarOpen }) {
+function TodoModal({ completedListId, isSidebarOpen, boardId }) {
   const dispatch = useDispatch();
   const { currentTodo } = useSelector(R.pick(['currentTodo']));
   const isOpen = !!currentTodo.id;
@@ -167,6 +167,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
             <CategorySelect
               onChange={(newCategoryId) => updateTodo('category', newCategoryId)}
               currentCategoryId={updatedTodo.category}
+              boardId={boardId}
               noToggle
             />
           </span>
@@ -186,7 +187,7 @@ function TodoModal({ completedListId, isSidebarOpen }) {
               size="small"
               onClick={() => {
                 if (
-                  window.confirm(`Are you sure you want to delete the board "${updatedTodo.text}"?`)
+                  window.confirm(`Are you sure you want to delete the todo "${updatedTodo.text}"?`)
                 )
                   deleteTodo();
               }}
@@ -214,10 +215,6 @@ const Priorities = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
-
-  button {
-    display: block;
-  }
 `;
 
 const Buttons = styled.div`
@@ -229,7 +226,7 @@ const Buttons = styled.div`
     width: 3rem;
     width: 75px;
     color: white;
-    display: block;
+    width: 100%;
 
     svg {
       height: 19px;
@@ -257,6 +254,7 @@ const ModalWrapper = styled.div``;
 TodoModal.propTypes = {
   completedListId: PropTypes.string.isRequired,
   isSidebarOpen: PropTypes.bool,
+  boardId: PropTypes.string.isRequired,
 };
 
 export default TodoModal;

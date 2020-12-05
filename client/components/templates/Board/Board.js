@@ -272,7 +272,11 @@ function Board({ board, theme: { sizes } }) {
         </DragDropContext>
       </main>
 
-      <TodoModal completedListId={completedListId} isSidebarOpen={board.sidebarOpen} />
+      <TodoModal
+        completedListId={completedListId}
+        isSidebarOpen={board.sidebarOpen}
+        boardId={board.id}
+      />
     </StyledBoard>
   );
 }
