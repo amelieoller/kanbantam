@@ -25,7 +25,7 @@ const Dropdown = ({ children, label, required, handleOnBlur, defaultValue, helpT
           {children}
         </StyledSelect>
 
-        {helpText && <HelpText>{helpText}</HelpText>}
+        {helpText && <div className="help-text">{helpText}</div>}
       </InputWrapper>
     );
   };
@@ -67,13 +67,6 @@ const StyledSelect = styled.select`
     calc(100% - 2em) 0.2em;
   background-size: 5px 5px, 5px 5px, 1px 1.5em;
   background-repeat: no-repeat;
-`;
-
-const HelpText = styled.div`
-  font-style: italic;
-  font-size: 1rem;
-  margin-top: 2px;
-  color: ${({ theme }) => theme.colors.disabled('onSurface')};
 `;
 
 Dropdown.propTypes = {

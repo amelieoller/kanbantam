@@ -232,6 +232,13 @@ const GlobalStyles = createGlobalStyle`
     display: none;
   }
 
+  .help-text {
+    font-style: italic;
+    font-size: 1rem;
+    margin-top: 2px;
+    color: ${({ theme }) => theme.colors.disabled('onSurface')};
+  }
+
   @media ${(props) => props.theme.media.tabletSmall} {
     .hide-on-mobile {
       display: none !important;

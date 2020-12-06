@@ -19,7 +19,7 @@ const Input = ({ label, type, helpText, noLabel, ...inputProps }) => {
           {...inputProps}
         />
 
-        {helpText && <HelpText>{helpText}</HelpText>}
+        {helpText && <div className="help-text">{helpText}</div>}
       </InputWrapper>
     );
   };
@@ -46,13 +46,6 @@ const StyledInput = styled.input`
   font-size: 1.3rem;
   -webkit-appearance: none;
   margin-top: ${({ noLabel }) => !noLabel && '3px'};
-`;
-
-const HelpText = styled.div`
-  font-style: italic;
-  font-size: 1rem;
-  margin-top: 2px;
-  color: ${({ theme }) => theme.colors.disabled('onSurface')};
 `;
 
 Input.propTypes = {

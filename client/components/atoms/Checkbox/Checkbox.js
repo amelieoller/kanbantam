@@ -1,29 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import CheckSquareIcon from '_assets/icons/check-square.svg';
 import SquareIcon from '_assets/icons/square.svg';
 
-const Checkbox = ({ label, onChange, checked }) => {
-  const [isChecked, setIsChecked] = useState(checked ? 1 : 0);
+const Checkbox = ({ label, onChange, checked, helpText }) => {
+  const [isChecked, setIsChecked] = useState(checked);
+
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
 
   const handleCheck = () => {
     onChange();
-    setIsChecked((state) => (state + 1) % 2);
+    setIsChecked((prevIsChecked) => !prevIsChecked);
   };
 
   return (
-    <StyledCheckbox
-      onClick={handleCheck}
-      onKeyDown={(e) => e.keyCode === 13 && handleCheck()}
-      tabIndex={0}
-      isChecked={isChecked}
-    >
-      {isChecked ? <CheckSquareIcon /> : <SquareIcon />}
+    <>
+      <StyledCheckbox
+        onClick={handleCheck}
+        onKeyDown={(e) => e.keyCode === 13 && handleCheck()}
+        tabIndex={0}
+        isChecked={isChecked}
+      >
+        {isChecked ? <CheckSquareIcon /> : <SquareIcon />}
 
-      <label htmlFor="checkbox">{label}</label>
-    </StyledCheckbox>
+        <label htmlFor="checkbox">{label}</label>
+      </StyledCheckbox>
+
+      {helpText && <div className="help-text">{helpText}</div>}
+    </>
   );
 };
 
@@ -56,6 +64,7 @@ Checkbox.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   checked: PropTypes.bool,
+  helpText: PropTypes.string,
 };
 
 export default Checkbox;

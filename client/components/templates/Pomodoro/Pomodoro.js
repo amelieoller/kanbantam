@@ -59,7 +59,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
       // Update title
       const [minutes, seconds] = formatTime(newMsPassed, sessionLength);
-      document.title = `${isWorkSession ? 'Work' : 'Break'} - ${minutes}:${seconds}`;
+      document.title = `${minutes}:${seconds} - ${isWorkSession ? 'Work' : 'Break'}`;
 
       // Update pomodoro circle
       setStrokeDasharray(
@@ -108,6 +108,21 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     }
   }, [isRunning]);
 
+  useEffect(() => {
+    // Switch to focus mode when pomodoro starts if startFocusModeWithPomodoro is enabled
+    if (currentBoard.startFocusModeWithPomodoro) {
+      const isWorkSession = sessionLength === workLength;
+
+      if (isRunning && isWorkSession) {
+        // If startFocusModeWithPomodoro is enabled AND if the session we're starting is a work session, enable focus mode
+        toggleFocusMode(true);
+      } else if (isRunning) {
+        // If startFocusModeWithPomodoro is enabled AND if the session we're starting is a break session, disable focus mode
+        toggleFocusMode(false);
+      }
+    }
+  }, [currentBoard.startFocusModeWithPomodoro, isRunning, sessionLength, workLength]);
+
   // -------------- HELPERS --------------
   const switchSessions = () => {
     // Switch sessions and reset everything else
@@ -115,10 +130,13 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     setPausedTime(0);
     setTimePassedMs(0);
     setEndTime(0);
-    setIsRunning(false);
     setStrokeDasharray('0,20000');
 
-    document.title = 'Kanbantam';
+    // If continuousPomodori is enabled, we keep the clock running, otherwise, set running to false
+    if (!currentBoard.continuousPomodori) {
+      setIsRunning(false);
+      document.title = 'Kanbantam';
+    }
   };
 
   const playOrPauseTimer = () => setIsRunning((prevIsRunning) => !prevIsRunning);
@@ -130,6 +148,16 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
       attemptUpdateTodo({
         id: firstTodo.id,
         elapsedMinutes: firstTodo.elapsedMinutes + 1,
+      }),
+    );
+  };
+
+  // Toggle focusMode
+  const toggleFocusMode = (bool) => {
+    dispatch(
+      attemptUpdateBoard({
+        id: currentBoard.id,
+        focusMode: bool,
       }),
     );
   };
@@ -353,6 +381,8 @@ Pomodoro.propTypes = {
     id: PropTypes.string.isRequired,
     totalPomodori: PropTypes.number,
     elapsedPomodori: PropTypes.shape({}),
+    continuousPomodori: PropTypes.bool,
+    startFocusModeWithPomodoro: PropTypes.bool,
   }),
   workLength: PropTypes.number.isRequired,
   breakLength: PropTypes.number.isRequired,

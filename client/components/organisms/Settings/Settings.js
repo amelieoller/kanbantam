@@ -18,6 +18,7 @@ import ListIcon from '_assets/icons/list.svg';
 import SettingsIcon from '_assets/icons/settings.svg';
 import TrashIcon from '_assets/icons/trash-2.svg';
 import XIcon from '_assets/icons/x.svg';
+import ClockIcon from '_assets/icons/clock.svg';
 
 const Settings = ({ currentBoard }) => {
   const dispatch = useDispatch();
@@ -28,7 +29,8 @@ const Settings = ({ currentBoard }) => {
   const [defaultTime, setDefaultTime] = useState(0);
   const [defaultCategory, setDefaultCategory] = useState('');
   const [defaultFocusList, setDefaultFocusList] = useState('');
-  const [focusMode, setFocusMode] = useState(false);
+  const [startFocusModeWithPomodoro, setStartFocusModeWithPomodoro] = useState(false);
+  const [continuousPomodori, setContinuousPomodori] = useState(false);
 
   const [settingsPending, setSettingsPending] = useState(false);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
@@ -36,8 +38,9 @@ const Settings = ({ currentBoard }) => {
   useEffect(() => {
     setDefaultTime(currentBoard.defaultTime);
     setDefaultCategory(currentBoard.defaultCategory);
-    setFocusMode(currentBoard.focusMode);
+    setStartFocusModeWithPomodoro(currentBoard.startFocusModeWithPomodoro);
     setDefaultFocusList(currentBoard.defaultFocusList || '');
+    setContinuousPomodori(currentBoard.continuousPomodori);
   }, [currentBoard]);
 
   const handleUpdateBoard = () => {
@@ -47,8 +50,9 @@ const Settings = ({ currentBoard }) => {
           id: currentBoard.id,
           defaultTime,
           defaultCategory,
-          focusMode,
+          startFocusModeWithPomodoro,
           defaultFocusList,
+          continuousPomodori,
         }),
       );
 
@@ -155,12 +159,28 @@ const Settings = ({ currentBoard }) => {
           </InputWrapper>
 
           <Checkbox
-            label="Activate when time starts"
+            label="Activate when Pomodoro starts"
             onChange={() => {
               setSettingsPending(true);
-              setFocusMode(!focusMode);
+              setStartFocusModeWithPomodoro(!startFocusModeWithPomodoro);
             }}
-            checked={focusMode}
+            checked={startFocusModeWithPomodoro}
+            helpText="Activates focus mode when Pomodoro timer starts"
+          />
+
+          {/* Pomodoro */}
+          <h2>
+            <ClockIcon /> Pomodoro
+          </h2>
+
+          <Checkbox
+            label="Enable continuous Pomodori"
+            onChange={() => {
+              setSettingsPending(true);
+              setContinuousPomodori(!continuousPomodori);
+            }}
+            checked={continuousPomodori}
+            helpText="Pomodoro timer will continue running and automatically switch from work to break mode and back"
           />
 
           {/* Delete Board */}
@@ -264,7 +284,8 @@ Settings.propTypes = {
     title: PropTypes.string.isRequired,
     defaultTime: PropTypes.number,
     defaultCategory: PropTypes.string,
-    focusMode: PropTypes.bool,
+    startFocusModeWithPomodoro: PropTypes.bool,
+    continuousPomodori: PropTypes.bool,
     defaultFocusList: PropTypes.string,
   }).isRequired,
 };
