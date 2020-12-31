@@ -21,7 +21,9 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
   const dispatch = useDispatch();
 
-  const [sessionLength, setSessionLength] = useState(workLength); // If it's a work session (25 min) or a break (5 min)
+  const [workSessionLength, setWorkSessionLength] = useState(workLength); // Length of a work session
+  const [breakSessionLength, setBreakSessionLength] = useState(breakLength); // Length of a break session
+  const [sessionLength, setSessionLength] = useState(workSessionLength); // If it's a work session (25 min) or a break (5 min)
   const [pausedTime, setPausedTime] = useState(0); // Ms when the timer was paused (so it can be started at that exact time)
   const [timePassedMs, setTimePassedMs] = useState(0); // The ms of time that have passed
   const [endTime, setEndTime] = useState(0); // Ms to when the time is run out (time now + length of the session in min * 60000)
@@ -34,7 +36,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
   // -------------- MAIN TIMER FUNCTIONALITY --------------
   const elapseTime = () => {
-    const isWorkSession = sessionLength === workLength;
+    const isWorkSession = sessionLength === workSessionLength;
     const isStartOfSession = timePassedMs === 0;
     const minuteHasPassed = Math.floor((timePassedMs / 1000) % 60) === 0;
 
@@ -75,6 +77,21 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
   useInterval(elapseTime, isRunning ? 990 : null);
 
   // -------------- EFFECTS --------------
+  // (Re)setting work and break session length when it changes
+  useEffect(() => {
+    const isWorkSession = sessionLength === workSessionLength;
+
+    setWorkSessionLength(workLength);
+    if (isWorkSession) setSessionLength(workLength);
+  }, [workLength]);
+
+  useEffect(() => {
+    const isBreakSession = sessionLength === breakSessionLength;
+
+    setBreakSessionLength(breakLength);
+    if (isBreakSession) setSessionLength(breakLength);
+  }, [breakLength]);
+
   // First time starting timer
   useEffect(() => {
     if (isRunning && !endTime) {
@@ -111,7 +128,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
   useEffect(() => {
     // Switch to focus mode when pomodoro starts if startFocusModeWithPomodoro is enabled
     if (currentBoard.startFocusModeWithPomodoro) {
-      const isWorkSession = sessionLength === workLength;
+      const isWorkSession = sessionLength === workSessionLength;
 
       if (isRunning && isWorkSession) {
         // If startFocusModeWithPomodoro is enabled AND if the session we're starting is a work session, enable focus mode
@@ -121,12 +138,12 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
         toggleFocusMode(false);
       }
     }
-  }, [currentBoard.startFocusModeWithPomodoro, isRunning, sessionLength, workLength]);
+  }, [currentBoard.startFocusModeWithPomodoro, isRunning, sessionLength, workSessionLength]);
 
   // -------------- HELPERS --------------
   const switchSessions = () => {
     // Switch sessions and reset everything else
-    setSessionLength(sessionLength === workLength ? breakLength : workLength);
+    setSessionLength(sessionLength === workSessionLength ? breakSessionLength : workSessionLength);
     setPausedTime(0);
     setTimePassedMs(0);
     setEndTime(0);

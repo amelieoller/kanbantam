@@ -31,6 +31,8 @@ const Settings = ({ currentBoard }) => {
   const [defaultFocusList, setDefaultFocusList] = useState('');
   const [startFocusModeWithPomodoro, setStartFocusModeWithPomodoro] = useState(false);
   const [continuousPomodori, setContinuousPomodori] = useState(false);
+  const [workSessionLength, setWorkSessionLength] = useState(0);
+  const [breakSessionLength, setBreakSessionLength] = useState(0);
 
   const [settingsPending, setSettingsPending] = useState(false);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
@@ -41,6 +43,8 @@ const Settings = ({ currentBoard }) => {
     setStartFocusModeWithPomodoro(currentBoard.startFocusModeWithPomodoro);
     setDefaultFocusList(currentBoard.defaultFocusList || '');
     setContinuousPomodori(currentBoard.continuousPomodori);
+    setWorkSessionLength(currentBoard.workSessionLength);
+    setBreakSessionLength(currentBoard.breakSessionLength);
   }, [currentBoard]);
 
   const handleUpdateBoard = () => {
@@ -53,6 +57,8 @@ const Settings = ({ currentBoard }) => {
           startFocusModeWithPomodoro,
           defaultFocusList,
           continuousPomodori,
+          workSessionLength,
+          breakSessionLength,
         }),
       );
 
@@ -183,6 +189,32 @@ const Settings = ({ currentBoard }) => {
             helpText="Pomodoro timer will continue running and automatically switch from work to break mode and back"
           />
 
+          <Input
+            label="Work Session Length"
+            onChange={(e) => {
+              const newMinutes = e.target.value === '' ? 0 : e.target.value;
+
+              setSettingsPending(true);
+              setWorkSessionLength(parseInt(newMinutes, 10));
+            }}
+            defaultValue={workSessionLength === 0 ? '' : workSessionLength}
+            type="number"
+            helpText="Length of a work session in minutes (default is 25 minutes)"
+          />
+
+          <Input
+            label="Break Session Length"
+            onChange={(e) => {
+              const newMinutes = e.target.value === '' ? 0 : e.target.value;
+
+              setSettingsPending(true);
+              setBreakSessionLength(parseInt(newMinutes, 10));
+            }}
+            defaultValue={breakSessionLength === 0 ? '' : breakSessionLength}
+            type="number"
+            helpText="Length of a break session in minutes (default is 5 minutes)"
+          />
+
           {/* Delete Board */}
           <h2>
             <AlertCircleIcon />
@@ -287,6 +319,8 @@ Settings.propTypes = {
     startFocusModeWithPomodoro: PropTypes.bool,
     continuousPomodori: PropTypes.bool,
     defaultFocusList: PropTypes.string,
+    workSessionLength: PropTypes.number,
+    breakSessionLength: PropTypes.number,
   }).isRequired,
 };
 

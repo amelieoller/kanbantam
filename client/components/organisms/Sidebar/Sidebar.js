@@ -63,8 +63,8 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
           <Pomodoro
             currentBoard={currentBoard}
             firstTodo={firstTodo}
-            workLength={25}
-            breakLength={5}
+            workLength={currentBoard.workSessionLength}
+            breakLength={currentBoard.breakSessionLength}
             isSidebarOpen={isSidebarOpen}
           />
         </SectionWrapper>
@@ -181,6 +181,10 @@ Sidebar.propTypes = {
     defaultFocusList: PropTypes.string,
     category: PropTypes.string,
     focusToday: PropTypes.string,
+    workSessionLength: PropTypes.number,
+    breakSessionLength: PropTypes.number,
+    totalPomodori: PropTypes.number,
+    elapsedPomodori: PropTypes.number,
   }),
 };
 

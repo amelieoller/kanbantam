@@ -18,6 +18,8 @@ const boardSchema = new Schema(
     focusMode: { type: Boolean, default: false },
     startFocusModeWithPomodoro: { type: Boolean, default: false },
     continuousPomodori: { type: Boolean, default: false },
+    workSessionLength: { type: Number, default: 25 },
+    breakSessionLength: { type: Number, default: 5 },
     defaultFocusList: { type: String },
     totalPomodori: { type: Number, default: 0 },
     order: { type: Number, decimal: true, default: 0 },
