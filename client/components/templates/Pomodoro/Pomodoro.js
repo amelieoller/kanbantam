@@ -77,6 +77,14 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
   useInterval(elapseTime, isRunning ? 990 : null);
 
   // -------------- EFFECTS --------------
+  // Pause and play pomodoro on keydown of spacebar
+  useEffect(() => {
+    document.addEventListener('keydown', (e) => e.code === 'Space' && playOrPauseTimer());
+    return () => {
+      document.removeEventListener('keydown');
+    };
+  }, []);
+
   // (Re)setting work and break session length when it changes
   useEffect(() => {
     const isWorkSession = sessionLength === workSessionLength;
