@@ -253,8 +253,13 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
             <Controls isSidebarOpen={isSidebarOpen}>{renderPlayPauseButtons()}</Controls>
           ) : (
             <>
-              <span className="minutes">{minutes}</span>
-              <span className="seconds">{seconds}</span>
+              <div>
+                <span className="minutes">{minutes}</span>
+                <span className="seconds">{seconds}</span>
+              </div>
+              <span className="session-type">
+                {sessionLength === workSessionLength ? 'Work' : 'Break'}
+              </span>
             </>
           )}
         </div>
@@ -280,6 +285,9 @@ const Clock = styled.div`
     display: flex;
     justify-content: center;
     align-items: baseline;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .minutes {
       font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '2.4rem' : '2rem')};
@@ -290,6 +298,11 @@ const Clock = styled.div`
     .seconds {
       font-size: ${({ isSidebarOpen }) => (isSidebarOpen ? '1.4rem' : '1.1rem')};
       color: ${({ theme }) => theme.colors.darker(3, 'surfaceVariant')};
+    }
+
+    .session-type {
+      font-size: 14px;
+      color: #9fa1aa;
     }
   }
 
