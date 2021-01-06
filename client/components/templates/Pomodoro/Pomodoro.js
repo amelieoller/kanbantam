@@ -79,9 +79,15 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
   // -------------- EFFECTS --------------
   // Pause and play pomodoro on keydown of spacebar
   useEffect(() => {
-    document.addEventListener('keydown', (e) => e.code === 'Space' && playOrPauseTimer());
+    const listenToSpacebar = (e) => {
+      if (e.code === 'Space' && e.target.tagName === 'BODY') {
+        playOrPauseTimer();
+      }
+    };
+    document.addEventListener('keydown', listenToSpacebar);
+
     return () => {
-      document.removeEventListener('keydown');
+      document.removeEventListener('keydown', listenToSpacebar);
     };
   }, []);
 
