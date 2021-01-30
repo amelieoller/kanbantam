@@ -61,7 +61,7 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
       // Update title
       const [minutes, seconds] = formatTime(newMsPassed, sessionLength);
-      document.title = `${minutes}:${seconds} - ${isWorkSession ? 'Work' : 'Break'}`;
+      updateTitle(`${minutes}:${seconds} - ${isWorkSession ? 'Work' : 'Break'}`);
 
       // Update pomodoro circle
       setStrokeDasharray(
@@ -93,18 +93,23 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
 
   // (Re)setting work and break session length when it changes
   useEffect(() => {
-    const isWorkSession = sessionLength === workSessionLength;
-
-    setWorkSessionLength(workLength);
-    if (isWorkSession) setSessionLength(workLength);
-  }, [workLength]);
+    if (sessionLength === breakSessionLength) {
+      setBreakSessionLength(breakLength);
+      setSessionLength(breakLength);
+    } else {
+      setWorkSessionLength(workLength);
+      setSessionLength(workLength);
+    }
+  }, [breakLength, workLength]);
 
   useEffect(() => {
-    const isBreakSession = sessionLength === breakSessionLength;
+    const isWorkSession = sessionLength === workSessionLength;
+    updateTitle(`${minutes}:${seconds} - ${isWorkSession ? 'Work' : 'Break'}`);
 
-    setBreakSessionLength(breakLength);
-    if (isBreakSession) setSessionLength(breakLength);
-  }, [breakLength]);
+    return () => {
+      updateTitle('Kanbantam');
+    };
+  }, [sessionLength]);
 
   // First time starting timer
   useEffect(() => {
@@ -166,11 +171,14 @@ const Pomodoro = ({ firstTodo, currentBoard, workLength, breakLength, isSidebarO
     // If continuousPomodori is enabled, we keep the clock running, otherwise, set running to false
     if (!currentBoard.continuousPomodori) {
       setIsRunning(false);
-      document.title = 'Kanbantam';
     }
   };
 
   const playOrPauseTimer = () => setIsRunning((prevIsRunning) => !prevIsRunning);
+
+  const updateTitle = (newTitle) => {
+    document.title = newTitle;
+  };
 
   // -------------- DATABASE UPDATES --------------
   // Elapse one minute on the first todo in the default list
