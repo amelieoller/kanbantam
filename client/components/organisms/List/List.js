@@ -6,7 +6,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Todo from '_molecules/Todo';
 import { formatYearMonthDay } from '_utils/dates';
 
-const List = ({ listId, todos, listHeight, placeholderProps, board, completedListId }) => {
+const List = ({ listId, todos, listHeight, board, completedListId }) => {
   const [withinPomodoroTodos, setWithinPomodoroTodos] = useState([]);
 
   useEffect(() => {
@@ -130,22 +130,22 @@ const ScrollContainer = styled.div`
   max-height: ${({ listHeight }) => listHeight}px;
 `;
 
-const Placeholder = styled.div`
-  position: absolute;
-  border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
-  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
-  background-image: linear-gradient(
-    135deg,
-    ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 25%,
-    ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 25%,
-    ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 50%,
-    ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 50%,
-    ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 75%,
-    ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 75%,
-    ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 100%
-  );
-  background-size: 28.28px 28.28px;
-`;
+// const Placeholder = styled.div`
+//   position: absolute;
+//   border-radius: ${({ theme }) => theme.sizes.borderRadiusSmall};
+//   border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
+//   background-image: linear-gradient(
+//     135deg,
+//     ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 25%,
+//     ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 25%,
+//     ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 50%,
+//     ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 50%,
+//     ${({ theme }) => theme.colors.lighter(25, 'surfaceVariant')} 75%,
+//     ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 75%,
+//     ${({ theme }) => theme.colors.lighter(15, 'surfaceVariant')} 100%
+//   );
+//   background-size: 28.28px 28.28px;
+// `;
 
 List.propTypes = {
   listId: PropTypes.string.isRequired,

@@ -2,27 +2,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import MinusCircleIcon from '_assets/icons/minus-circle.svg';
-import PlusCircleIcon from '_assets/icons/plus-circle.svg';
-import Button from '_atoms/Button';
-import {
-  Wrapper,
-  ProgressBarWrapper,
-  ProgressWrapper,
-  ProgressFiller,
-  TextLeft,
-} from './ProgressBarStyles';
+import { Wrapper, ProgressBarWrapper, ProgressWrapper, ProgressFiller } from './ProgressBarStyles';
 
-const ProgressBar = ({
-  total,
-  elapsed,
-  type,
-  handleUpdate,
-  incrementBy,
-  showMinus,
-  incrementLabel,
-  decrementLabel,
-}) => {
+const ProgressBar = ({ total, elapsed, type }) => {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
@@ -30,16 +12,6 @@ const ProgressBar = ({
 
     setPercentage(calculatedPercentage > 100 ? 100 : calculatedPercentage);
   }, [total, elapsed]);
-
-  const handleIncrement = () => handleTotalUpdate(total + incrementBy);
-  const handleDecrement = () => handleTotalUpdate(total - incrementBy);
-
-  const handleTotalUpdate = (newTotal) => {
-    // If newTotal is below 0 or is the same as previousTotal, return
-    if (newTotal === total || newTotal < 0) return;
-
-    handleUpdate(newTotal);
-  };
 
   const timeLeft = () => {
     const minutesLeft = total - elapsed;

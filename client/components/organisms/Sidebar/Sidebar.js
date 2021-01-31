@@ -6,15 +6,12 @@ import * as R from 'ramda';
 
 import CompletedTodos from '_organisms/CompletedTodos';
 import TaskGraph from '_organisms/TaskGraph';
-import TodaysFocus from '_molecules/TodaysFocus';
 import Pomodoro from '_templates/Pomodoro';
 import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder } from '_utils/sorting';
 import { filterByCategory } from '_utils/filtering';
 import ChevronLeftIcon from '_assets/icons/chevrons-left.svg';
 import ChevronRightIcon from '_assets/icons/chevrons-right.svg';
-import AwardIcon from '_assets/icons/award.svg';
-import ClockIcon from '_assets/icons/clock.svg';
 
 function Sidebar({ isSidebarOpen, currentBoard }) {
   const dispatch = useDispatch();
@@ -46,12 +43,12 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
     handleUpdateBoard({ sidebarOpen: !isSidebarOpen });
   };
 
-  const renderSectionHeader = (title) =>
-    isSidebarOpen && (
-      <SectionHeader isSidebarOpen={isSidebarOpen}>
-        <h2>{title}</h2>
-      </SectionHeader>
-    );
+  // const renderSectionHeader = (title) =>
+  //   isSidebarOpen && (
+  //     <SectionHeader isSidebarOpen={isSidebarOpen}>
+  //       <h2>{title}</h2>
+  //     </SectionHeader>
+  //   );
 
   return (
     <SidebarWrapper isSidebarOpen={isSidebarOpen}>
@@ -101,27 +98,27 @@ const SectionWrapper = styled.div`
   position: relative;
 `;
 
-const SectionHeader = styled.div`
-  position: absolute;
-  color: #c7c3bd;
-  bottom: 3px;
-  padding-top: 3px;
-  left: 8px;
+// const SectionHeader = styled.div`
+//   position: absolute;
+//   color: #c7c3bd;
+//   bottom: 3px;
+//   padding-top: 3px;
+//   left: 8px;
 
-  svg {
-    margin: ${({ isSidebarOpen }) => (isSidebarOpen ? '0 2px 0 0' : '0 5px')};
-    width: 25px;
-    flex-shrink: 0;
-    color: ${({ theme }) => theme.colors.lighter(8, 'onBackground')};
-  }
+//   svg {
+//     margin: ${({ isSidebarOpen }) => (isSidebarOpen ? '0 2px 0 0' : '0 5px')};
+//     width: 25px;
+//     flex-shrink: 0;
+//     color: ${({ theme }) => theme.colors.lighter(8, 'onBackground')};
+//   }
 
-  h2 {
-    margin: 0;
-    text-transform: uppercase;
-    font-size: 15px;
-    font-weight: 500;
-  }
-`;
+//   h2 {
+//     margin: 0;
+//     text-transform: uppercase;
+//     font-size: 15px;
+//     font-weight: 500;
+//   }
+// `;
 
 const SidebarWrapper = styled.aside`
   background: ${({ theme }) => theme.colors.surface};
@@ -184,7 +181,7 @@ Sidebar.propTypes = {
     workSessionLength: PropTypes.number,
     breakSessionLength: PropTypes.number,
     totalPomodori: PropTypes.number,
-    elapsedPomodori: PropTypes.number,
+    elapsedPomodori: PropTypes.shape({}),
   }),
 };
 
