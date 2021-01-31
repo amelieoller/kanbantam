@@ -10,9 +10,9 @@ import GithubIcon from '_assets/icons/github.svg';
 
 const WelcomePage = () => {
   return (
-    <WelcomePageStyles>
+    <WelcomePageStyles data-test="welcome-page">
       <LoginArea>
-        <Header>Kanban 2.0</Header>
+        <Header>Kanbantam</Header>
 
         <Login />
       </LoginArea>
@@ -25,6 +25,7 @@ const WelcomePage = () => {
           className="github-icon"
           label="GitHub Repository"
           aria-label="GitHub Repository"
+          data-test="login-image"
         >
           <GithubIcon />
         </GithubIconWrapper>

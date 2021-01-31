@@ -6,7 +6,8 @@ import CompletedTodo from './CompletedTodo';
 import ChevronsDown from '_assets/icons/chevrons-down.svg';
 import ChevronsUp from '_assets/icons/chevrons-up.svg';
 
-const DateSection = ({ categories, todosArr: [incomingTodos, dayText], showAllTodos, expand }) => {
+const DateSection = ({ categories, todosArr, showAllTodos, expand }) => {
+  const [incomingTodos, dayText] = todosArr;
   const [showAll, setShowAll] = useState(showAllTodos);
   const [todos, setTodos] = useState(incomingTodos);
   const highlightedTodos = todos.filter((t) => t.highlighted);
@@ -54,7 +55,12 @@ const DayWrapper = styled.div`
   }
 `;
 
-DateSection.propTypes = {};
+DateSection.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.shape({})),
+  todosArr: PropTypes.array,
+  showAllTodos: PropTypes.bool,
+  expand: PropTypes.string,
+};
 
 DateSection.defaultProps = { showAllTodos: false };
 

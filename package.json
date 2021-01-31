@@ -17,7 +17,13 @@
     "test:coverage": "./scripts/test-coverage",
     "test:watch-client": "./scripts/test-watch-client",
     "test:watch-server": "./scripts/test-watch-server",
-    "format": "./scripts/format"
+    "format": "./scripts/format",
+    "cypress": "cypress open"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && yarn test"
+    }
   },
   "repository": {
     "type": "git",
@@ -87,6 +93,7 @@
     "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
     "react-easy-swipe": "^0.0.18",
+    "react-input-autosize": "^3.0.0",
     "react-is": "^16.13.1",
     "react-markdown": "^4.3.1",
     "react-modal": "^3.11.2",
@@ -126,18 +133,23 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
+    "cross-env": "^7.0.3",
     "css-loader": "^3.4.2",
+    "cypress": "^6.3.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-import-resolver-webpack": "^0.12.1",
+    "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
+    "faker": "^5.2.0",
     "favicons-webpack-plugin": "3.0.1",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.0.4",
+    "husky": "^4.3.8",
     "image-webpack-loader": "^6.0.0",
     "jest": "^25.2.7",
     "jest-environment-jsdom": "^25.2.6",

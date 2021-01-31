@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 import Modal from 'react-modal';
-import { lighten } from 'polished';
 
 import Button from '_atoms/Button';
 import CodeMirrorArea from '_atoms/CodeMirrorArea';

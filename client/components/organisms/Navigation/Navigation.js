@@ -49,7 +49,12 @@ function Navigation({ pathname }) {
   const isHome = pathname === '/';
 
   return (
-    <StyledNavigation role="navigation" isHome={isHome} navBackground={currentCategory.color}>
+    <StyledNavigation
+      role="navigation"
+      isHome={isHome}
+      navBackground={currentCategory.color}
+      data-test="navigation"
+    >
       <Left to="/">
         <LogoIcon />
         <span className="hide-on-mobile">Kanbantam</span>

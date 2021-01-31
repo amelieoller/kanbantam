@@ -108,24 +108,40 @@ function Login() {
   return (
     <StyledLogin>
       <InputWrapper>
-        <Input label="Username" onChange={handleUsernameChange} value={username} />
+        <Input
+          label="Username"
+          onChange={handleUsernameChange}
+          value={username}
+          data-test="username"
+        />
         {!isLogin && <Message>{usernameMessage}</Message>}
       </InputWrapper>
       <InputWrapper>
-        <Input label="Password" type="password" onChange={handlePasswordChange} />
+        <Input
+          label="Password"
+          type="password"
+          onChange={handlePasswordChange}
+          data-test="password"
+        />
         {!isLogin ? (
           <Message>{passwordMessage}</Message>
         ) : (
           <RememberMe>
             <label>
-              <input name="rememberMe" type="checkbox" checked={remember} onChange={rememberMe} />
+              <input
+                name="rememberMe"
+                type="checkbox"
+                checked={remember}
+                onChange={rememberMe}
+                data-test="remember-me"
+              />
               Remember me
             </label>
           </RememberMe>
         )}
       </InputWrapper>
       <ButtonWrapper>
-        <Button onClick={isLogin ? login : signup} label="Log in">
+        <Button onClick={isLogin ? login : signup} label="Log in" data-test="login-submit">
           {isLogin ? 'Log In' : 'Sign Up'}
         </Button>
       </ButtonWrapper>
