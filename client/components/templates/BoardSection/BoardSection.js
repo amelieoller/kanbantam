@@ -5,7 +5,7 @@ import BoardList from '_organisms/BoardList';
 
 function BoardSection() {
   return (
-    <StyledBoardList>
+    <StyledBoardList data-test="board-section">
       <BoardList />
     </StyledBoardList>
   );
