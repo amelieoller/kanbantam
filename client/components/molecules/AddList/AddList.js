@@ -58,18 +58,4 @@ const NewListInput = styled.input`
   height: 2.584rem;
 `;
 
-const Button = styled.button`
-  border: none;
-  background: ${({ theme }) => theme.colors.surface};
-  cursor: pointer;
-  width: 100%;
-  padding: ${({ theme }) => theme.sizes.spacingInput};
-  text-align: left;
-  font-size: 1.2rem;
-  border-radius: ${({ theme }) => theme.sizes.borderRadius};
-  height: ${({ theme }) => theme.sizes.listHeaderHeight};
-  border: 1px solid ${({ theme }) => theme.colors.surfaceVariant};
-  color: ${({ theme }) => theme.colors.medium('onSurface')};
-`;
-
 export default AddList;

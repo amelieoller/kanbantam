@@ -67,12 +67,12 @@ const StyledLists = styled.ul`
   overflow: scroll;
 `;
 
-const DayWrapper = styled.div`
-  padding-top: 15px;
-  h3 {
-    margin: 0;
-    margin-bottom: 5px;
-  }
-`;
+// const DayWrapper = styled.div`
+//   padding-top: 15px;
+//   h3 {
+//     margin: 0;
+//     margin-bottom: 5px;
+//   }
+// `;
 
 export default CompletedTodos;

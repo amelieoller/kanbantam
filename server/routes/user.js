@@ -2,7 +2,6 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { requireAuth } = require('./middleware');
 const { User } = require('../database/schemas');
-const controllers = require('../controllers/users');
 
 const router = express.Router();
 

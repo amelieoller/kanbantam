@@ -12,7 +12,6 @@ import {
   LabelList,
 } from 'recharts';
 import { useDispatch } from 'react-redux';
-import * as R from 'ramda';
 
 import { formatYearMonthDay } from '_utils/dates';
 import MinusIcon from '_assets/icons/minus-circle.svg';
@@ -117,9 +116,7 @@ const TaskGraph = ({ boardId, elapsedPomodori, totalPomodori, isSidebarOpen }) =
     areaColor = '#e6e6e6';
   }
 
-  const renderCustomizedLabel = (props) => {
-    const { x, y, value, index } = props;
-
+  const renderCustomizedLabel = ({ x, y, value, index }) => {
     return index === 4 ? (
       <LabelToRight x={x + 4} y={y + 4} fill="#898989">
         {value}
@@ -131,6 +128,13 @@ const TaskGraph = ({ boardId, elapsedPomodori, totalPomodori, isSidebarOpen }) =
     const newGoal = goal + changeByNum;
     setGoal(newGoal);
     dispatch(attemptUpdateBoard({ id: boardId, totalPomodori: newGoal }));
+  };
+
+  renderCustomizedLabel.propTypes = {
+    x: PropTypes.string,
+    y: PropTypes.string,
+    value: PropTypes.string,
+    index: PropTypes.string,
   };
 
   return (
@@ -280,6 +284,16 @@ const Label = styled.div`
 
 TaskGraph.propTypes = {
   elapsedPomodori: PropTypes.shape({}),
+  active: PropTypes.bool,
+  boardId: PropTypes.string,
+  totalPomodori: PropTypes.number,
+  isSidebarOpen: PropTypes.bool,
+};
+
+CustomTooltip.propTypes = {
+  active: PropTypes.bool,
+  payload: PropTypes.string,
+  label: PropTypes.string,
 };
 
 export default React.memo(TaskGraph);

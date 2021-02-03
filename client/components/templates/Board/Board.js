@@ -15,7 +15,6 @@ import reorder, { reorderTodoList } from '_utils/dragAndDrop';
 import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
 import { filterByCategory } from '_utils/filtering';
 import useResize from '_hooks/useResize';
-import TaskOverview from '../../molecules/TaskOverview/TaskOverview';
 
 function Board({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
