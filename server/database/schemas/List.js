@@ -24,7 +24,7 @@ listSchema.pre('findOneAndRemove', async function (next) {
   const listId = this.getFilter()['_id'].toString();
 
   // Delete all todos associated with this list
-  mongoose.model('Todo').deleteMany({ list: listId }, function (err, result) {
+  mongoose.model('Todo').deleteMany({ list: listId }, function (err) {
     if (err) {
       console.log(`Error on List delete ${err}`);
       next(err);

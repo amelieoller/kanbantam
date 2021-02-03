@@ -39,5 +39,11 @@ module.exports = {
     'react-hooks/rules-of-hooks': 2,
     'react-hooks/exhaustive-deps': 1,
     'jsx-a11y/no-static-element-interactions': 0,
+    'jsx-a11y/no-autofocus': [
+      2,
+      {
+        ignoreNonDOM: true,
+      },
+    ],
   },
 };

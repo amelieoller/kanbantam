@@ -56,7 +56,7 @@ const TodaysFocus = ({ boardId, boardFocusToday }) => {
           />
         </div>
       ) : (
-        <div onClick={handleClick}>
+        <div onClick={handleClick} onKeyPress={handleClick}>
           <MarkdownArea text={text} handleUpdateText={changeText} />
         </div>
       )}

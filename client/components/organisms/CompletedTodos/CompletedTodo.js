@@ -72,7 +72,11 @@ const CompletedTodo = ({ todo, categories, expand }) => {
       highlighted={todo.highlighted}
       isOpen={isOpen}
     >
-      <div className="todo-text" onClick={() => handleTodoClick(todo)}>
+      <div
+        className="todo-text"
+        onClick={() => handleTodoClick(todo)}
+        onKeyPress={() => handleTodoClick(todo)}
+      >
         {todo.text}
       </div>
 
@@ -104,6 +108,7 @@ CompletedTodo.propTypes = {
     minutes: PropTypes.number,
   }),
   categories: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string.isRequired })),
+  expand: PropTypes.bool,
 };
 
 CompletedTodo.defaultProps = {

@@ -3,19 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import * as R from 'ramda';
-import { parseISO } from 'date-fns';
 
 import Checkmark from '_atoms/Checkmark';
 import ProgressBar from '_molecules/ProgressBar';
 import MarkdownArea from '_molecules/MarkdownArea';
 import { attemptUpdateTodo } from '_actions/todos';
-import { formatDaysToNow } from '_utils/dates.js';
 import useCombinedRefs from '_hooks/useCombinedRefs';
-import CalendarIcon from '_assets/icons/calendar.svg';
-import AlertCircleIcon from '_assets/icons/alert-circle.svg';
 import { setCurrentTodo } from '_actions/currentTodo';
-
-const fromNow = (date) => formatDaysToNow(parseISO(date));
 
 const Todo = ({
   todo,
@@ -126,30 +120,8 @@ const Todo = ({
   );
 };
 
-const TopBadge = styled.span`
-  background: ${({ color, theme }) => (color ? color : theme.colors.surfaceVariant)};
-  border-radius: 7px;
-  padding: 2px 5px;
-  font-size: 0.8rem;
-  color: ${({ theme }) => theme.colors.onSurfaceVariant};
-  margin-right: ${({ theme }) => theme.sizes.spacingSmall};
-
-  &.pointer {
-    cursor: pointer;
-  }
-
-  & > *:not(:last-child) {
-    margin-right: 3px;
-  }
-
-  svg {
-    width: 8px;
-    height: 8px;
-  }
-`;
-
 const Container = styled.div`
-  border: ${({ theme, important }) => `2px solid ${important ? '#F4A09A' : 'transparent'}`};
+  border: ${({ important }) => `2px solid ${important ? '#F4A09A' : 'transparent'}`};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
   padding: 11px 6px;
@@ -209,6 +181,7 @@ Todo.propTypes = {
     minutes: PropTypes.number,
     elapsedMinutes: PropTypes.number,
     category: PropTypes.string,
+    list: PropTypes.string,
   }),
   isDragging: PropTypes.bool.isRequired,
   provided: PropTypes.shape({
