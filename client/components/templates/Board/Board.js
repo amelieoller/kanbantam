@@ -311,7 +311,7 @@ const ListsWrapper = styled.div`
 
   & > *:not(:last-child) {
     margin-right: ${({ theme }) => theme.sizes.spacingSmall};
-    border-right: 1px solid ${({ theme }) => theme.colors.light};
+    border-right: 1px solid #ccc;
     height: 100%;
     padding-right: ${({ theme }) => theme.sizes.spacingSmall};
   }

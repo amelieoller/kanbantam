@@ -330,7 +330,7 @@ const Clock = styled.div`
 
     circle {
       stroke-dasharray: 3 3;
-      stroke: #eaebf3;
+      stroke: #ccc;
       transition: all 1s ease;
     }
   }

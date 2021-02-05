@@ -72,6 +72,7 @@ const StyledBoardList = styled.div`
     width: 270px;
     height: 140px;
     margin: 0 15px 15px 0;
+    border: 1px solid #ccc;
 
     &:focus {
       outline: none;

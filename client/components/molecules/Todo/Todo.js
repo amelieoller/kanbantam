@@ -121,7 +121,7 @@ const Todo = ({
 };
 
 const Container = styled.div`
-  border: ${({ important }) => `2px solid ${important ? '#F4A09A' : 'transparent'}`};
+  border: ${({ important }) => `1px solid ${important ? '#F4A09A' : '#ccc'}`};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px lightgreen` : 'none')};
   padding: 11px 6px;
