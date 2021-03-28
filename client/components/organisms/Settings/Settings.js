@@ -26,7 +26,7 @@ const Settings = ({ currentBoard }) => {
   const { categories } = useSelector(R.pick(['categories']));
   const { lists } = useSelector(R.pick(['lists']));
 
-  const [defaultTime, setDefaultTime] = useState(0);
+  const [defaultTimes, setDefaultTimes] = useState([0, 0, 0]);
   const [defaultCategory, setDefaultCategory] = useState('');
   const [defaultFocusList, setDefaultFocusList] = useState('');
   const [startFocusModeWithPomodoro, setStartFocusModeWithPomodoro] = useState(false);
@@ -38,7 +38,7 @@ const Settings = ({ currentBoard }) => {
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
 
   useEffect(() => {
-    setDefaultTime(currentBoard.defaultTime);
+    setDefaultTimes(currentBoard.defaultTimes ? currentBoard.defaultTimes : [0, 0, 0]);
     setDefaultCategory(currentBoard.defaultCategory);
     setStartFocusModeWithPomodoro(currentBoard.startFocusModeWithPomodoro);
     setDefaultFocusList(currentBoard.defaultFocusList || '');
@@ -52,7 +52,7 @@ const Settings = ({ currentBoard }) => {
       dispatch(
         attemptUpdateBoard({
           id: currentBoard.id,
-          defaultTime,
+          defaultTimes,
           defaultCategory,
           startFocusModeWithPomodoro,
           defaultFocusList,
@@ -73,6 +73,33 @@ const Settings = ({ currentBoard }) => {
   };
 
   const deleteBoard = () => dispatch(attemptDeleteBoard(currentBoard.id));
+
+  const renderDefaultTimeInput = (index) => {
+    const buttonLabel = `Default Minutes ${
+      index === 0 ? '(First' : index === 1 ? '(Second' : '(Third'
+    } Button)`;
+
+    return (
+      <InputWrapper>
+        <Input
+          label={buttonLabel}
+          onChange={(e) => {
+            const newMinutes = e.target.value === '' ? 0 : e.target.value;
+
+            setSettingsPending(true);
+            setDefaultTimes([
+              ...defaultTimes.slice(0, index),
+              parseInt(newMinutes, 10),
+              ...defaultTimes.slice(index + 1, defaultTimes.length),
+            ]);
+          }}
+          defaultValue={defaultTimes[index] === 0 ? '' : defaultTimes[index]}
+          type="number"
+          helpText="Default time to be added to each new card"
+        />
+      </InputWrapper>
+    );
+  };
 
   return (
     <>
@@ -117,20 +144,9 @@ const Settings = ({ currentBoard }) => {
             </Dropdown>
           </InputWrapper>
 
-          <InputWrapper>
-            <Input
-              label="Default Minutes"
-              onChange={(e) => {
-                const newMinutes = e.target.value === '' ? 0 : e.target.value;
-
-                setSettingsPending(true);
-                setDefaultTime(parseInt(newMinutes, 10));
-              }}
-              defaultValue={defaultTime === 0 ? '' : defaultTime}
-              type="number"
-              helpText="Default time to be added to each new card"
-            />
-          </InputWrapper>
+          {renderDefaultTimeInput(0)}
+          {renderDefaultTimeInput(1)}
+          {renderDefaultTimeInput(2)}
 
           {/* Categories */}
           <h2>
@@ -314,7 +330,7 @@ Settings.propTypes = {
   currentBoard: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    defaultTime: PropTypes.number,
+    defaultTimes: PropTypes.arrayOf(PropTypes.string),
     defaultCategory: PropTypes.string,
     startFocusModeWithPomodoro: PropTypes.bool,
     continuousPomodori: PropTypes.bool,

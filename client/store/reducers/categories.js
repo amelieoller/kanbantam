@@ -19,7 +19,7 @@ export default function categories(state = [], action) {
     case UPDATE_CATEGORY:
       return byIdReplaceAtIndex(state, action.payload.id, action.payload);
     case UPDATE_CATEGORY_ID:
-      return byIdReplaceAtIndex(state, action.payload.id, { id: action.newId });
+      return byIdReplaceAtIndex(state, action.payload.id, { id: action.board });
     case REMOVE_CATEGORY:
       return state.filter((category) => category.id !== action.payload.id);
     case CLEAR_DATA:

@@ -11,7 +11,7 @@ export const postBoard = (dispatch) => (board) =>
     .then((res) => {
       const newBoardId = res.body.data._id;
 
-      dispatch(updateBoardId(board.id, newBoardId));
+      dispatch(updateBoardId(board.id, { ...res.body.data, id: newBoardId }));
       dispatch(attemptAddList({ title: 'complete', board: newBoardId, special: true }));
 
       return handleSuccess(res);

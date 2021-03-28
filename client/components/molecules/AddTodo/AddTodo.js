@@ -5,7 +5,8 @@ import { useDispatch } from 'react-redux';
 
 import { attemptAddTodo } from '_actions/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
-import PlusButton from '_atoms/PlusButton';
+import IconButton from '_atoms/IconButton';
+import PlusIcon from '_assets/icons/plus.svg';
 
 function AddTodo({ board, listId, lastCardSortVal }) {
   const formRef = useRef();
@@ -14,6 +15,7 @@ function AddTodo({ board, listId, lastCardSortVal }) {
 
   const [text, setText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [todoMinutes, setTodoMinutes] = useState(0);
 
   useOnClickOutside(formRef, () => setIsOpen(false));
 
@@ -37,7 +39,7 @@ function AddTodo({ board, listId, lastCardSortVal }) {
           board: board.id,
           list: listId,
           order: lastCardSortVal + 1,
-          minutes: board.defaultTime || 0,
+          minutes: todoMinutes,
           elapsedMinutes: 0,
           category: todoCategory,
         }),
@@ -48,7 +50,20 @@ function AddTodo({ board, listId, lastCardSortVal }) {
 
   const updateText = (e) => setText(e.target.value);
 
-  const toggleIsOpen = () => setIsOpen((prevOpen) => !prevOpen);
+  const toggleIsOpen = (minutes) => {
+    setTodoMinutes(minutes);
+    setIsOpen((prevOpen) => !prevOpen);
+  };
+
+  const renderDefaultTimeButton = (index) => {
+    const time = board.defaultTimes ? board.defaultTimes[index] : 0;
+
+    return (
+      <IconButton onClick={() => toggleIsOpen(time)} altText="Add todo to list">
+        {time === 0 ? <PlusIcon /> : <span>{time}</span>}
+      </IconButton>
+    );
+  };
 
   return isOpen ? (
     <NewTodoForm onSubmit={handleAddTodo} ref={formRef}>
@@ -62,7 +77,9 @@ function AddTodo({ board, listId, lastCardSortVal }) {
     </NewTodoForm>
   ) : (
     <ButtonWrapper>
-      <PlusButton onClick={toggleIsOpen} label="Add todo to list" />
+      {renderDefaultTimeButton(0)}
+      {renderDefaultTimeButton(1)}
+      {renderDefaultTimeButton(2)}
     </ButtonWrapper>
   );
 }
@@ -85,13 +102,15 @@ const NewTodoInput = styled.input`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  max-width: 200px;
+  margin: 0 auto;
 `;
 
 AddTodo.propTypes = {
   board: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    defaultTime: PropTypes.number,
+    defaultTimes: PropTypes.arrayOf(PropTypes.string),
     defaultCategory: PropTypes.string,
     category: PropTypes.string,
   }),

@@ -15,10 +15,9 @@ export const setBoards = (payload) => ({
   payload,
 });
 
-export const updateBoardId = (oldId, newId) => ({
+export const updateBoardId = (oldId, board) => ({
   type: UPDATE_BOARD_ID,
-  payload: { id: oldId },
-  newId: newId,
+  payload: { oldId, board },
 });
 
 export const attemptGetBoards = (boardId) => (dispatch) =>

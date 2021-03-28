@@ -8,8 +8,9 @@ import { useDispatch } from 'react-redux';
 
 import { attemptAddCategory } from '_actions/categories';
 import Button from '_atoms/Button';
-import PlusButton from '_atoms/PlusButton';
+import IconButton from '_atoms/IconButton';
 import Input from '_atoms/Input';
+import PlusIcon from '_assets/icons/plus.svg';
 
 const CategorySelect = ({ onChange, currentCategoryId, noToggle, boardId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -156,11 +157,11 @@ const CategoryOptionsComponent = ({
             </Button>
           ))}
 
-          <PlusButtonContainer>
-            <PlusButton onClick={() => setShowAddNew((prevState) => !prevState)} label="Add" large>
-              <OptionText>Add</OptionText>
-            </PlusButton>
-          </PlusButtonContainer>
+          <IconButtonContainer>
+            <IconButton onClick={() => setShowAddNew((prevState) => !prevState)} label="Add" large>
+              <PlusIcon />
+            </IconButton>
+          </IconButtonContainer>
         </>
       </CategoryOptions>
 
@@ -194,7 +195,7 @@ const NewCategoryForm = styled.form`
   }
 `;
 
-const PlusButtonContainer = styled.div`
+const IconButtonContainer = styled.div`
   padding: 5px;
 `;
 

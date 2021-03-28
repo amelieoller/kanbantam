@@ -25,13 +25,6 @@ function AddBoardTile({ lastBoardSortVal }) {
         attemptAddBoard({
           title,
           order: lastBoardSortVal + 1,
-          sidebarOpen: true,
-          theme: 'light',
-          totalPomodori: 0,
-          default: '',
-          focusMode: false,
-          category: '',
-          elapsedPomodori: {},
         }),
       );
       setTitle('');
