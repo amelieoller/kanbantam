@@ -2,20 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import PlusIcon from '_assets/icons/plus.svg';
-
-const PlusButton = ({ onClick, label, children, large }) => {
+const IconButton = ({ onClick, label, children, large, altText }) => {
   const size = large ? 17.5 : 14;
   const stroke = 2;
 
   return (
     <Wrapper>
-      <StyledPlusButton
+      <StyledIconButton
         onClick={onClick}
         size={size}
         stroke={stroke}
-        label={label}
-        aria-label={label}
+        label={altText}
+        aria-label={altText}
       >
         <svg className="plus-circle">
           <circle
@@ -29,10 +27,10 @@ const PlusButton = ({ onClick, label, children, large }) => {
           />
         </svg>
 
-        <PlusIcon className="plus-mark" />
-      </StyledPlusButton>
+        <span className="icon">{children}</span>
+      </StyledIconButton>
 
-      {children && <Label>{children}</Label>}
+      {label && <Label>{label}</Label>}
     </Wrapper>
   );
 };
@@ -46,9 +44,18 @@ const Wrapper = styled.div`
 
 const Label = styled.div`
   margin-top: 2px;
+  color: rgba(77, 77, 77, 0.92);
+  font-size: 11px;
+  margin-top: 3px;
+  text-align: center;
+  font-weight: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 `;
 
-const StyledPlusButton = styled.div`
+const StyledIconButton = styled.div`
   position: relative;
   width: ${({ size }) => `${size * 2}px`};
   height: ${({ size }) => `${size * 2}px`};
@@ -65,7 +72,7 @@ const StyledPlusButton = styled.div`
     }
   }
 
-  svg.plus-mark {
+  .icon > * {
     width: ${({ size, stroke }) => `${size + stroke}px`};
     height: ${({ size, stroke }) => `${size + stroke}px`};
     position: absolute;
@@ -74,6 +81,10 @@ const StyledPlusButton = styled.div`
     color: #ccccd3;
     transition: all 0.8s ease;
     stroke-width: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
   }
 
   &:hover {
@@ -83,18 +94,19 @@ const StyledPlusButton = styled.div`
       stroke-width: 2px;
     }
 
-    svg.plus-mark {
+    .icon > * {
       color: ${({ theme }) => theme.colors.primary};
       stroke-width: 3px;
     }
   }
 `;
 
-PlusButton.propTypes = {
+IconButton.propTypes = {
   onClick: PropTypes.func,
   label: PropTypes.string,
   children: PropTypes.node,
   large: PropTypes.bool,
+  altText: PropTypes.string,
 };
 
-export default PlusButton;
+export default IconButton;

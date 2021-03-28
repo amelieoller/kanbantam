@@ -20,7 +20,7 @@ export default function boards(state = [], action) {
     case UPDATE_BOARD:
       return byIdReplaceAtIndex(state, action.payload.id, action.payload);
     case UPDATE_BOARD_ID:
-      return byIdReplaceAtIndex(state, action.payload.id, { id: action.newId });
+      return byIdReplaceAtIndex(state, action.payload.oldId, action.payload.board);
     case REMOVE_BOARD:
       return state.filter((todo) => todo.id !== action.payload.id);
     case CLEAR_DATA:

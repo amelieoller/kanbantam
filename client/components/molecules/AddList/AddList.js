@@ -53,7 +53,7 @@ const NewListInput = styled.input`
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
   padding: ${({ theme }) => theme.sizes.spacingInput};
   height: ${({ theme }) => theme.sizes.listHeaderHeight};
-  /* border: 1px solid ${({ theme }) => theme.colors.surfaceVariant}; */
+  border: 1px solid #ccc;
   color: ${({ theme }) => theme.colors.onSurface};
   height: 2.584rem;
 `;
