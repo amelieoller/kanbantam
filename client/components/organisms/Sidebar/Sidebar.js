@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
 import CompletedTodos from '_organisms/CompletedTodos';
 import TaskGraph from '_organisms/TaskGraph';
 import Pomodoro from '_templates/Pomodoro';
-import { attemptUpdateBoard } from '_actions/boards';
 import { sortItemsByOrder } from '_utils/sorting';
 import { filterByCategory } from '_utils/filtering';
-import ChevronLeftIcon from '_assets/icons/chevrons-left.svg';
-import ChevronRightIcon from '_assets/icons/chevrons-right.svg';
 
 function Sidebar({ isSidebarOpen, currentBoard }) {
-  const dispatch = useDispatch();
-
   const [firstTodo, setFirstTodo] = useState(null);
 
   const { todos } = useSelector(R.pick(['todos']));
@@ -35,14 +30,6 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
     }
   }, [currentBoard.defaultFocusList, currentBoard.category, todos]);
 
-  const handleUpdateBoard = (attribute) => {
-    dispatch(attemptUpdateBoard({ id: currentBoard.id, ...attribute }));
-  };
-
-  const handleToggleClick = () => {
-    handleUpdateBoard({ sidebarOpen: !isSidebarOpen });
-  };
-
   // const renderSectionHeader = (title) =>
   //   isSidebarOpen && (
   //     <SectionHeader isSidebarOpen={isSidebarOpen}>
@@ -51,45 +38,40 @@ function Sidebar({ isSidebarOpen, currentBoard }) {
   //   );
 
   return (
-    <SidebarWrapper isSidebarOpen={isSidebarOpen}>
-      <CollapseButton onClick={() => handleToggleClick()} aria-label="Expand sidebar">
-        {isSidebarOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-      </CollapseButton>
-      <SidebarContent>
-        <SectionWrapper>
-          <Pomodoro
-            currentBoard={currentBoard}
-            firstTodo={firstTodo}
-            workLength={currentBoard.workSessionLength}
-            breakLength={currentBoard.breakSessionLength}
-            isSidebarOpen={isSidebarOpen}
-          />
-        </SectionWrapper>
+    <>
+      <SectionWrapper>
+        <Pomodoro
+          currentBoard={currentBoard}
+          firstTodo={firstTodo}
+          workLength={currentBoard.workSessionLength}
+          breakLength={currentBoard.breakSessionLength}
+          isSidebarOpen={isSidebarOpen}
+        />
+      </SectionWrapper>
 
-        {/* <SectionWrapper>
+      {/* <SectionWrapper>
           {renderSectionHeader("Today's Focus")}
 
           <TodaysFocus boardId={currentBoard.id} boardFocusToday={currentBoard.focusToday} />
         </SectionWrapper> */}
 
-        <SectionWrapper>
-          {/* {renderSectionHeader('Pomodori Finished')} */}
+      <SectionWrapper>
+        {/* {renderSectionHeader('Pomodori Finished')} */}
 
-          <TaskGraph
-            boardId={currentBoard.id}
-            totalPomodori={currentBoard.totalPomodori}
-            elapsedPomodori={currentBoard.elapsedPomodori}
-            isSidebarOpen={isSidebarOpen}
-          />
-        </SectionWrapper>
+        <TaskGraph
+          boardId={currentBoard.id}
+          totalPomodori={currentBoard.totalPomodori}
+          elapsedPomodori={currentBoard.elapsedPomodori}
+          isSidebarOpen={isSidebarOpen}
+        />
+      </SectionWrapper>
 
-        <SectionWrapper>
-          {/* {renderSectionHeader('Completed Todos')} */}
+      <SectionWrapper>
+        {/* {renderSectionHeader('Completed Todos')} */}
 
-          <CompletedTodos />
-        </SectionWrapper>
-      </SidebarContent>
-    </SidebarWrapper>
+        <CompletedTodos board={currentBoard} />
+      </SectionWrapper>
+    </>
   );
 }
 
@@ -119,57 +101,6 @@ const SectionWrapper = styled.div`
 //     font-weight: 500;
 //   }
 // `;
-
-const SidebarWrapper = styled.aside`
-  background: ${({ theme }) => theme.colors.surface};
-  height: calc(100vh - ${({ theme }) => theme.sizes.navbarHeight});
-  box-shadow: 3px 0px 8px 0px rgba(155, 170, 178, 0.1);
-  color: ${({ theme }) => theme.colors.onSurface};
-  width: ${({ theme, isSidebarOpen }) =>
-    isSidebarOpen ? theme.sizes.sidebarWidthLarge : theme.sizes.sidebarWidthSmall};
-  transition: 0.4s ease;
-  overflow-y: scroll;
-
-  /* "hack" for getting drag and drop scroll to work horizontally AND vertically */
-  position: fixed;
-  left: 0;
-  z-index: 1;
-`;
-
-const SidebarContent = styled.div`
-  & > * {
-    border-bottom: 1px solid #eaebf3;
-  }
-`;
-
-const CollapseButton = styled.button`
-  position: absolute;
-  left: 50%;
-  top: calc(85vh - 40px);
-  transform: translateX(-50%);
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: ${({ theme }) => theme.colors.surface};
-  z-index: 1;
-
-  &:hover,
-  &:focus {
-    background: ${({ theme }) => theme.colors.darker(1, 'surface')};
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-`;
 
 Sidebar.propTypes = {
   isSidebarOpen: PropTypes.bool.isRequired,

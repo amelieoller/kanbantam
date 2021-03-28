@@ -15,6 +15,7 @@ import reorder, { reorderTodoList } from '_utils/dragAndDrop';
 import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
 import { filterByCategory } from '_utils/filtering';
 import useResize from '_hooks/useResize';
+import SidebarWrapper from '_organisms/SidebarWrapper';
 
 function Board({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
@@ -224,7 +225,9 @@ function Board({ board, theme: { sizes } }) {
 
   return (
     <StyledBoard isSidebarOpen={board.sidebarOpen}>
-      <Sidebar isSidebarOpen={board.sidebarOpen} currentBoard={board} />
+      <SidebarWrapper isSidebarOpen={board.sidebarOpen} boardId={board.id}>
+        <Sidebar isSidebarOpen={board.sidebarOpen} currentBoard={board} />
+      </SidebarWrapper>
 
       <main id="main" ref={boardRef}>
         {/* <TaskOverview /> */}

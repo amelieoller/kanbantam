@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as R from 'ramda';
+import { Link } from 'react-router-dom';
 
 import { todosByDateFromToday } from '_utils/filtering';
 import DateSection from './DateSection';
+import Button from '_atoms/Button';
 
-const CompletedTodos = () => {
+const CompletedTodos = ({ board }) => {
   const { categories } = useSelector(R.pick(['categories']));
   const { todos } = useSelector(R.pick(['todos']));
 
@@ -48,6 +50,7 @@ CompletedTodos.propTypes = {
   yesterdayCompletedTodos: PropTypes.arrayOf(
     PropTypes.shape({ text: PropTypes.string, id: PropTypes.string }),
   ),
+  board: PropTypes.shape({}),
 };
 
 const GetStarted = styled.div`
