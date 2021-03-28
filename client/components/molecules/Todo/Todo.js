@@ -84,7 +84,7 @@ const Todo = ({
     >
       <MarkdownArea text={todo.text} handleUpdateText={handleTodoTextUpdate} />
 
-      <Footer>
+      <Footer minutes={todo.minutes}>
         <FooterLeft>
           {/* {!!todo.important && (
               <TopBadge color="coral">
@@ -103,7 +103,6 @@ const Todo = ({
             <ProgressBar
               total={todo.minutes}
               elapsed={todo.elapsedMinutes}
-              type="min"
               handleUpdate={handleMinuteUpdate}
               incrementBy={10}
               incrementLabel={`Add 10 minutes to ${todo.text.substring(0, 20)}`}
@@ -153,7 +152,7 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: ${({ theme }) => theme.sizes.spacingLarge};
+  margin-top: ${({ theme, minutes }) => (minutes ? theme.sizes.spacing : theme.sizes.spacingSmall)};
 
   & > *:not(:last-child) {
     margin-right: 16px;

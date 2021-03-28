@@ -7,6 +7,7 @@ import { attemptAddTodo } from '_actions/todos';
 import useOnClickOutside from '_hooks/useOnClickOutside';
 import IconButton from '_atoms/IconButton';
 import PlusIcon from '_assets/icons/plus.svg';
+import { minutesToRoughHours } from '_utils/dates';
 
 function AddTodo({ board, listId, lastCardSortVal }) {
   const formRef = useRef();
@@ -56,7 +57,7 @@ function AddTodo({ board, listId, lastCardSortVal }) {
   };
 
   const renderDefaultTimeButton = (index) => {
-    const time = board.defaultTimes ? board.defaultTimes[index] : 0;
+    const time = minutesToRoughHours(board.defaultTimes ? board.defaultTimes[index] : 0);
 
     return (
       <IconButton onClick={() => toggleIsOpen(time)} altText="Add todo to list">
@@ -110,7 +111,7 @@ const ButtonWrapper = styled.div`
 AddTodo.propTypes = {
   board: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    defaultTimes: PropTypes.arrayOf(PropTypes.string),
+    defaultTimes: PropTypes.arrayOf(PropTypes.number),
     defaultCategory: PropTypes.string,
     category: PropTypes.string,
   }),
