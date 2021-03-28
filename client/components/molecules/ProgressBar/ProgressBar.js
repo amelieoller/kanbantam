@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Wrapper, ProgressBarWrapper, ProgressWrapper, ProgressFiller } from './ProgressBarStyles';
+import { minutesAndHours } from '_utils/dates';
 
-const ProgressBar = ({ total, elapsed, type }) => {
+const ProgressBar = ({ total, elapsed }) => {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
@@ -15,25 +16,19 @@ const ProgressBar = ({ total, elapsed, type }) => {
 
   const timeLeft = () => {
     const minutesLeft = total - elapsed;
-    if (minutesLeft >= 0) {
-      // return `${minutesLeft}${type} left`;
+    const formattedMinutesAndHours = minutesAndHours(minutesLeft);
 
+    if (minutesLeft >= 0) {
       return (
         <>
-          <span className="green">
-            {minutesLeft}
-            {type}
-          </span>
+          <span className="green">{formattedMinutesAndHours}</span>
           <span> left</span>
         </>
       );
     } else {
       return (
         <>
-          <span className="red">
-            {minutesLeft}
-            {type}
-          </span>
+          <span className="red">{formattedMinutesAndHours}</span>
           <span> over</span>
         </>
       );
@@ -43,13 +38,8 @@ const ProgressBar = ({ total, elapsed, type }) => {
   return (
     <Wrapper>
       <TopText>
-        <span className="left">
-          <span>
-            {elapsed}
-            {type}
-          </span>
-          <span> of {total}</span>
-        </span>
+        <span className="left">{elapsed ? <span> Total: {minutesAndHours(total)}</span> : ''}</span>
+
         <span className="right">{timeLeft()}</span>
       </TopText>
 
@@ -119,7 +109,6 @@ const TopText = styled.div`
 ProgressBar.propTypes = {
   total: PropTypes.number.isRequired,
   elapsed: PropTypes.number,
-  type: PropTypes.string.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   incrementBy: PropTypes.number.isRequired,
   showMinus: PropTypes.bool,

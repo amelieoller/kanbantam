@@ -330,7 +330,7 @@ Settings.propTypes = {
   currentBoard: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    defaultTimes: PropTypes.arrayOf(PropTypes.string),
+    defaultTimes: PropTypes.arrayOf(PropTypes.number),
     defaultCategory: PropTypes.string,
     startFocusModeWithPomodoro: PropTypes.bool,
     continuousPomodori: PropTypes.bool,
