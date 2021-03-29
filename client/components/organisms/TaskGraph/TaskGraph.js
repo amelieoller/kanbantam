@@ -292,7 +292,11 @@ TaskGraph.propTypes = {
 
 CustomTooltip.propTypes = {
   active: PropTypes.bool,
-  payload: PropTypes.string,
+  payload: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+    }),
+  ),
   label: PropTypes.string,
 };
 

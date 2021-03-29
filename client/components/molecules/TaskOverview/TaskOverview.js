@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as R from 'ramda';
 
-import DateSection from '../../organisms/CompletedTodos/DateSection';
+import DateSection from '_organisms/CompletedTodos/DateSection';
 import { todosByDateFromToday } from '_utils/filtering';
 
 const TaskOverview = () => {

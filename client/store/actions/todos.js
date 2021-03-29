@@ -21,8 +21,8 @@ export const updateTodoId = (oldId, newId) => ({
   newId: newId,
 });
 
-export const attemptGetTodos = (boardId) => (dispatch) =>
-  getTodos(boardId)
+export const attemptGetTodos = (boardId, completed = false) => (dispatch) =>
+  getTodos(boardId, completed)
     .then(({ data }) => {
       const todos = R.map((todo) => R.omit(['Id', '_v'], R.assoc('id', todo._id, todo)), data);
 

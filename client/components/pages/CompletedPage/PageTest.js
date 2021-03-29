@@ -5,19 +5,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as R from 'ramda';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import AddList from '_molecules/AddList';
 import Column from '_organisms/Column';
-import Sidebar from '_organisms/Sidebar';
 import TodoModal from '_organisms/TodoModal';
 import { attemptUpdateList } from '_actions/lists';
 import { attemptUpdateTodo } from '_actions/todos';
 import reorder, { reorderTodoList } from '_utils/dragAndDrop';
-import { sortItemsByOrder, calculateNewOrder } from '_utils/sorting';
+import { calculateNewOrder } from '_utils/sorting';
 import { filterByCategory } from '_utils/filtering';
 import useResize from '_hooks/useResize';
 import SidebarWrapper from '_organisms/SidebarWrapper';
 
-function Board({ board, theme: { sizes } }) {
+function PageTest({ board, theme: { sizes } }) {
   const boardRef = useRef(null);
   const boundingRect = useResize(boardRef);
 
@@ -29,28 +27,47 @@ function Board({ board, theme: { sizes } }) {
   const [listsWithTodos, setListsWithTodos] = useState({});
   const [orderedLists, setOrderedLists] = useState([]);
   const [placeholderProps, setPlaceholderProps] = useState({});
-  const [completedListId, setCompletedListId] = useState('');
+
+  const filterByDateRange = (ts, startDate, endDate) =>
+    ts.filter((t) => {
+      const splitDate = t.completedAt.split('-');
+      const year = splitDate[0];
+      const month = parseInt(splitDate[1]) - 1;
+      const day = splitDate[2].split('T')[0];
+      const date = new Date(year, month, day);
+
+      return date >= startDate && date < endDate;
+    });
 
   useEffect(() => {
-    const filteredListsWithoutSpecial = lists.filter((l) => !l.special);
-    const completedList = lists.find((l) => l.special && l.title === 'complete');
-    const sortedLists = sortItemsByOrder(filteredListsWithoutSpecial);
+    const dayLists = [];
+    let newTodos = filterByCategory(board.category, todos);
 
-    // Category filter
-    let filteredTodos = filterByCategory(board.category, todos);
+    const todosByListId = Array.from({ length: 10 }).reduce((acc, list, index) => {
+      const startDate = new Date(new Date().setDate(new Date().getDate() - index));
+      startDate.setHours(0, 0, 0, 0);
 
-    const todosByListId = sortedLists.reduce((acc, list) => {
-      const todosFilteredByList = filteredTodos.filter((t) => t.list === list.id);
-      const sortedAndFilteredTodos = sortItemsByOrder(todosFilteredByList);
+      const endDate = new Date(new Date().setDate(new Date().getDate() - (index - 1)));
+      endDate.setHours(0, 0, 0, 0);
+
+      const myList = {
+        board: board.id,
+        order: index,
+        id: index,
+        listDate: startDate,
+        title: startDate.getDate(),
+      };
+      dayLists.push(myList);
+
+      const filteredTodos = filterByDateRange(newTodos, startDate, endDate);
 
       return {
         ...acc,
-        [list.id]: sortedAndFilteredTodos,
+        [myList.id]: filteredTodos,
       };
     }, {});
 
-    setCompletedListId(completedList.id);
-    setOrderedLists(sortedLists);
+    setOrderedLists(dayLists);
     setListsWithTodos(todosByListId);
   }, [lists, todos, board.category]);
 
@@ -213,20 +230,10 @@ function Board({ board, theme: { sizes } }) {
     return screenHeight - navHeight - listHeaderHeight - listFooterHeight - doublePadding;
   };
 
-  const isInFocusMode = board.focusMode && board.defaultFocusList && orderedLists.length !== 0;
-
-  const filterFocusList = () => {
-    if (isInFocusMode) {
-      return [orderedLists.find((list) => list.id === board.defaultFocusList)];
-    } else {
-      return orderedLists;
-    }
-  };
-
   return (
     <StyledBoard isSidebarOpen={board.sidebarOpen}>
       <SidebarWrapper isSidebarOpen={board.sidebarOpen} boardId={board.id}>
-        <Sidebar isSidebarOpen={board.sidebarOpen} currentBoard={board} />
+        Some sidebar content
       </SidebarWrapper>
 
       <main id="main" ref={boardRef}>
@@ -243,7 +250,7 @@ function Board({ board, theme: { sizes } }) {
                 {...provided.droppableProps}
                 isSidebarOpen={board.sidebarOpen}
               >
-                {filterFocusList().map((list, index) => (
+                {orderedLists.map((list, index) => (
                   <Column
                     key={list.id}
                     index={index}
@@ -253,32 +260,16 @@ function Board({ board, theme: { sizes } }) {
                     board={board}
                     listHeight={calculateListHeight()}
                     placeholderProps={placeholderProps}
-                    completedListId={completedListId}
                   />
                 ))}
                 {provided.placeholder}
-
-                {!isInFocusMode && (
-                  <div>
-                    <AddList
-                      boardId={board.id}
-                      lastListSortVal={
-                        orderedLists.length === 0 ? 0 : orderedLists[orderedLists.length - 1].order
-                      }
-                    />
-                  </div>
-                )}
               </ListsWrapper>
             )}
           </Droppable>
         </DragDropContext>
       </main>
 
-      <TodoModal
-        completedListId={completedListId}
-        isSidebarOpen={board.sidebarOpen}
-        boardId={board.id}
-      />
+      <TodoModal isSidebarOpen={board.sidebarOpen} boardId={board.id} />
     </StyledBoard>
   );
 }
@@ -323,7 +314,7 @@ const ListsWrapper = styled.div`
   /* Don't use overflow-y scroll, react dnd can't do 2-direction scrolls yet, "hack" implemented by adding fixed positions to nav and sidebar */
 `;
 
-Board.propTypes = {
+PageTest.propTypes = {
   board: PropTypes.shape({
     id: PropTypes.string.isRequired,
     sidebarOpen: PropTypes.bool.isRequired,
@@ -336,4 +327,4 @@ Board.propTypes = {
   }),
 };
 
-export default withTheme(Board);
+export default withTheme(PageTest);

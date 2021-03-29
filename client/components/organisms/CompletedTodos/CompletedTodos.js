@@ -48,6 +48,7 @@ CompletedTodos.propTypes = {
   yesterdayCompletedTodos: PropTypes.arrayOf(
     PropTypes.shape({ text: PropTypes.string, id: PropTypes.string }),
   ),
+  board: PropTypes.shape({}),
 };
 
 const GetStarted = styled.div`

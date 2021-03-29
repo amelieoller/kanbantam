@@ -14,8 +14,9 @@ export const postTodo = (dispatch) => (todo) =>
     })
     .catch(dispatchError(dispatch));
 
-export const getTodos = (boardId) =>
-  request.get(`/api/todos?boardId=${boardId}`).then(handleSuccess).catch(handleError);
+export const getTodos = (boardId, completed) =>{
+  return request.get(`/api/todos?boardId=${boardId}&completed=${completed}`).then(handleSuccess).catch(handleError);
+}
 
 export const putTodo = (dispatch) => ({ id, ...todo }) =>
   request.put(`/api/todos/${id}`).send(todo).then(handleSuccess).catch(dispatchError(dispatch));
