@@ -286,7 +286,10 @@ CategoryOptionsComponent.propTypes = {
   handleChangeComplete: PropTypes.func.isRequired,
   currentCategoryId: PropTypes.string,
   boardId: PropTypes.string.isRequired,
-  currentCategory: PropTypes.shape({}),
+  currentCategory: PropTypes.shape({
+    color: PropTypes.string,
+    id: PropTypes.string,
+  }),
   categories: PropTypes.arrayOf(
     PropTypes.shape({ title: PropTypes.string, color: PropTypes.string, id: PropTypes.string }),
   ),

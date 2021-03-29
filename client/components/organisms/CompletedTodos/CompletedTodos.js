@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as R from 'ramda';
-import { Link } from 'react-router-dom';
 
 import { todosByDateFromToday } from '_utils/filtering';
 import DateSection from './DateSection';
-import Button from '_atoms/Button';
 
-const CompletedTodos = ({ board }) => {
+const CompletedTodos = () => {
   const { categories } = useSelector(R.pick(['categories']));
   const { todos } = useSelector(R.pick(['todos']));
 

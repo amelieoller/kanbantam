@@ -73,10 +73,6 @@ export const minutesToRoughHours = (minutes) => {
   return minutes;
 };
 
-const roundToOneDecimal = (num) => Math.round(num * 10) / 10;
-
-const roundToTwoDecimals = (num) => Math.round(num * 100) / 100;
-
 export const minutesAndHours = (minutes) => {
   const MINUTES_IN_HOUR = 60;
 

@@ -15,6 +15,7 @@ import WelcomePage from '_pages/WelcomePage/WelcomePage';
 import { attemptGetUser } from '_thunks/user';
 import { clearData } from '_actions/user';
 import '_styles/codeMirrorStyles.css';
+import CompletedPage from '../../pages/CompletedPage';
 
 function Main({ location, theme: { colors } }) {
   const dispatch = useDispatch();
@@ -104,6 +105,13 @@ function Main({ location, theme: { colors } }) {
             <Switch>
               <Route exact path="/" component={BoardsPage} />
               <Route
+                path="/boards/:id/completed"
+                render={(routerProps) => {
+                  return <CompletedPage boardId={routerProps.match.params.id} />;
+                }}
+              />
+              <Route
+                exact
                 path="/boards/:id"
                 render={(routerProps) => {
                   return <BoardPage boardId={routerProps.match.params.id} />;
